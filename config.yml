@@ -1,0 +1,225 @@
+#Plugin: XPBoost
+#Author: Qifi (elving21)
+#The variables which start and end with '%' you can either move them around or comepletely remove from the message
+lang:
+  prefix: '&f[&aXPBoost&f] '
+  #The message that player gets when he gets XP and boost is active
+  doublexpnot: '&fYou got &a%newexp% XP &finstead of &a%oldexp% XP'
+  #The action bar message when boost is activated, %timeleft% placeholder can be used here
+  actionbar: '&a%boost%x XP boost is active'
+  #Boss bar message, BossBarAPI needed for that
+  bossbar: '&a%boost%x XP boost is active'
+  #If motdon is set to true and global boost is active, motd is gonna change to this Some place holders you can use: (%max% = number of slots, %players% = number of online players)
+  motd: "&c%boost%x &aXP Multiplier is enabled! Join NOW! \n &f&lThis is second line! &c%players%/%max%"
+  #MSG when boost finishes
+  boostfisnish: '&cYour boost has expired.'
+  #/xpboost info command output
+  boostcountdown: '&fSeconds remaining: &6'
+  #MSG on /xpboost info when boost is not active
+  boostinfodeny: '&fYou dont have any active boosts.'
+  #Message when player buys XP boost
+  xpbuy: '&c%boost%x &fXP boost &fis on for &a%time% seconds &c(%money%$)'
+  #The name of the Inventory when player opens GUI
+  gui: '&cXP Boost Shop'
+  #Name of the EXP Bottle in GUI
+  xptitle: '&a%boost%x XP Boost'
+  #Lore of the EXP Bottle in GUI, to start a new line put '%newline%'
+  xplore: '&c%boost%x XP Boost for %time% seconds%newline%&aPrice: &f&l%money%$'
+  #Message on failed buy
+  buyfail: '&cYou dont have enough money to purchase this boost! &a(%money%$)'
+  #Message on buy when boost is still active
+  boostactive: '&cYour boost is still active!'
+  #Notification message on join when global boost is enabled
+  joinnotmsg: '&f&lGlobal XP Boost of %boost%x is currently &f&aenabled &f&lfor everyone!'
+  #Blocked command message when boost is active
+  cmdblock: '&cYou are not allowed to execute &a%cmd% &ccommand while boost is active :('
+  #Three lores on an given item
+  item:
+    lore1: '&fBoost: &a%boost%x'
+    lore2: '&fDuration: &a%time% Seconds'
+    lore3: '&8Right-Click to gain boost.'
+  reload: '&fConfig has been reloaded'
+  menu:
+    row1: '/xpboost gui &f- Opens up GUI'
+    row2: '/xpboost info &f- Shows time remaining'
+    row3: '/xpboost on/off &f - Enables/disables global XP Boost'
+    row4: '/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost'
+    row5: '/xpboost clear <name> &f - Clears active boost'
+    row6: '/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player'
+    row7: '/xpboost global <boost> - Changes global boost multiplier'
+    row8: '/xpboost reload &f - Reloads config'
+    row9: 'What ever is inside [] is &coptional'
+
+settings:
+  #Enable debug 0 = disabled | 1 = Normal | 2 = All information (Mostly useless)
+  debug: 0
+  #If you dont want to send metrics (statistics about the plugin) cahnge it to false
+  metrics: true
+  #Do you want to disable xp bottles? SELECT MODE 1 or 2 or 3
+  #Mode 1: Normal behaviour
+  #Mode 2: Set dropped XP from xp bottles to 0
+  #Mode 3: Disallow players to drop EXP bottles while their boost is active
+  xpbottlemode: 1
+  #if you want to use only SkillAPI/McMmmo/Heroes/RpgMe etc. experience for example, set this to true, and vanilla xp will be unaffected
+  disablevanillaxp: false
+  globalboost:
+    #Global XP boost
+    multiplier: 2.0
+    #Enable/disable notification on join when global boost is active
+    notification: true
+  #Do you want the message about the XP gained to appear
+  doublexpmsg: true
+  #Actionban msg time delay in ticks, (20 ticks = 1 sec) default 5 sec
+  actiondelay: 100
+  #Enable/disable motd when global boost is active
+  motdon: true
+  #Enable/disable actionbar message when boost is active
+  actionbarmsg: true
+  bossbar:
+    #Enable/disable bossbar when boost is active (will work only if BossBar plugin is present)
+    bossbarmsg: true
+    #Color of the boss bar
+    color: BLUE
+    #Style of the boss bar
+    style: NOTCHED_20
+  #Item type material for an xpboost item from /xpb item
+  itemmaterial: POTION
+  #Sign settings
+  sign:
+    #line1 is the text that u need to write in order to create sign, other lines will apear automatically
+    line1: '&a[XPBoost]'
+    line2: '&cOpen'
+    #if you dont need other lines, just leave it blank
+    line3: ''
+    line4: ''
+  #Days on which XP boost should be active for everyone! (change to true)
+  day:
+    monday: false
+    teusday: false
+    wednesday: false
+    thursday: false
+    friday: false
+    saturday: false
+    sunday: false
+  #Disabled commands
+  disabledcommands:
+    #Do you want this feature to be enabled?
+    enabled: true
+    #List of forbiden commands while XPBoost is active
+    list:
+    - '/give'
+    - '/test'
+  #Put it to true if you are using daily global xpboost and ur server does not restart every day
+  periodicalDayCheck: false
+  #McMMO support
+  mcmmo:
+    msg:
+      enabled: true
+      msg: '&aGained &c%newexp% &aXP istead of &c%oldexp%&a. Skill: &c%skill%'
+  #RPGme support
+  rpgme:
+    msg:
+      enabled: true
+      #I disabled message for a STAMINA skill cuz its just spamms rly a lot
+      msg: '&aGained &c%newexp% &aXP istead of &c%oldexp%&a. Skill: &c%skill%'
+  #Heroes support
+  heroes:
+    msg:
+      enabled: true
+      msg: '&aGained &c%newexp% &aXP istead of &c%oldexp%&a. Source: &c%source%'
+
+#boost:
+#  boost1:
+#   enabled: true // Enable disable boost option *REQUIRED*
+#   boost: 2.0 //XP multiplier *REQUIRED*
+#   cost: 500.0 //Currency cost *REQUIRED*
+#   time: 300 //Duration of the effect in seconds *REQUIRED*
+#   title: '&4%boost%x XPBoost &f(%money% $) Custom Title' //You can specify custom titles for different boosts if title is not present default preset will be used Placeholders: %boost%,%money%,%time% *OPTIONAL*
+#   permisson: *REQUIRED*
+#     use: false //Enable/disable permission usage for a specific boost
+#     perm: 'xpboost.guest' //if use=true, permission required to buy this boost
+#     msg: '&cNo permission' //Message when player does not have a specific permission
+#    behaviour:  //You can specify a 'behaviour' of each boost and set which XP it will affect, this is optional. default everything is true *OPTIONAL*
+#      VANILLA: true  //This XP Boost will be only viable for vanilla xp.
+#      SKILLAPI: false //This XP boost will be disabled for skillapi if you've got one.
+#      MCMMO: false //Same but for mcmmo
+#      RPGME: false //Same but for rgme
+#      HEROES: false //Same but for heroes
+
+boost:
+  boost1:
+    enabled: true
+    boost: 1.5
+    cost: 500.0
+    time: 300
+    title: '&4%boost%x XPBoost &f(%money% $) Custom Title' 
+    permission:
+      use: false
+      perm: 'xpboost.guest'
+      msg: '&cNo permission (%perm%)'
+    behaviour:
+      VANILLA: true
+      SKILLAPI: false
+      HEROES: true
+  boost2:
+    enabled: true
+    boost: 2.0
+    cost: 800.0
+    time: 250
+    permission:
+      use: false
+      perm: 'xpboost.guest'
+      msg: '&cNo permission (%perm%)'
+    behaviour:
+      SKILLAPI: false
+      RPGME: false
+  boost3:
+    enabled: true
+    boost: 2.5
+    cost: 1500
+    time: 350
+    permission:
+      use: true
+      perm: 'xpboost.vip'
+      msg: '&cThis boost is only for &aVIP &cusers. (%perm%)'
+    behaviour:
+      VANILLA: true
+      SKILLAPI: false
+      MCMMO: true
+      RPGME: false
+  boost4:
+    enabled: true
+    boost: 3.0
+    cost: 3000.0
+    time: 350
+    permission:
+      use: true
+      perm: 'xpboost.vip'
+      msg: '&cThis boost is only for &aVIP &cusers. (%perm%)'
+  boost5:
+    enabled: true
+    boost: 3.5
+    cost: 5000.0
+    time: 1000
+    permission:
+      use: true
+      perm: 'xpboost.vip'
+      msg: '&cThis boost is only for &aVIP &cusers. (%perm%)'
+  boost6:
+    enabled: false
+    boost: 4.0
+    cost: 7000.0
+    time: 300
+    permission:
+      use: true
+      perm: 'xpboost.mod'
+      msg: '&cThis boost is only for &aMOD &cusers. (%perm%)'
+  boost7:
+    enabled: false
+    boost: 5.0
+    cost: 10000.0
+    time: 300
+    permission:
+      use: true
+      perm: 'xpboost.mod'
+      msg: '&cThis boost is only for &aMOD &cusers. (%perm%)'
