@@ -37,6 +37,8 @@ public class ExpListener implements Listener{
 			XPBoost xpb = xpbAPI.getBoost(id);
 			if(xpb.hasCondition(CONDITION_NAME))
 				expnew =  (int) Math.round(exp * xpb.getBoost());
+			else
+				return;
 		}
 		
 		if(gl.isEnabled()){

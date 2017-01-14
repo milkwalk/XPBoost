@@ -80,10 +80,7 @@ public class XPBoost {
 	//Check whether a player has a condition
 	public boolean hasCondition(Condition condition){
 		if(conditions.containsKey(condition)){
-			if(conditions.get(condition))
-				return true;
-			else 
-				return false;
+			return conditions.get(condition);
 		}else{
 			return true;
 		}
@@ -102,5 +99,9 @@ public class XPBoost {
 	//DURATION OF THE BOOST IN SECONDS
 	public int getBoostTime(){
 		return this.boostTime;
+	}
+	
+	public void clearCondition(){
+		this.conditions.clear();
 	}
 }

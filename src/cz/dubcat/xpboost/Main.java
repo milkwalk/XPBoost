@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,7 @@ import org.mcstats.Metrics;
 
 import cz.dubcat.xpboost.GUI.ClickListener;
 import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.cmds.CommandHandler;
 import cz.dubcat.xpboost.cmds.clearCmd;
@@ -252,6 +254,13 @@ public class Main extends JavaPlugin{
     
     @Override
     public void onDisable(){
+    	
+    	getLogger().info("Saving players....");
+    	//SAVING EVERYONES BOOST
+    	for(Player p : Bukkit.getServer().getOnlinePlayers()){
+    			MainAPI.savePlayer(p);
+    	}
+    	
         getLogger().info("Disabled :(");
     }
     

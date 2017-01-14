@@ -37,6 +37,8 @@ public class SkillApi implements Listener{
    			XPBoost xpb = xpbAPI.getBoost(id);
    			if(xpb.hasCondition(CONDITION_NAME))
    				expnew =  Math.round(exp * xpb.getBoost());
+			else
+				return;
    		}
    		
    		if(gl.isEnabled()){
