@@ -52,20 +52,22 @@ public class McMMO  implements Listener{
 		}
 		
 		if(gl.isEnabled()){
-			expnew = (int) Math.round(exp * gl.getGlobalBoost());
+			expnew += (int) Math.round(exp * gl.getGlobalBoost());
 		}
 		
-		expbug = true;
-		ExperienceAPI.addXP(player, convert, expnew);
-		expbug = false;
-		
-		if (plugin.getConfig().getBoolean("settings.mcmmo.msg.enabled")){
-			String message = plugin.getConfig().getString("settings.mcmmo.msg.msg");
-			message = message.replaceAll("%newexp%", expnew+"");
-			message = message.replaceAll("%oldexp%", exp+"");
-			message = message.replaceAll("%skill%", skill+"");
-	    	MainAPI.sendMSG(message, player);
-		}		
+		if(expnew > 0){
+			expbug = true;
+			ExperienceAPI.addXP(player, convert, expnew);
+			expbug = false;
+			
+			if (plugin.getConfig().getBoolean("settings.mcmmo.msg.enabled")){
+				String message = plugin.getConfig().getString("settings.mcmmo.msg.msg");
+				message = message.replaceAll("%newexp%", expnew+"");
+				message = message.replaceAll("%oldexp%", exp+"");
+				message = message.replaceAll("%skill%", skill+"");
+		    	MainAPI.sendMSG(message, player);
+			}		
+		}
 	}
 
 }

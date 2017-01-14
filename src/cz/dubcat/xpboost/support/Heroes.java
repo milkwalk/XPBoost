@@ -39,16 +39,20 @@ public class Heroes implements Listener{
 		}
 		
 		if(gl.isEnabled()){
-			expnew = Math.round(exp * gl.getGlobalBoost());
+			expnew += Math.round(exp * gl.getGlobalBoost());
 		}
 		
-		if (Main.getPlugin().getConfig().getBoolean("settings.heroes.msg.enabled")){
-			String message = Main.getPlugin().getConfig().getString("settings.heroes.msg.msg");
-		    message = message.replaceAll("%newexp%", expnew+"");
-		    message = message.replaceAll("%oldexp%", exp+"");
-		    message = message.replaceAll("%source%", skill+"");
-		    MainAPI.sendMSG(message, player);
-	    }     
+		if(expnew > 0){
+			event.setExpGain(expnew);
+			
+			if (Main.getPlugin().getConfig().getBoolean("settings.heroes.msg.enabled")){
+				String message = Main.getPlugin().getConfig().getString("settings.heroes.msg.msg");
+			    message = message.replaceAll("%newexp%", expnew+"");
+			    message = message.replaceAll("%oldexp%", exp+"");
+			    message = message.replaceAll("%source%", skill+"");
+			    MainAPI.sendMSG(message, player);
+		    }     
+		}
 		
 	}
 

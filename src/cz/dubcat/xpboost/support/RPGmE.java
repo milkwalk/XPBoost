@@ -39,18 +39,21 @@ public class RPGmE implements Listener{
 		}
 		
 		if(gl.isEnabled()){
-			expnew =Math.round(exp * gl.getGlobalBoost());
+			expnew +=Math.round(exp * gl.getGlobalBoost());
 		}
 		
-		e.setExp(expnew);
+		if(expnew > 0){
+			e.setExp(expnew);
 		
-		if (!skill.equals("STAMINA"))
-			if (Main.getPlugin().getConfig().getBoolean("settings.rpgme.msg.enabled")){
-				String message = Main.getPlugin().getConfig().getString("settings.rpgme.msg.msg");
-			    message = message.replaceAll("%newexp%", expnew+"");
-			    message = message.replaceAll("%oldexp%", exp+"");
-			    message = message.replaceAll("%skill%", skill+"");
-			    MainAPI.sendMSG(message, player);
+			if (!skill.equals("STAMINA")){
+				if (Main.getPlugin().getConfig().getBoolean("settings.rpgme.msg.enabled")){
+					String message = Main.getPlugin().getConfig().getString("settings.rpgme.msg.msg");
+				    message = message.replaceAll("%newexp%", expnew+"");
+				    message = message.replaceAll("%oldexp%", exp+"");
+				    message = message.replaceAll("%skill%", skill+"");
+				    MainAPI.sendMSG(message, player);
+				}
 			}
+		}
 	}
 }

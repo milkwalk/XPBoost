@@ -16,7 +16,6 @@ import org.mcstats.Metrics;
 
 import cz.dubcat.xpboost.GUI.ClickListener;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.cmds.CommandHandler;
 import cz.dubcat.xpboost.cmds.clearCmd;

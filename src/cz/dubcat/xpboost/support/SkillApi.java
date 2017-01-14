@@ -42,13 +42,15 @@ public class SkillApi implements Listener{
    		}
    		
    		if(gl.isEnabled()){
-   			expnew = Math.round(exp * gl.getGlobalBoost());
+   			expnew += Math.round(exp * gl.getGlobalBoost());
    		}
    		
-   		expbug = true;
-   		PlayerData data = SkillAPI.getPlayerData(player);
-   		data.giveExp(expnew, event.getSource());
-   		expbug = false;
+   		if(expnew > 0){
+	   		expbug = true;
+	   		PlayerData data = SkillAPI.getPlayerData(player);
+	   		data.giveExp(expnew, event.getSource());
+	   		expbug = false;
+   		}
     }
 
 }

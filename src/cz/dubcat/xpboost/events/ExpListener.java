@@ -42,19 +42,21 @@ public class ExpListener implements Listener{
 		}
 		
 		if(gl.isEnabled()){
-			expnew = (int) Math.round(exp * gl.getGlobalBoost());
+			expnew += (int) Math.round(exp * gl.getGlobalBoost());
 		}
 		
-		event.setAmount(expnew);
-		
-		MainAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP (" + CONDITION_NAME+ ")" , Debug.NORMAL);
-		
-		if (Main.getPlugin().getConfig().getBoolean("settings.doublexpmsg")){
-			String message = Main.getPlugin().getConfig().getString("lang.doublexpnot")
-					.replaceAll("%newexp%", expnew+"")
-		    		.replaceAll("%oldexp%", exp+"");
+		if(expnew > 0){
+			event.setAmount(expnew);
 			
-			MainAPI.sendMSG(message, player);
-	    }
+			MainAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP (" + CONDITION_NAME+ ")" , Debug.NORMAL);
+			
+			if (Main.getPlugin().getConfig().getBoolean("settings.doublexpmsg")){
+				String message = Main.getPlugin().getConfig().getString("lang.doublexpnot")
+						.replaceAll("%newexp%", expnew+"")
+			    		.replaceAll("%oldexp%", exp+"");
+				
+				MainAPI.sendMSG(message, player);
+		    }
+		}
     }
 }
