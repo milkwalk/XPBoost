@@ -36,7 +36,7 @@ public class BossBarN extends BukkitRunnable{
 				int lenght =	xpb.getBoostTime();
 				float calc1 = ((float)xpb.getTimeRemaining())/(float)(lenght);
 				
-				String message = MainAPI.colorizeText(Main.getPlugin().getConfig().getString("lang.bossbar").replaceAll("%boost%", xpb.getBoost()+""));
+				String message = MainAPI.colorizeText(Main.getLang().getString("lang.bossbar").replaceAll("%boost%", xpb.getBoost()+""));
 
 				BossBarAPI.addBar(p, // The receiver of the BossBar
 	      		      new TextComponent(message), // Displayed message

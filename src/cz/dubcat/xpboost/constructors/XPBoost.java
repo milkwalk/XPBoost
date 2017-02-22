@@ -3,8 +3,9 @@ package cz.dubcat.xpboost.constructors;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.entity.Player;
+import org.bukkit.Bukkit;
 
+import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 
 public class XPBoost {
@@ -12,16 +13,14 @@ public class XPBoost {
 	private UUID uiid;
 	private double boost  =1;
 	private long endtime;
-	private String name;
 	private ConcurrentHashMap<Condition, Boolean> conditions = new ConcurrentHashMap<Condition, Boolean>();
 	private int boostTime;
 
 	
-	public XPBoost(Player p, double boost, long endtime){
-		this.uiid = p.getUniqueId();
-		this.boost = boost;
-		this.endtime = endtime;
-		this.name = p.getName();
+	public XPBoost(UUID id, double boost, long endtime){
+		this.uiid = id;	
+		this.boost = boost;		
+		this.endtime = endtime;	
 		this.boostTime = (int) ((endtime - System.currentTimeMillis())/1000);
 	}
 	
@@ -35,6 +34,16 @@ public class XPBoost {
 		return this.boost;
 	}
 	
+	
+	//add time to an existing boost
+	public void addTimeToBoost(long time){	
+			this.endtime += time;
+	}
+	
+	//add time to an existing boost
+	public void substractTimeFromBoost(long time){	
+		this.endtime -= time;
+	}
 	
 	//add time to an existing boost
 	public void addBoost(double boost, long time){
@@ -58,8 +67,8 @@ public class XPBoost {
 	
 	//remove/reset boost
 	public void clear(){
-		this.boost  = 1;
-		this.endtime = 0;
+		this.boost  = 1.0D;
+		this.endtime = 0L;
 		this.conditions.clear();
 	}
 	
@@ -87,8 +96,13 @@ public class XPBoost {
 	}
 	
 	//Get a name of a player >.<
+	@Deprecated
 	public String getName(){
-		return this.name;
+		if(Bukkit.getServer().getPlayer(this.uiid) != null && Bukkit.getServer().getPlayer(this.uiid).isOnline()){
+			return Bukkit.getServer().getPlayer(this.uiid).getName();
+		}else{
+			return Bukkit.getServer().getOfflinePlayer(this.uiid).getName();
+		}
 	}
 	
 	//RETURN A HASHMAP WITH A LIST OF ALL INCLUDED CONDITIONS
@@ -103,5 +117,9 @@ public class XPBoost {
 	
 	public void clearCondition(){
 		this.conditions.clear();
+	}
+	
+	public void savePlayerFile(){
+		MainAPI.saveOfflinePlayer(this.uiid, this);
 	}
 }

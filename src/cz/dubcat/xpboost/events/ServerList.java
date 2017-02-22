@@ -15,7 +15,7 @@ public class ServerList implements Listener{
     public void onServerListPing(ServerListPingEvent event){
     	if (Main.GLOBAL_BOOST.isEnabled()){
     		if (Main.getPlugin().getConfig().getBoolean("settings.motdon")){    			
-    			String message = Main.getPlugin().getConfig().getString("lang.motd");
+    			String message = Main.getLang().getString("lang.motd");
     			String max = ""+event.getMaxPlayers();
     			String actual = ""+event.getNumPlayers();
     			message = message.replaceAll("%boost%", Main.GLOBAL_BOOST.getGlobalBoost()+"");

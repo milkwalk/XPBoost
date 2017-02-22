@@ -1,6 +1,6 @@
 name: XPboost
 author: Qifi (elving21)
-version: 1.83
+version: 1.87
 main: cz.dubcat.xpboost.Main
 commands:
     xpboost:
@@ -16,4 +16,4 @@ permissions:
         description: Allows you to use the admin commands
         default: op
 depend: [Vault]
-softdepend: [Vault,SkillAPI,RPGme,BossBarAPI,Heroes]
+softdepend: [Vault,SkillAPI,RPGme,BossBarAPI,Heroes,PlaceholderAPI]

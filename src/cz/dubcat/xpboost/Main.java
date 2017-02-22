@@ -1,5 +1,6 @@
 package cz.dubcat.xpboost;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.UUID;
@@ -8,6 +9,8 @@ import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -28,6 +31,7 @@ import cz.dubcat.xpboost.cmds.offCmd;
 import cz.dubcat.xpboost.cmds.onCmd;
 import cz.dubcat.xpboost.cmds.reloadCmd;
 import cz.dubcat.xpboost.cmds.xpboostMain;
+import cz.dubcat.xpboost.config.ConfigManager;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import cz.dubcat.xpboost.events.ClickListener_18;
@@ -41,6 +45,7 @@ import cz.dubcat.xpboost.events.Signs;
 import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
 import cz.dubcat.xpboost.support.McMMO;
+import cz.dubcat.xpboost.support.Placeholder;
 import cz.dubcat.xpboost.support.RPGmE;
 import cz.dubcat.xpboost.support.SkillApi;
 import cz.dubcat.xpboost.versions.actionBar;
@@ -64,6 +69,11 @@ public class Main extends JavaPlugin{
     
     private actionbarInterface actionbar;
     private static Main plugin;
+    public static int config_version = 1;
+    
+    //lang    
+    public static File lang_file;
+    public static FileConfiguration lang;
     
     
     public void registerCommands() {
@@ -73,7 +83,7 @@ public class Main extends JavaPlugin{
         handler.register("xpboost", new xpboostMain(this));
             
         handler.register("gui", new guiCmd());
-        handler.register("info", new infoCmd(this));
+        handler.register("info", new infoCmd());
         handler.register("reload", new reloadCmd(this));
         handler.register("give", new giveCmd(this));
         handler.register("on", new onCmd(this));
@@ -93,6 +103,25 @@ public class Main extends JavaPlugin{
     	this.log = getLogger();
 	    getConfig().options().copyDefaults(true);
 	    saveDefaultConfig();
+	    
+	    
+		if(!Main.getPlugin().getConfig().contains("settings.config_version") || Main.getPlugin().getConfig().getInt("settings.config_version") < Main.config_version){
+			this.log.warning("&cYou config is out of date, regenerate you config fille or add required keys for the full functionality of the plugin. You version: &a" +Main.getPlugin().getConfig().getInt("settings.config_version") + " &cnewest version: &a" +  Main.config_version);
+			this.log.warning("    Key: settings.config_version Value: 1");
+			this.log.warning("    Key: settings.language Value: ENG");
+		}
+	    
+	    if(getConfig().contains("settings.language")){
+	    	 lang_file = new File(Main.getPlugin().getDataFolder() + "/lang/lang_"+getConfig().getString("settings.language")+".yml");
+	    	 lang = YamlConfiguration.loadConfiguration(lang_file);
+	    }else{
+	    	lang_file = new File(getDataFolder() + "/lang/lang_ENG.yml");
+	    	lang = YamlConfiguration.loadConfiguration(lang_file);
+	    }
+	    
+	    //lang file
+	    ConfigManager lang = new ConfigManager();
+	    lang.loadLangFile();
 	    
 	    
 	    //INITIALIZE GLOBAL BOOST
@@ -159,6 +188,17 @@ public class Main extends JavaPlugin{
         } else {
         	log.info("Found BossBarAPI, enabling support.");
         	new BossBarN().runTaskTimer(Main.getPlugin(), 0, 100);
+        }
+        
+        
+        Plugin placeholder = this.getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        
+        //BOSS BAR
+        if(placeholder == null) {
+        	log.warning("PlaceholderAPI not found, disabling support.");
+        } else {
+        	log.info("Found PlaceholderAPI, enabling support.");
+        	new Placeholder(this).hook();
         }
         
 	    //END SUPPORT ----------------------------------------------------------------------------
@@ -298,6 +338,10 @@ public class Main extends JavaPlugin{
     
     public static Plugin getPlugin(){
     	return plugin;
+    }
+    
+    public static FileConfiguration getLang(){
+    	return lang;
     }
     
     public static Logger getLog(){

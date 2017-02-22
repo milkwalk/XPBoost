@@ -23,7 +23,7 @@ public class onCmd implements CommandInterface{
     	Player player;
     	if(sender instanceof Player) {
     		player = (Player) sender;
-    		if (!(player.hasPermission("xpboost.admin"))){
+    		if (!(player.hasPermission("xpboost.admin")) || !(player.hasPermission("xpboost.on"))){
     			return false;
     		}
     	}

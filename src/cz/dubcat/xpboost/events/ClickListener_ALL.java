@@ -18,7 +18,6 @@ import cz.dubcat.xpboost.api.xpbAPI;
 public class ClickListener_ALL implements Listener{
 
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void rightClick(PlayerInteractEvent event){
 		
@@ -30,16 +29,18 @@ public class ClickListener_ALL implements Listener{
             
             Player player = event.getPlayer();
             
-            if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("settings.itemmaterial"))){
-            	ItemStack item = player.getItemInHand();
+            if(player.getInventory().getItemInMainHand() != null && player.getInventory().getItemInMainHand().getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("settings.itemmaterial"))){
+            	ItemStack item = player.getInventory().getItemInMainHand();
             	if(item.getItemMeta() !=null && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getLore() != null){
             		String nazev = item.getItemMeta().getDisplayName();
             		List<String> lore = item.getItemMeta().getLore();
             		
-            		if(nazev.contains("XPBoost")){
+            		String name = MainAPI.stripColours(MainAPI.colorizeText(Main.getLang().getString("lang.itemname").replace("%boost%", "").replace("%time%", "")));
+            		
+            		if(nazev.contains(name)){
             			
             			if(xpbAPI.hasBoost(player.getUniqueId())){
-            				MainAPI.sendMSG( Main.getPlugin().getConfig().getString("lang.boostactive"), player);
+            				MainAPI.sendMSG( Main.getLang().getString("lang.boostactive"), player);
             				event.setCancelled(true);
             				return;
             			}
@@ -48,7 +49,7 @@ public class ClickListener_ALL implements Listener{
             			double boost = 0;
             			Integer time = 0;
             			for(String l : lore){
-            				String str = l;
+            				String str = MainAPI.stripColours(l);
             				str = str.replaceAll("[^\\d.]", "");
             				if(i == 0){
             					boost = Double.parseDouble(str);
@@ -64,9 +65,10 @@ public class ClickListener_ALL implements Listener{
             			
             			xpbAPI.setPlayerBoost(player.getUniqueId(), boost, time);
             			
-            			MainAPI.sendMSG(Main.getPlugin().getConfig().getString("lang.xpbuy").replace("%boost%", ""+boost).replace("%time%", ""+time).replace("%money%", ""), player);
+            			MainAPI.sendMSG(Main.getLang().getString("lang.xpbuy").replace("%boost%", ""+boost).replace("%time%", ""+time).replace("%money%", ""), player);
             			
-            			player.setItemInHand(null);
+            			player.getInventory().setItemInMainHand(null);
+            			player.updateInventory();
             			
             			event.setCancelled(true);
             			

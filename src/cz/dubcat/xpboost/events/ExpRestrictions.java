@@ -30,6 +30,14 @@ public class ExpRestrictions implements Listener{
             Player player = event.getPlayer();   
             if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.EXP_BOTTLE){
             	event.setCancelled(true);
+            	
+            	/*ThrownExpBottle expb = (ThrownExpBottle) player.getWorld().spawnEntity(player.getLocation(),EntityType.THROWN_EXP_BOTTLE);
+            	expb.setVelocity(new Vector(0,10,0));
+            	expb.setShooter(player);
+            	
+            	ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);*/         
+            	
+            	
             }
         }
 	}

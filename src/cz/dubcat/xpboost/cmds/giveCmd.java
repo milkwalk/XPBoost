@@ -1,7 +1,5 @@
 package cz.dubcat.xpboost.cmds;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -9,9 +7,9 @@ import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
-import cz.dubcat.xpboost.api.MainAPI.Condition;
 
 public class giveCmd implements CommandInterface{	
 	

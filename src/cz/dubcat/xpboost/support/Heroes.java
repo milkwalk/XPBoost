@@ -10,9 +10,9 @@ import com.herocraftonline.heroes.api.events.ExperienceChangeEvent;
 import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 
 import cz.dubcat.xpboost.Main;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 

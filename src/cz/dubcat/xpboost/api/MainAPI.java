@@ -29,7 +29,7 @@ public class MainAPI {
 	}
 	
 	public enum Condition{
-		VANILLA,SKILLAPI,MCMMO,RPGME,HEROES;
+		VANILLA,SKILLAPI,MCMMO,RPGME,HEROES,ALL;
 		public static Condition[] CONDITIONS = new Condition[] {VANILLA,SKILLAPI,MCMMO,RPGME,HEROES};
 	}
 	
@@ -47,11 +47,15 @@ public class MainAPI {
 		}
 		
 		if(players.contains("xp.endtime")){
-			endtime = (long) getPlayerVariable("xp.endtime");
+			try{
+				endtime = (long) getPlayerVariable("xp.endtime");
+			} catch(ClassCastException e){
+				return;
+			}
 		}
 		
-		if(boost != 0 || endtime != 0){
-			XPBoost xpb = new XPBoost(p, boost,endtime);	
+		if(endtime > System.currentTimeMillis()){
+			XPBoost xpb = new XPBoost(p.getUniqueId(), boost,endtime);	
 			Main.allplayers.put(p.getUniqueId(), xpb);			
 		}
 	}
@@ -77,6 +81,27 @@ public class MainAPI {
 		        it.remove(); 
 		    }
 		}	
+	}
+	
+	public static void saveOfflinePlayer(UUID id, XPBoost xpb){
+		
+		setPlayerFile(id);
+		//RESET EVERYTHIGN
+		setPlayerVariable("xp", "");
+		
+		//SAVE NEW INFO >.<
+		setPlayerVariable("xp.boost", xpb.getBoost());
+		setPlayerVariable("xp.endtime", xpb.getEndTime());		
+		
+		
+	   Iterator<Entry<Condition, Boolean>> it = xpb.getConditions().entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry<Condition, Boolean> pair = (Map.Entry<Condition, Boolean>)it.next();
+	    	setPlayerVariable("xp.condition." + pair.getKey(), pair.getValue());
+	        it.remove(); 
+	    }
+	    
+	    savePlayerProfile();
 	}
 	
 	
@@ -119,12 +144,12 @@ public class MainAPI {
     }
     
 	public static void sendMSG(String string, UUID player){
-		Bukkit.getServer().getPlayer(player).sendMessage(colorizeText(Main.getPlugin().getConfig().getString("lang.prefix") + string));
+		Bukkit.getServer().getPlayer(player).sendMessage(colorizeText(Main.getLang().getString("lang.prefix") + string));
 	}
     
     
 	public static void sendMSG(String string, Player player){
-		player.sendMessage(colorizeText(Main.getPlugin().getConfig().getString("lang.prefix") + string));
+		player.sendMessage(colorizeText(Main.getLang().getString("lang.prefix") + string));
 	}
     
     
@@ -147,8 +172,32 @@ public class MainAPI {
         string = string.replaceAll("&f", ChatColor.WHITE+"");
         string = string.replaceAll("&l", ChatColor.BOLD+"");
         string = string.replaceAll("&r", ChatColor.WHITE+"");
+        string = string.replaceAll("&m", ChatColor.STRIKETHROUGH+"");
         return string;
     }
+    
+	public static String stripColours(String string) {
+		string = string.replaceAll(ChatColor.BLACK + "", "");
+		string = string.replaceAll(ChatColor.DARK_BLUE + "", "");
+		string = string.replaceAll(ChatColor.DARK_GREEN + "", "");
+		string = string.replaceAll(ChatColor.DARK_AQUA + "", "");
+		string = string.replaceAll(ChatColor.DARK_RED + "", "");
+		string = string.replaceAll(ChatColor.DARK_PURPLE + "", "");
+		string = string.replaceAll(ChatColor.GOLD + "", "");
+		string = string.replaceAll(ChatColor.GRAY + "", "");
+		string = string.replaceAll(ChatColor.DARK_GRAY + "", "");
+		string = string.replaceAll(ChatColor.BLUE + "", "");
+		string = string.replaceAll(ChatColor.GREEN + "", "");
+		string = string.replaceAll(ChatColor.AQUA + "", "");
+		string = string.replaceAll(ChatColor.RED + "", "");
+		string = string.replaceAll(ChatColor.LIGHT_PURPLE + "", "");
+		string = string.replaceAll(ChatColor.YELLOW + "", "");
+		string = string.replaceAll(ChatColor.WHITE + "", "");
+		string = string.replaceAll(ChatColor.BOLD + "", "");
+		string = string.replaceAll(ChatColor.WHITE + "", "");
+		string = string.replaceAll(ChatColor.STRIKETHROUGH + "", "");
+		return string;
+	}
     
     
     public static void createDisplay(Material material, Inventory inv, int Slot, String name, String lore){
@@ -190,7 +239,7 @@ public class MainAPI {
 			amount = 9;
 		}
 		
-      	Inventory GUI = Bukkit.createInventory(null, amount, colorizeText(Main.getPlugin().getConfig().getString("lang.gui")));
+      	Inventory GUI = Bukkit.createInventory(null, amount, colorizeText(Main.getLang().getString("lang.gui")));
       	
 		for(String key : Main.getPlugin().getConfig().getConfigurationSection("boost").getKeys(false)){
 			if (Main.getPlugin().getConfig().getBoolean("boost." + key + ".enabled") == true){
@@ -198,9 +247,13 @@ public class MainAPI {
             	int cost = Main.getPlugin().getConfig().getInt("boost." + key + ".cost");
             	int time = Main.getPlugin().getConfig().getInt("boost." + key + ".time");
             	double boost = Main.getPlugin().getConfig().getDouble("boost." + key + ".boost");
+            	Material mat = Material.EXP_BOTTLE;
             	
+            	if(Main.getPlugin().getConfig().contains("boost." + key + ".item_type")){
+            		mat = Material.valueOf(Main.getPlugin().getConfig().getString("boost." + key + ".item_type"));
+            	}
             	
-            	MainAPI.createDisplay(Material.EXP_BOTTLE,GUI,i,(Main.getPlugin().getConfig().getString("boost." + key + ".title") != null) ? MainAPI.colorizeText(Main.getPlugin().getConfig().getString("boost." + key + ".title")).replaceAll("%boost%", boost+"").replaceAll("%money%", cost + "").replaceAll("%time%", time + "") : MainAPI.colorizeText(Main.getPlugin().getConfig().getString("lang.xptitle").replaceAll("%boost%", boost+"")),MainAPI.colorizeText(Main.getPlugin().getConfig().getString("lang.xplore").replaceAll("%time%", time + "").replaceAll("%money%", cost + "").replaceAll("%boost%", boost + "")));
+            	MainAPI.createDisplay(mat,GUI,i,(Main.getPlugin().getConfig().getString("boost." + key + ".title") != null) ? MainAPI.colorizeText(Main.getPlugin().getConfig().getString("boost." + key + ".title")).replaceAll("%boost%", boost+"").replaceAll("%money%", cost + "").replaceAll("%time%", time + "") : MainAPI.colorizeText(Main.getLang().getString("lang.xptitle").replaceAll("%boost%", boost+"")),MainAPI.colorizeText(Main.getLang().getString("lang.xplore").replaceAll("%time%", time + "").replaceAll("%money%", cost + "").replaceAll("%boost%", boost + "")));
 	            player.openInventory(GUI);
 			}
 		}

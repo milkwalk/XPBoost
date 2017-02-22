@@ -55,11 +55,18 @@ public class itemCommand implements CommandInterface{
 			ItemStack item = new ItemStack(Material.getMaterial(Main.getPlugin().getConfig().getString("settings.itemmaterial")));
 			ItemMeta meta = item.getItemMeta();
 			
-			meta.setDisplayName(MainAPI.colorizeText("&a"+boost+"x XPBoost"));
+			meta.setDisplayName(MainAPI.colorizeText(Main.getLang().getString("lang.itemname").replace("%boost%", boost+"").replace("%time%", time+"")));
+			
 			List<String> lore = new ArrayList<String>();
-			lore.add(MainAPI.colorizeText(Main.getPlugin().getConfig().getString("lang.item.lore1").replace("%boost%", ""+boost)));
-			lore.add(MainAPI.colorizeText(Main.getPlugin().getConfig().getString("lang.item.lore2").replace("%time%", ""+time)));
-			lore.add(MainAPI.colorizeText(Main.getPlugin().getConfig().getString("lang.item.lore3")));
+			lore.add(MainAPI.colorizeText(Main.getLang().getString("lang.item.lore1").replace("%boost%", ""+boost)));
+			lore.add(MainAPI.colorizeText(Main.getLang().getString("lang.item.lore2").replace("%time%", ""+time)));
+			lore.add(MainAPI.colorizeText(Main.getLang().getString("lang.item.lore3")));
+			if(Main.getLang().contains("lang.item.lore4")){
+				lore.add(MainAPI.colorizeText(Main.getLang().getString("lang.item.lore4")));
+			}else if(Main.getLang().contains("lang.item.lore5")){
+				lore.add(MainAPI.colorizeText(Main.getLang().getString("lang.item.lore5")));
+			}
+			
 			meta.setLore(lore);
 			item.setItemMeta(meta);
 			

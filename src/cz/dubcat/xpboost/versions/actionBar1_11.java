@@ -2,8 +2,8 @@ package cz.dubcat.xpboost.versions;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -15,8 +15,8 @@ import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import net.minecraft.server.v1_11_R1.IChatBaseComponent;
-import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
 import net.minecraft.server.v1_11_R1.IChatBaseComponent.ChatSerializer;
+import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
 
 public class actionBar1_11  implements actionbarInterface {
 	
@@ -48,7 +48,7 @@ public class actionBar1_11  implements actionbarInterface {
             	        }
             	        
             	    	CraftPlayer p = (CraftPlayer) Bukkit.getPlayer(xpb.getUUID());
-            	    	String message = MainAPI.colorizeText(plugin.getConfig().getString("lang.actionbar").replaceAll("%boost%", xpb.getBoost()+""));
+            	    	String message = MainAPI.colorizeText(Main.getLang().getString("lang.actionbar").replaceAll("%boost%", xpb.getBoost()+""));
             	    	message = message.replaceAll("%timeleft%",xpb.getTimeRemaining()+"");
             	        IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
             	        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);

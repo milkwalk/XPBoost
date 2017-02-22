@@ -11,7 +11,7 @@ public class guiCmd implements CommandInterface{
     @Override
     public boolean onCommand(CommandSender sender, Command cmd,String commandLabel, String[] args) {
         Player player = (Player) sender;
-    	if (player.hasPermission("xpboost.use")){
+    	if (player.hasPermission("xpboost.use") || player.hasPermission("xpboost.gui")){
     		MainAPI.openXpBoostShop(player);
     	}
         return false;

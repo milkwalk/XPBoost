@@ -2,8 +2,8 @@ package cz.dubcat.xpboost;
 
 import java.util.Iterator;
 import java.util.Map;
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
@@ -31,7 +31,7 @@ public class XPBoostTask extends BukkitRunnable{
 			XPBoost xpb = pair.getValue();
 
 			if(xpb.getTimeRemaining() == 0){
-    	    	String message = Main.getPlugin().getConfig().getString("lang.boostfisnish");
+    	    	String message = Main.getLang().getString("lang.boostfisnish");
 	    	
     	    	//SEND MESSAGE
     	    	Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {

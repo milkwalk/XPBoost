@@ -11,8 +11,8 @@ import com.sucy.skill.api.event.PlayerExperienceGainEvent;
 import com.sucy.skill.api.player.PlayerData;
 
 import cz.dubcat.xpboost.Main;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 

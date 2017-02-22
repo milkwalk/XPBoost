@@ -48,7 +48,7 @@ public class actionBar implements actionbarInterface{
             	        }
             	        
             	    	CraftPlayer p = (CraftPlayer) Bukkit.getPlayer(xpb.getUUID());
-            	    	String message = MainAPI.colorizeText(plugin.getConfig().getString("lang.actionbar").replaceAll("%boost%", xpb.getBoost()+""));
+            	    	String message = MainAPI.colorizeText(Main.getLang().getString("lang.actionbar").replaceAll("%boost%", xpb.getBoost()+""));
             	    	message = message.replaceAll("%timeleft%",xpb.getTimeRemaining()+"");
             	        IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
             	        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);

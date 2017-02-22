@@ -1,14 +1,14 @@
 package cz.dubcat.xpboost.cmds;
 
+import java.sql.SQLException;
+import java.util.HashMap;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.api.MainAPI;
-
-import java.sql.SQLException;
-import java.util.HashMap;
 
 public class CommandHandler implements CommandExecutor
 {

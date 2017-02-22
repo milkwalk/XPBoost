@@ -11,9 +11,9 @@ import com.gmail.nossr50.datatypes.skills.SkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 
 import cz.dubcat.xpboost.Main;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 

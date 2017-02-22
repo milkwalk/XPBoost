@@ -7,9 +7,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import cz.dubcat.xpboost.Main;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import net.flamedek.rpgme.events.SkillExpGainEvent;

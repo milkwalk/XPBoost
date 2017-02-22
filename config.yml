@@ -1,56 +1,10 @@
 #Plugin: XPBoost
 #Author: Qifi (elving21)
 #The variables which start and end with '%' you can either move them around or comepletely remove from the message
-lang:
-  prefix: '&f[&aXPBoost&f] '
-  #The message that player gets when he gets XP and boost is active
-  doublexpnot: '&fYou got &a%newexp% XP &finstead of &a%oldexp% XP'
-  #The action bar message when boost is activated, %timeleft% placeholder can be used here
-  actionbar: '&a%boost%x XP boost is active'
-  #Boss bar message, BossBarAPI needed for that
-  bossbar: '&a%boost%x XP boost is active'
-  #If motdon is set to true and global boost is active, motd is gonna change to this Some place holders you can use: (%max% = number of slots, %players% = number of online players)
-  motd: "&c%boost%x &aXP Multiplier is enabled! Join NOW! \n &f&lThis is second line! &c%players%/%max%"
-  #MSG when boost finishes
-  boostfisnish: '&cYour boost has expired.'
-  #/xpboost info command output
-  boostcountdown: '&fSeconds remaining: &6'
-  #MSG on /xpboost info when boost is not active
-  boostinfodeny: '&fYou dont have any active boosts.'
-  #Message when player buys XP boost
-  xpbuy: '&c%boost%x &fXP boost &fis on for &a%time% seconds &c(%money%$)'
-  #The name of the Inventory when player opens GUI
-  gui: '&cXP Boost Shop'
-  #Name of the EXP Bottle in GUI
-  xptitle: '&a%boost%x XP Boost'
-  #Lore of the EXP Bottle in GUI, to start a new line put '%newline%'
-  xplore: '&c%boost%x XP Boost for %time% seconds%newline%&aPrice: &f&l%money%$'
-  #Message on failed buy
-  buyfail: '&cYou dont have enough money to purchase this boost! &a(%money%$)'
-  #Message on buy when boost is still active
-  boostactive: '&cYour boost is still active!'
-  #Notification message on join when global boost is enabled
-  joinnotmsg: '&f&lGlobal XP Boost of %boost%x is currently &f&aenabled &f&lfor everyone!'
-  #Blocked command message when boost is active
-  cmdblock: '&cYou are not allowed to execute &a%cmd% &ccommand while boost is active :('
-  #Three lores on an given item
-  item:
-    lore1: '&fBoost: &a%boost%x'
-    lore2: '&fDuration: &a%time% Seconds'
-    lore3: '&8Right-Click to gain boost.'
-  reload: '&fConfig has been reloaded'
-  menu:
-    row1: '/xpboost gui &f- Opens up GUI'
-    row2: '/xpboost info &f- Shows time remaining'
-    row3: '/xpboost on/off &f - Enables/disables global XP Boost'
-    row4: '/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost'
-    row5: '/xpboost clear <name> &f - Clears active boost'
-    row6: '/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player'
-    row7: '/xpboost global <boost> - Changes global boost multiplier'
-    row8: '/xpboost reload &f - Reloads config'
-    row9: 'What ever is inside [] is &coptional'
-
 settings:
+  config_version: 1
+  #can be ENG atm only, if you've got a translation to some other language sent it to me and i will include it :)
+  language: 'ENG'
   #Enable debug 0 = disabled | 1 = Normal | 2 = All information (Mostly useless)
   debug: 0
   #If you dont want to send metrics (statistics about the plugin) cahnge it to false
@@ -135,6 +89,7 @@ settings:
 #   cost: 500.0 //Currency cost *REQUIRED*
 #   time: 300 //Duration of the effect in seconds *REQUIRED*
 #   title: '&4%boost%x XPBoost &f(%money% $) Custom Title' //You can specify custom titles for different boosts if title is not present default preset will be used Placeholders: %boost%,%money%,%time% *OPTIONAL*
+#   item_type: SLIME_BALL *OPTIONAL*
 #   permisson: *REQUIRED*
 #     use: false //Enable/disable permission usage for a specific boost
 #     perm: 'xpboost.guest' //if use=true, permission required to buy this boost
@@ -152,7 +107,8 @@ boost:
     boost: 1.5
     cost: 500.0
     time: 300
-    title: '&4%boost%x XPBoost &f(%money% $) Custom Title' 
+    title: '&4%boost%x XPBoost &f(%money% $) Custom Title'
+    item_type: SLIME_BALL
     permission:
       use: false
       perm: 'xpboost.guest'

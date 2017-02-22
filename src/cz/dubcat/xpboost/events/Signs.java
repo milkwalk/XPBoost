@@ -49,7 +49,7 @@ public class Signs implements Listener {
 		  if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == Material.SIGN_POST || block.getState().getType() == Material.WALL_SIGN)) {
 			  Sign sign = (Sign) block.getState();
 			  if (sign.getLine(0).equalsIgnoreCase(MainAPI.colorizeText(Main.getPlugin().getConfig().getString("settings.sign.line1")))){
-				  if (player.hasPermission("xpboost.use")){  
+				  if (player.hasPermission("xpboost.use") || player.hasPermission("xpboost.gui")){  
 					  MainAPI.openXpBoostShop(player);			  
 				  }
 			  }

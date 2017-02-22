@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
+import cz.dubcat.xpboost.api.xpbAPI;
 
 public class CommandListener implements Listener{
 	
@@ -32,7 +32,7 @@ public class CommandListener implements Listener{
 	    
 	    for(String cmd : cmdlist){
 	    	if(cmd.equalsIgnoreCase(finalcmd)){
-	    		MainAPI.sendMSG(Main.getPlugin().getConfig().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
+	    		MainAPI.sendMSG(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
 	    		
 	    		MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);
 	    		
