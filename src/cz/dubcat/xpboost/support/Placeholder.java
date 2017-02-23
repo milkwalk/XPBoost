@@ -48,15 +48,15 @@ public class Placeholder extends EZPlaceholderHook {
     	}
     	
         if(identifier.equals("boost_zero")){
-        	return String.valueOf(0);
+        	return String.valueOf(xpb.getBoost());
         }
         
         if (identifier.equals("timeleft_zero")) {
-        	return String.valueOf(0);
+        	return String.valueOf(xpb.getTimeRemaining());
         }
         
         if(identifier.equals("boost_time_zero")){
-        	return String.valueOf(0);
+        	return String.valueOf(xpb.getBoostTime());
         }
     	
         if (identifier.equals("timeleft")) {

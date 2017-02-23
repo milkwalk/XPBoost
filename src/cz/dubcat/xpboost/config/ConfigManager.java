@@ -10,7 +10,7 @@ public class ConfigManager {
 	
 	public void setLine(String key, String content){
 		if(!Main.lang.contains(key))
-			setLine(key, content);
+			Main.lang.set(key, content);
 	}
 	
 	public void loadLangFile(){
