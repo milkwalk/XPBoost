@@ -24,8 +24,9 @@ public class xpboostMain implements CommandInterface{
 	    Player player = (Player) sender;       
 	  	MainAPI.sendMSG(Main.getLang().getString("lang.menu.row1"), player);
 	  	MainAPI.sendMSG(Main.getLang().getString("lang.menu.row2"), player);
+	  	MainAPI.sendMSG(Main.getLang().getString("lang.menu.row3"), player);
 	      if (player.hasPermission("xpboost.admin")){
-		    	  for(int i = 3; i < 10;i++){
+		    	  for(int i = 4; i < 11;i++){
 		    		  MainAPI.sendMSG(Main.getLang().getString("lang.menu.row"  +i), player);
 		    	  }
 	    	  }
@@ -37,6 +38,7 @@ public class xpboostMain implements CommandInterface{
     	plugin.getLogger().info(Main.getLang().getString("lang.menu.row7"));
     	plugin.getLogger().info(Main.getLang().getString("lang.menu.row8"));
     	plugin.getLogger().info(Main.getLang().getString("lang.menu.row9"));
+    	plugin.getLogger().info(Main.getLang().getString("lang.menu.row10"));
     }
         return false;
     }

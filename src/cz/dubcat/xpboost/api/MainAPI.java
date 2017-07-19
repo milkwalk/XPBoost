@@ -19,6 +19,11 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.FactionColl;
+import com.massivecraft.factions.entity.MPlayer;
+
+
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
@@ -35,6 +40,9 @@ public class MainAPI {
 	
     public static File playersyml;
     public static FileConfiguration players;
+    
+    public static File factionsyml;
+    public static FileConfiguration factions;
 		
 	public static void loadPlayer(Player p){
 		setPlayerFile(p.getUniqueId());
@@ -83,6 +91,70 @@ public class MainAPI {
 		}	
 	}
 	
+	public static boolean loadAllFactions(){
+		File[] files = new File(Main.getPlugin().getDataFolder() + "/factions/").listFiles();
+		
+		if(files == null || files.length == 0)
+			return false;
+		
+	    for (File file : files) {
+	        if (!file.isDirectory()) {
+	        	loadFaction(file.getName().replaceAll(".yml", ""));
+	        }
+	    }
+		return true;
+	}
+	
+	public static void loadFaction(String faction){
+		Faction f = FactionColl.get().getByName(faction);
+		File file = setFactionFile(f);
+		
+		double boost = 0;
+		long endtime = 0;
+		
+		if(factions.contains("xp.boost")){
+			boost = (double) getFactionVariable("xp.boost");
+		}
+		
+		if(factions.contains("xp.endtime")){
+			try{
+				endtime = (long) getFactionVariable("xp.endtime");
+			} catch(ClassCastException e){
+				return;
+			}
+		}
+		
+		if(endtime > System.currentTimeMillis()){
+			XPBoost xpb = new XPBoost(f, boost,endtime);	
+			Main.factions_boost.put(f, xpb);			
+		}else{
+			file.delete();
+		}
+	}
+	
+	public static void saveFaction(Faction f, XPBoost xpb){
+		setFactionFile(f);
+		
+		if(xpbAPI.hasFactionBoost(f)){
+			
+			setFactionFile(f);
+			//RESET EVERYTHIGN
+			setFactionVariable("xp", "");
+			
+			//SAVE NEW INFO >.<
+			setFactionVariable("xp.boost", xpb.getBoost());
+			setFactionVariable("xp.endtime", xpb.getEndTime());		
+			
+			
+		   Iterator<Entry<Condition, Boolean>> it = xpb.getConditions().entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry<Condition, Boolean> pair = (Map.Entry<Condition, Boolean>)it.next();
+		    	setFactionVariable("xp.condition." + pair.getKey(), pair.getValue());
+		        it.remove(); 
+		    }
+		}		
+	}
+	
 	public static void saveOfflinePlayer(UUID id, XPBoost xpb){
 		
 		setPlayerFile(id);
@@ -105,9 +177,11 @@ public class MainAPI {
 	}
 	
 	
-	public static void setPlayerFile(UUID uuid){
+	public static File setPlayerFile(UUID uuid){
         playersyml = new File(Main.getPlugin().getDataFolder()+"/players/"+uuid+".yml");
         players = YamlConfiguration.loadConfiguration(playersyml);	
+        
+        return playersyml;
 	}
 	
 	public static void setPlayerVariable(String cesta, Object variable){
@@ -123,6 +197,26 @@ public class MainAPI {
 		return players.get(cesta);
 	}
 	
+	public static File setFactionFile(Faction faction){
+        factionsyml = new File(Main.getPlugin().getDataFolder()+"/factions/"+faction.getName()+".yml");
+        factions = YamlConfiguration.loadConfiguration(factionsyml);
+        
+        return factionsyml;
+	}
+	
+	public static void setFactionVariable(String cesta, Object variable){
+		factions.set(cesta, variable);
+		saveFactionFile();
+	}
+	
+	public static void saveFactionFile(){
+		  saveCustomYml(factions, factionsyml);
+	}
+	
+	public static Object getFactionVariable(String cesta){
+		return factions.get(cesta);
+	}
+	
     public static void saveCustomYml(FileConfiguration ymlConfig, File ymlFile) {
     	try {
     		ymlConfig.save(ymlFile);
@@ -131,16 +225,10 @@ public class MainAPI {
     	}
     }
     
-    public static void debug(String srt, Debug val){
-    	
-    	if(Main.debug == Debug.OFF){
-    		return;
-    	}
-    	
+    public static void debug(String srt, Debug val){   	
     	if(Main.debug == val){
     		Main.getLog().info(srt);
-    	}
-    	
+    	}   	
     }
     
 	public static void sendMSG(String string, UUID player){
@@ -154,26 +242,7 @@ public class MainAPI {
     
     
     public static String colorizeText(String string) {
-        string = string.replaceAll("&0", ChatColor.BLACK+"");
-        string = string.replaceAll("&1", ChatColor.DARK_BLUE+"");
-        string = string.replaceAll("&2", ChatColor.DARK_GREEN+"");
-        string = string.replaceAll("&3", ChatColor.DARK_AQUA+"");
-        string = string.replaceAll("&4", ChatColor.DARK_RED+"");
-        string = string.replaceAll("&5", ChatColor.DARK_PURPLE+"");
-        string = string.replaceAll("&6", ChatColor.GOLD+"");
-        string = string.replaceAll("&7", ChatColor.GRAY+"");
-        string = string.replaceAll("&8", ChatColor.DARK_GRAY+"");
-        string = string.replaceAll("&9", ChatColor.BLUE+"");
-        string = string.replaceAll("&a", ChatColor.GREEN+"");
-        string = string.replaceAll("&b", ChatColor.AQUA+"");
-        string = string.replaceAll("&c", ChatColor.RED+"");
-        string = string.replaceAll("&d", ChatColor.LIGHT_PURPLE+"");
-        string = string.replaceAll("&e", ChatColor.YELLOW+"");
-        string = string.replaceAll("&f", ChatColor.WHITE+"");
-        string = string.replaceAll("&l", ChatColor.BOLD+"");
-        string = string.replaceAll("&r", ChatColor.WHITE+"");
-        string = string.replaceAll("&m", ChatColor.STRIKETHROUGH+"");
-        return string;
+    	return ChatColor.translateAlternateColorCodes('&', string);
     }
     
 	public static String stripColours(String string) {
@@ -219,6 +288,56 @@ public class MainAPI {
     	meta.setLore(itemlore);
     	item.setItemMeta(meta);		    	 
     	inv.setItem(Slot, item); 
+    }
+    
+    public static Faction getPlayerFaction(Player p){  	
+    	return MPlayer.get(p).getFaction();
+    }
+    
+    public static void openFactionBoostShop(Player player){
+		int i = -1;
+		
+		int amount = 1;
+		
+		Faction faction = getPlayerFaction(player);
+		
+		if(faction.isNone()){
+			sendMSG(Main.getLang().getString("lang.factions_nofaction"),player);
+			return;
+		}
+		
+		for(String key : Main.factions.getConfigurationSection("boost").getKeys(false)){
+			if (Main.factions.getBoolean("boost." + key + ".enabled") == true){
+				amount++;
+			}
+		}
+		
+		if(amount > 9 && amount <= 18){
+			amount = 18;
+		}else if(amount > 18){
+			amount = 27;
+		}else{
+			amount = 9;
+		}
+		
+      	Inventory GUI = Bukkit.createInventory(null, amount, colorizeText(Main.getLang().getString("lang.factions_gui_name")));
+      	
+		for(String key : Main.factions.getConfigurationSection("boost").getKeys(false)){
+			if (Main.factions.getBoolean("boost." + key + ".enabled") == true){
+				i++;
+            	int cost = Main.getPlugin().getConfig().getInt("boost." + key + ".cost");
+            	int time = Main.getPlugin().getConfig().getInt("boost." + key + ".time");
+            	double boost = Main.getPlugin().getConfig().getDouble("boost." + key + ".boost");
+            	Material mat = Material.EXP_BOTTLE;
+            	
+            	if(Main.getPlugin().getConfig().contains("boost." + key + ".item_type")){
+            		mat = Material.valueOf(Main.getPlugin().getConfig().getString("boost." + key + ".item_type"));
+            	}
+            	
+            	MainAPI.createDisplay(mat,GUI,i,(Main.getPlugin().getConfig().getString("boost." + key + ".title") != null) ? MainAPI.colorizeText(Main.getPlugin().getConfig().getString("boost." + key + ".title")).replaceAll("%boost%", boost+"").replaceAll("%money%", cost + "").replaceAll("%time%", time + "") : MainAPI.colorizeText(Main.getLang().getString("lang.xptitle").replaceAll("%boost%", boost+"")),MainAPI.colorizeText(Main.getLang().getString("lang.xplore").replaceAll("%time%", time + "").replaceAll("%money%", cost + "").replaceAll("%boost%", boost + "")));
+	            player.openInventory(GUI);
+			}
+		}
     }
     
     public static void openXpBoostShop(Player player){

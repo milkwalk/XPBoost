@@ -2,6 +2,11 @@ package cz.dubcat.xpboost.api;
 
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
+
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
@@ -23,6 +28,41 @@ public class xpbAPI {
 		}else{
 			return null;
 		}
+	}
+	
+	
+	public static boolean hasFactionBoost(Faction f){
+		if(f.isNone())
+			return false;
+		
+		if(Main.factions_boost.containsKey(f))
+			return true;
+		else
+			return false;
+	}
+	
+	public static XPBoost getFactionBoost(Player p){
+		if(!Main.factions_enabled || MPlayer.get(p).getFaction().isNone() || !hasFactionBoost(MPlayer.get(p).getFaction()) || (Main.factions.getBoolean("settings.allow_one_boost_only") && hasBoost(p.getUniqueId())))
+			return null;
+		
+		return  Main.factions_boost.get(MPlayer.get(p).getFaction());
+		
+	}
+	
+	public static XPBoost getFactionBoost(Faction f){
+		if(!Main.factions_enabled || f.isNone() || !hasFactionBoost(f))
+			return null;
+		
+		return  Main.factions_boost.get(f);
+	}
+	
+	public static void setFactionBoost(Faction f, double boost, int time){
+		if(f.isNone())
+			return;
+		
+		XPBoost newxpb = new XPBoost(f, boost, (System.currentTimeMillis() + time*1000));
+		Main.factions_boost.put(f, newxpb);
+		MainAPI.debug("Creating new boost "+boost +"x for Faction " + f.getName() , Debug.NORMAL);
 	}
 	
 	

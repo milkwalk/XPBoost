@@ -13,11 +13,12 @@ import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class McMMO  implements Listener{
+public class McMMO implements Listener{
 	
 	
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
@@ -30,7 +31,6 @@ public class McMMO  implements Listener{
         this.plugin = plugin;
     }
 	
-	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void gainXp(McMMOPlayerXpGainEvent event){
 		 Player player = event.getPlayer();
@@ -38,7 +38,7 @@ public class McMMO  implements Listener{
 		
 		 SkillType skill = event.getSkill();
 		 String convert = ""+ skill;
-		 int exp = event.getXpGained();
+		 int exp = (int) event.getRawXpGained();
 		 int expnew = 0;
 		 
 		 if (expbug) return;
@@ -51,13 +51,19 @@ public class McMMO  implements Listener{
 				return;
 		}
 		
+		if(xpbAPI.getFactionBoost(player) != null){
+			XPBoost faction_boost = xpbAPI.getFactionBoost(player);
+			expnew += (int) Math.round(exp * faction_boost.getBoost());
+			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to McMMOXP, Player: " + player.getName(), Debug.ALL);
+		}
+		
 		if(gl.isEnabled()){
 			expnew += (int) Math.round(exp * gl.getGlobalBoost());
 		}
 		
 		if(expnew > 0){
 			expbug = true;
-			ExperienceAPI.addXP(player, convert, expnew);
+			ExperienceAPI.addXP(player, convert, expnew, "UNKNOWN");
 			expbug = false;
 			
 			if (plugin.getConfig().getBoolean("settings.mcmmo.msg.enabled")){

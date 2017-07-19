@@ -1,0 +1,21 @@
+settings:
+  #If you set this to true, players wont be able to purchase XPBoost while
+  #their faction boost is active, or faction boost wont addup while their personal boost is active
+  allow_one_boost_only: false
+boost:
+  #ID of the boost from the config.yml
+  boost1:
+    #The value from the config.yml is being ignored here, and instead this one is used
+    #this way, you can hide some of the boosts and show them only in the faction gui.
+    #(set boost1 enabled in config.yml to false and here to true, boost1 will be hidden in the /xpb gui but will be avaliable in the /xpb factions)
+    enabled: true
+    #If you set this to true only owners will be able to purchase this boost
+    onlyowners: true
+    #Restricted factions from purchasing this boost
+    restricted_factions:
+    - 'test'
+  boost2:
+    enabled: true
+    onlyowners: false
+    restricted_factions:
+    - 'test'

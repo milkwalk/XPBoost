@@ -1,5 +1,6 @@
 package cz.dubcat.xpboost;
 
+import java.io.File;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -7,16 +8,17 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitTask;
 
 import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class XPBoostTask extends BukkitRunnable{
+public class XPBoostTask implements Runnable{
 	
-	public int id;
+	public BukkitTask id;
 
-	public void setId(int id){
+	public void setId(BukkitTask id){
 		 this.id = id;	
 	}
 		
@@ -41,7 +43,11 @@ public class XPBoostTask extends BukkitRunnable{
 		    		}
 		    	}, 0L);
 		    	
+    	    	MainAPI.debug("Removed boost from UUID " + xpb.getUUID(), Debug.NORMAL);
 				mp.remove(xpb.getUUID());
+				
+				File file = MainAPI.setPlayerFile(xpb.getUUID());
+				file.delete();
 			}
     	}		
 	}

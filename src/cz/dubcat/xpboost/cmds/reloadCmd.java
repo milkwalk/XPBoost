@@ -38,6 +38,9 @@ public class reloadCmd implements CommandInterface{
 	    	Main.lang_file = new File(Main.getPlugin().getDataFolder() + "/lang/lang_ENG.yml");
 	    	Main.lang = YamlConfiguration.loadConfiguration(Main.lang_file);
 	    }
+	    
+    	Main.factions_file = new File(Main.getPlugin().getDataFolder() + "/factions.yml");
+    	Main.factions = YamlConfiguration.loadConfiguration(Main.factions_file);
 		
 		if(sender instanceof Player) {
 			player = (Player) sender;		   	

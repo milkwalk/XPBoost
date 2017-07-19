@@ -5,20 +5,30 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 
+import com.massivecraft.factions.entity.Faction;
+
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 
-public class XPBoost {
+public class XPBoost{
 	
 	private UUID uiid;
 	private double boost  =1;
 	private long endtime;
 	private ConcurrentHashMap<Condition, Boolean> conditions = new ConcurrentHashMap<Condition, Boolean>();
 	private int boostTime;
+	private Faction faction;
 
 	
 	public XPBoost(UUID id, double boost, long endtime){
 		this.uiid = id;	
+		this.boost = boost;		
+		this.endtime = endtime;	
+		this.boostTime = (int) ((endtime - System.currentTimeMillis())/1000);
+	}
+	
+	public XPBoost(Faction faction, double boost, long endtime){
+		this.faction = faction;
 		this.boost = boost;		
 		this.endtime = endtime;	
 		this.boostTime = (int) ((endtime - System.currentTimeMillis())/1000);
@@ -63,6 +73,10 @@ public class XPBoost {
 	//Get time when boost ends in miliseconds
 	public long getEndTime(){
 		return this.endtime;
+	}
+	
+	public Faction getFaction(){
+		return this.faction;
 	}
 	
 	//remove/reset boost

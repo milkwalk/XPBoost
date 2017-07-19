@@ -3,6 +3,7 @@ package cz.dubcat.xpboost;
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -17,11 +18,17 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
+import com.massivecraft.factions.entity.Faction;
+
+import be.maximvdw.placeholderapi.PlaceholderAPI;
 import cz.dubcat.xpboost.GUI.ClickListener;
+import cz.dubcat.xpboost.GUI.FactionsClickListener;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
+import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.cmds.CommandHandler;
 import cz.dubcat.xpboost.cmds.clearCmd;
+import cz.dubcat.xpboost.cmds.factionCmd;
 import cz.dubcat.xpboost.cmds.giveCmd;
 import cz.dubcat.xpboost.cmds.globalCmd;
 import cz.dubcat.xpboost.cmds.guiCmd;
@@ -45,12 +52,12 @@ import cz.dubcat.xpboost.events.Signs;
 import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
 import cz.dubcat.xpboost.support.McMMO;
-import cz.dubcat.xpboost.support.Placeholder;
 import cz.dubcat.xpboost.support.RPGmE;
 import cz.dubcat.xpboost.support.SkillApi;
 import cz.dubcat.xpboost.versions.actionBar;
 import cz.dubcat.xpboost.versions.actionBar1_1;
 import cz.dubcat.xpboost.versions.actionBar1_11;
+import cz.dubcat.xpboost.versions.actionBar1_12;
 import cz.dubcat.xpboost.versions.actionBar1_9;
 import cz.dubcat.xpboost.versions.actionBar1_94;
 import cz.dubcat.xpboost.versions.actionbarInterface;
@@ -61,6 +68,7 @@ public class Main extends JavaPlugin{
 	Logger log;
 	
 	public static ConcurrentHashMap<UUID, XPBoost> allplayers  = new ConcurrentHashMap<UUID, XPBoost>();
+	public static ConcurrentHashMap<Faction, XPBoost> factions_boost;
 	public static GlobalBoost GLOBAL_BOOST;
     public static Economy economy = null;
     
@@ -75,13 +83,17 @@ public class Main extends JavaPlugin{
     public static File lang_file;
     public static FileConfiguration lang;
     
+    //factions
+    public static File factions_file;
+    public static FileConfiguration factions;
+    
+    public static boolean factions_enabled = false;
     
     public void registerCommands() {
-      	 
-        CommandHandler handler = new CommandHandler();
- 
+    	CommandHandler handler = new CommandHandler();
+    	
         handler.register("xpboost", new xpboostMain(this));
-            
+           
         handler.register("gui", new guiCmd());
         handler.register("info", new infoCmd());
         handler.register("reload", new reloadCmd(this));
@@ -91,11 +103,13 @@ public class Main extends JavaPlugin{
         handler.register("clear", new clearCmd(this));
         handler.register("item", new itemCommand(this));
         handler.register("global", new globalCmd(this));
+    	handler.register("faction", new factionCmd());
+    	handler.register("factions", new factionCmd());
+        
         getCommand("xpboost").setExecutor(handler);
         getCommand("xpb").setExecutor(handler);
     }
 	
-    @SuppressWarnings("deprecation")
 	@Override
     public void onEnable()
     {
@@ -111,6 +125,7 @@ public class Main extends JavaPlugin{
 			this.log.warning("    Key: settings.language Value: ENG");
 		}
 	    
+		//language
 	    if(getConfig().contains("settings.language")){
 	    	 lang_file = new File(Main.getPlugin().getDataFolder() + "/lang/lang_"+getConfig().getString("settings.language")+".yml");
 	    	 lang = YamlConfiguration.loadConfiguration(lang_file);
@@ -119,9 +134,15 @@ public class Main extends JavaPlugin{
 	    	lang = YamlConfiguration.loadConfiguration(lang_file);
 	    }
 	    
-	    //lang file
-	    ConfigManager lang = new ConfigManager();
-	    lang.loadLangFile();
+    	factions_file = new File(getDataFolder() + "/factions.yml");
+    	factions = YamlConfiguration.loadConfiguration(factions_file);
+	    
+	    //load configs
+	    ConfigManager cfg = new ConfigManager();
+	    cfg.loadLangFile();
+    	cfg.loadFactionsFile();
+    	
+	    
 	    
 	    
 	    //INITIALIZE GLOBAL BOOST
@@ -138,11 +159,11 @@ public class Main extends JavaPlugin{
         
 	    
 	    //MCMMO
-        Plugin mcmmo = this.getServer().getPluginManager().getPlugin("McMMO");
+        Plugin mcmmo = this.getServer().getPluginManager().getPlugin("mcMMO");
         
-        if(mcmmo == null) {
+        if(mcmmo == null && getServer().getPluginManager().getPlugin("McMMO") == null) {
         	log.warning("McMMO not found, disabling support.");
-        } else {
+        } else {    	
         	log.info("Found McMMO, enabling support.");           
         	getServer().getPluginManager().registerEvents(new McMMO(this), this);
         }
@@ -189,26 +210,37 @@ public class Main extends JavaPlugin{
         	log.info("Found BossBarAPI, enabling support.");
         	new BossBarN().runTaskTimer(Main.getPlugin(), 0, 100);
         }
+	    
+        Plugin factions = this.getServer().getPluginManager().getPlugin("Factions");
         
+        //Factions
+        if(factions == null) {
+        	log.warning("Factions not found, disabling support.");
+        }else if(!Main.factions.getBoolean("settings.enabled")){
+        	log.warning("Factions support disabled, if you wish to use it, please set enabled to true in the factions.yml");
+        }else {
         
-        Plugin placeholder = this.getServer().getPluginManager().getPlugin("PlaceholderAPI");
-        
-        //BOSS BAR
-        if(placeholder == null) {
-        	log.warning("PlaceholderAPI not found, disabling support.");
-        } else {
-        	log.info("Found PlaceholderAPI, enabling support.");
-        	new Placeholder(this).hook();
+        	log.info("Found Factions, enabling support.");
+        	factions_boost  = new ConcurrentHashMap<Faction, XPBoost>();
+        	factions_enabled = true;
+        	
+        	MainAPI.loadAllFactions();
+        	
+    	    FactionXPBoostTask task = new FactionXPBoostTask();
+    		task.setId(Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, task, 0, 5));		
+        	
+        	getServer().getPluginManager().registerEvents(new FactionsClickListener(), this);
         }
         
 	    //END SUPPORT ----------------------------------------------------------------------------
-	    
+        
+        
         //register commands
         registerCommands();
 	    
 	    //REGISTER MAIN XPBOOST TASK
 	    XPBoostTask task = new XPBoostTask();
-		task.setId(Bukkit.getServer().getScheduler().scheduleAsyncRepeatingTask(this, task, 0, 5));		
+		task.setId(Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, task, 0, 5));		
 	    
 	    //SETUP ACTION BAR
         if (setupActionbar()) {
@@ -251,8 +283,6 @@ public class Main extends JavaPlugin{
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
         
-        Bukkit.getConsoleSender().sendMessage("DAY: " + day);
-        
         if (getConfig().getBoolean("settings.day.monday") && day == 2){
         	GLOBAL_BOOST.setEnabled(true);
         	Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "WOHOO! Today is the Monday! "+GLOBAL_BOOST.getGlobalBoost()+" XP day!");
@@ -288,6 +318,9 @@ public class Main extends JavaPlugin{
     		Bukkit.getConsoleSender().sendMessage(ChatColor.GREEN + "WOHOO! Today is the SUNDAY! "+GLOBAL_BOOST.getGlobalBoost()+"  XP day!");
     	}
     	
+    	
+    	initializePlaceholder();
+    	
         getLogger().info("Enabled.");
     }
     
@@ -300,9 +333,28 @@ public class Main extends JavaPlugin{
     			MainAPI.savePlayer(p);
     	}
     	
+    	if(factions_enabled){
+	    	getLogger().info("Saving factions....");
+	    	for(Entry<Faction, XPBoost> pair : factions_boost.entrySet()){
+	    		System.out.println(pair.getKey().getName());    		
+	    		MainAPI.saveFaction(pair.getKey(), pair.getValue());
+	    		MainAPI.debug("Saving active boost for faction " + pair.getKey().getName(), Debug.NORMAL);
+	    	}
+	    }
+    		
         getLogger().info("Disabled :(");
     }
     
+    private void initializePlaceholder() {
+        if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
+        	
+            PlaceholderAPI.registerPlaceholder(this, "xpboost_hasboost", event -> String.valueOf(xpbAPI.hasBoost(event.getPlayer().getUniqueId())));
+            PlaceholderAPI.registerPlaceholder(this, "xpboost_boost", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getBoost()));
+            PlaceholderAPI.registerPlaceholder(this, "xpboost_boost_time", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getBoostTime()));
+            PlaceholderAPI.registerPlaceholder(this, "xpboost_timeleft", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getTimeRemaining()));
+        }
+
+    }
     
     private boolean setupActionbar() {
 
@@ -330,6 +382,9 @@ public class Main extends JavaPlugin{
         	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }else if(version.equals("v1_11_R1")){
         	actionbar = new actionBar1_11(this);
+        	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
+        }else if(version.equals("v1_12_R1")) {
+        	actionbar = new actionBar1_12(this);
         	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }
         

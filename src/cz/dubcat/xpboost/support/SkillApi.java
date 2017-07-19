@@ -12,6 +12,8 @@ import com.sucy.skill.api.player.PlayerData;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.MainAPI.Debug;
+import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
@@ -40,6 +42,12 @@ public class SkillApi implements Listener{
 			else
 				return;
    		}
+   		
+		if(xpbAPI.getFactionBoost(player) != null){
+			XPBoost faction_boost = xpbAPI.getFactionBoost(player);
+			expnew += (int) Math.round(exp * faction_boost.getBoost());
+			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to SkillAPI, Player: " + player.getName(), Debug.ALL);
+		}
    		
    		if(gl.isEnabled()){
    			expnew += Math.round(exp * gl.getGlobalBoost());

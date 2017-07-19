@@ -35,9 +35,10 @@ public class ClickListener_ALL implements Listener{
             		String nazev = item.getItemMeta().getDisplayName();
             		List<String> lore = item.getItemMeta().getLore();
             		
-            		String name = MainAPI.stripColours(MainAPI.colorizeText(Main.getLang().getString("lang.itemname").replace("%boost%", "").replace("%time%", "")));
+            		String name = MainAPI.colorizeText(Main.getLang().getString("lang.itemname").replace("%boost%", "").replace("%time%", ""));
+            		String line1 = MainAPI.colorizeText(Main.getLang().getString("lang.item.lore1").split(" ")[0]);
             		
-            		if(nazev.contains(name)){
+            		if(nazev.contains(MainAPI.stripColours(name)) || nazev.contains(name) || nazev.equals(name) || lore.contains(line1)){
             			
             			if(xpbAPI.hasBoost(player.getUniqueId())){
             				MainAPI.sendMSG( Main.getLang().getString("lang.boostactive"), player);

@@ -32,6 +32,14 @@ lang:
   cmdblock: '&cYou are not allowed to execute &a%cmd% &ccommand while boost is active :('
   #name of the given item you can use %boost% or %time% placeholders
   itemname: '&a%boost%x XPBoost'
+  #name of faction XPBoost GUI menu
+  factions_gui_name: '&cFaction XPBoost Shop'
+  factions_nofaction: '&cYou are not member of any faction.'
+  factions_active_boost: 'Your faction already has an active boost!'
+  factions_only_owners: 'This boost can purchase only owner of the faction!'
+  factions_expire: '&cBoost for you faction has expired!'
+  factions_buy: '&c%player% &fhas bought a boost of &c%boost%x &ffor whole faction for &c%time% seconds!'
+  factions_one_boost: 'You cannot purchase any boosts while faction boost is active.'
   #Three lores on a given item, you can have up to 5 lines
   item:
     lore1: '&fBoost: &a%boost%x'
@@ -41,10 +49,11 @@ lang:
   menu:
     row1: '/xpboost gui &f- Opens up GUI'
     row2: '/xpboost info &f- Shows time remaining'
-    row3: '/xpboost on/off &f - Enables/disables global XP Boost'
-    row4: '/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost'
-    row5: '/xpboost clear <name> &f - Clears active boost'
-    row6: '/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player'
-    row7: '/xpboost global <boost> - Changes global boost multiplier'
-    row8: '/xpboost reload &f - Reloads config'
-    row9: 'What ever is inside [] is &coptional'
+    row3: '/xpboost factions &f- Opens up a factions GUI'
+    row4: '/xpboost on/off &f - Enables/disables global XP Boost'
+    row5: '/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost'
+    row6: '/xpboost clear <name> &f - Clears active boost'
+    row7: '/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player'
+    row8: '/xpboost global <boost> [time] - Changes global boost multiplier'
+    row9: '/xpboost reload &f - Reloads config'
+    row10: 'What ever is inside [] is &coptional'

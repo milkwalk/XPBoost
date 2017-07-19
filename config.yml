@@ -7,6 +7,8 @@ settings:
   language: 'ENG'
   #Enable debug 0 = disabled | 1 = Normal | 2 = All information (Mostly useless)
   debug: 0
+  #this is in development (faction support), please use it at your own risk.
+  enable_factions: false
   #If you dont want to send metrics (statistics about the plugin) cahnge it to false
   metrics: true
   #Do you want to disable xp bottles? SELECT MODE 1 or 2 or 3
@@ -69,18 +71,18 @@ settings:
   mcmmo:
     msg:
       enabled: true
-      msg: '&aGained &c%newexp% &aXP istead of &c%oldexp%&a. Skill: &c%skill%'
+      msg: '&aGained &c%newexp% &aXP instead of &c%oldexp%&a. Skill: &c%skill%'
   #RPGme support
   rpgme:
     msg:
       enabled: true
       #I disabled message for a STAMINA skill cuz its just spamms rly a lot
-      msg: '&aGained &c%newexp% &aXP istead of &c%oldexp%&a. Skill: &c%skill%'
+      msg: '&aGained &c%newexp% &aXP instead of &c%oldexp%&a. Skill: &c%skill%'
   #Heroes support
   heroes:
     msg:
       enabled: true
-      msg: '&aGained &c%newexp% &aXP istead of &c%oldexp%&a. Source: &c%source%'
+      msg: '&aGained &c%newexp% &aXP instead of &c%oldexp%&a. Source: &c%source%'
 
 #boost:
 #  boost1:
