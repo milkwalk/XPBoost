@@ -10,11 +10,11 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class reloadCmd implements CommandInterface{
+public class ReloadCmd implements CommandInterface{
 	
     private Main plugin;
     
-    public reloadCmd(Main plugin) {
+    public ReloadCmd(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -44,7 +44,7 @@ public class reloadCmd implements CommandInterface{
 		
 		if(sender instanceof Player) {
 			player = (Player) sender;		   	
-			MainAPI.sendMSG( Main.getLang().getString("lang.reload"), player);
+			MainAPI.sendMessage( Main.getLang().getString("lang.reload"), player);
 		}else{
 			plugin.getLogger().info(Main.getLang().getString("lang.reload"));   
 		}

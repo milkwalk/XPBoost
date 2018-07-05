@@ -22,7 +22,7 @@ public class McMMO implements Listener{
 	
 	
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
-	private static Condition CONDITION_NAME = Condition.MCMMO;
+	private static final Condition CONDITION_NAME = Condition.MCMMO;
 	
     private Main plugin;
     private boolean expbug = false;
@@ -40,7 +40,6 @@ public class McMMO implements Listener{
 		 String convert = ""+ skill;
 		 int exp = (int) event.getRawXpGained();
 		 int expnew = 0;
-		 
 		 if (expbug) return;
 		 
 		if(xpbAPI.hasBoost(id)){			
@@ -71,7 +70,7 @@ public class McMMO implements Listener{
 				message = message.replaceAll("%newexp%", expnew+"");
 				message = message.replaceAll("%oldexp%", exp+"");
 				message = message.replaceAll("%skill%", skill+"");
-		    	MainAPI.sendMSG(message, player);
+		    	MainAPI.sendMessage(message, player);
 			}		
 		}
 	}

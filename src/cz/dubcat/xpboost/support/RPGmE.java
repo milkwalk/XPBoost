@@ -18,7 +18,7 @@ import net.flamedek.rpgme.events.SkillExpGainEvent;
 public class RPGmE implements Listener{
 	
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
-	private static Condition CONDITION_NAME = Condition.RPGME;
+	private static final Condition CONDITION_NAME = Condition.RPGME;
 	
 	@EventHandler
     public void expEvent(SkillExpGainEvent e){
@@ -58,7 +58,7 @@ public class RPGmE implements Listener{
 				    message = message.replaceAll("%newexp%", expnew+"");
 				    message = message.replaceAll("%oldexp%", exp+"");
 				    message = message.replaceAll("%skill%", skill+"");
-				    MainAPI.sendMSG(message, player);
+				    MainAPI.sendMessage(message, player);
 				}
 			}
 		}

@@ -1,6 +1,6 @@
 name: XPboost
 author: Qifi (elving21)
-version: 1.93
+version: 1.95
 main: cz.dubcat.xpboost.Main
 commands:
     xpboost:

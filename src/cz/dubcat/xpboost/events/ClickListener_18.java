@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.MainAPI.Debug;
 
 public class ClickListener_18 implements Listener{
 	
@@ -30,38 +31,40 @@ public class ClickListener_18 implements Listener{
             		String nazev = item.getItemMeta().getDisplayName();
             		List<String> lore = item.getItemMeta().getLore();
             		
-            		String name = MainAPI.colorizeText(Main.getLang().getString("lang.itemname").replace("%boost%", "").replace("%time%", ""));
-            		String line1 = MainAPI.colorizeText(Main.getLang().getString("lang.item.lore1").split(" ")[0]);
+        			int i = 0;
+        			double boost = 0;
+        			Integer time = 0;
+        			
+        			try {
+	        			for(String l : lore){
+	        				String str = MainAPI.stripColours(l);
+	        				str = str.replaceAll("[^\\d.]", "");
+	        				if(i == 0){
+	        					boost = Double.parseDouble(str);
+	        				}else if (i == 1){
+	        					time = Integer.parseInt(str);
+	        					break;
+	        				}
+	        				i++;
+	        			}
+        			}catch(NumberFormatException ex) { 
+        				MainAPI.debug("Cannot recognise XPBoost item.", Debug.NORMAL);
+        				return;
+        			}
             		
-            		if(nazev.contains(MainAPI.stripColours(name)) || nazev.contains(name) || nazev.equals(name) || lore.contains(line1)){
+        			String name = MainAPI.colorizeText(Main.getLang().getString("lang.itemname").replace("%boost%", String.valueOf(boost)).replace("%time%", String.valueOf(time)));
+            		
+            		if(nazev.equals(name) || nazev.contains(MainAPI.stripColours(name)) || nazev.contains(name) || nazev.equals(name)){
             			
             			if(xpbAPI.hasBoost(player.getUniqueId())){
-            				MainAPI.sendMSG(Main.getLang().getString("lang.boostactive"), player);
+            				MainAPI.sendMessage(Main.getLang().getString("lang.boostactive"), player);
             				event.setCancelled(true);
             				return;
             			}
             			
-            			int i = 0;
-            			double boost = 0;
-            			Integer time = 0;
-            			for(String l : lore){
-            				String str = MainAPI.stripColours(l);
-            				str = str.replaceAll("[^\\d.]", "");
-            				if(i == 0){
-            					boost = Double.parseDouble(str);
-            				}else if (i == 1){
-            					time = Integer.parseInt(str);
-            				}
-            				i++;
-            			}
-            			
-            			
-            			//String[] split = nazev.split(" ");
-            			//double boost = Double.parseDouble(split[0]);
-            			
             			xpbAPI.setPlayerBoost(player.getUniqueId(), boost, time);
             			
-            			MainAPI.sendMSG(Main.getLang().getString("lang.xpbuy").replace("%boost%", ""+boost).replace("%time%", ""+time).replace("%money%", ""), player);
+            			MainAPI.sendMessage(Main.getLang().getString("lang.xpbuy").replace("%boost%", ""+boost).replace("%time%", ""+time).replace("%money%", ""), player);
             			
             			player.setItemInHand(null);
             			

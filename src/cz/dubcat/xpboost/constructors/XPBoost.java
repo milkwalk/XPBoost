@@ -13,12 +13,17 @@ import cz.dubcat.xpboost.api.MainAPI.Condition;
 public class XPBoost{
 	
 	private UUID uiid;
-	private double boost  =1;
+	private double boost = 1;
 	private long endtime;
 	private ConcurrentHashMap<Condition, Boolean> conditions = new ConcurrentHashMap<Condition, Boolean>();
+	private ConcurrentHashMap<String, Boolean> advancedOptions = new ConcurrentHashMap<String, Boolean>();
 	private int boostTime;
 	private Faction faction;
-
+	
+	public XPBoost(UUID id, double boost, long endtime, ConcurrentHashMap<Condition, Boolean> conditions){
+		this(id, boost, endtime);
+		this.conditions = conditions;
+	}
 	
 	public XPBoost(UUID id, double boost, long endtime){
 		this.uiid = id;	
@@ -34,28 +39,30 @@ public class XPBoost{
 		this.boostTime = (int) ((endtime - System.currentTimeMillis())/1000);
 	}
 	
-	//get uuid
+	
+	/* Player UUID */
 	public UUID getUUID(){
-		return this.uiid;
+		return uiid;
 	}
 	
-	//get boost
+	/* Boost */
 	public double getBoost(){
-		return this.boost;
+		return boost;
 	}
 	
 	
-	//add time to an existing boost
+	/* Add time to boost (in milliseconds) */
 	public void addTimeToBoost(long time){	
-			this.endtime += time;
+		endtime += time;
 	}
 	
-	//add time to an existing boost
+	/* Substract time from boost (in milliseconds) */
 	public void substractTimeFromBoost(long time){	
-		this.endtime -= time;
+		endtime -= time;
 	}
 	
-	//add time to an existing boost
+	/* Add time to boost (in milliseconds) 
+	 * */
 	public void addBoost(double boost, long time){
 		
 		if(boost == this.boost)
@@ -64,29 +71,29 @@ public class XPBoost{
 			setBoost(boost, time);
 	}
 	
-	//set boost
+	/* Override boost */
 	public void setBoost(double boost, long endtime){
 		this.boost = boost;
 		this.endtime = endtime;		
 	}
 	
-	//Get time when boost ends in miliseconds
+	/* Time when boost will end (in milliseconds) */
 	public long getEndTime(){
-		return this.endtime;
+		return endtime;
 	}
 	
 	public Faction getFaction(){
-		return this.faction;
+		return faction;
 	}
 	
-	//remove/reset boost
+	/* Remove/reset boost */
 	public void clear(){
-		this.boost  = 1.0D;
-		this.endtime = 0L;
-		this.conditions.clear();
+		boost  = 1.0D;
+		endtime = 0L;
+		conditions.clear();
 	}
 	
-	//Get time remaining of the boost in seconds
+	/* Get time remaining of the boost in seconds */
 	public double getTimeRemaining(){
 		if(endtime  >= System.currentTimeMillis()){
 			return ((endtime - System.currentTimeMillis())/1000);
@@ -95,12 +102,12 @@ public class XPBoost{
 		}
 	}
 	
-	//Add condition to the player
+	/* Add condition */
 	public void putCondition(Condition condition, boolean bol){
 		this.conditions.put(condition, bol);
 	}
 	
-	//Check whether a player has a condition
+	/* Check condition */
 	public boolean hasCondition(Condition condition){
 		if(conditions.containsKey(condition)){
 			return conditions.get(condition);
@@ -109,7 +116,6 @@ public class XPBoost{
 		}
 	}
 	
-	//Get a name of a player >.<
 	@Deprecated
 	public String getName(){
 		if(Bukkit.getServer().getPlayer(this.uiid) != null && Bukkit.getServer().getPlayer(this.uiid).isOnline()){
@@ -119,20 +125,21 @@ public class XPBoost{
 		}
 	}
 	
-	//RETURN A HASHMAP WITH A LIST OF ALL INCLUDED CONDITIONS
+	/* HashMap of all conditions */
 	public ConcurrentHashMap<Condition, Boolean> getConditions(){
 		return this.conditions;
 	}
 	
-	//DURATION OF THE BOOST IN SECONDS
+	/* Duration of the boost in seconds */
 	public int getBoostTime(){
-		return this.boostTime;
+		return boostTime;
 	}
 	
-	public void clearCondition(){
-		this.conditions.clear();
+	public void clearConditions(){
+		conditions.clear();
 	}
 	
+	/* Save current boost to a file */
 	public void savePlayerFile(){
 		MainAPI.saveOfflinePlayer(this.uiid, this);
 	}

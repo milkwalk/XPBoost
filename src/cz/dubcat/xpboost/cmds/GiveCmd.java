@@ -11,11 +11,11 @@ import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class giveCmd implements CommandInterface{	
+public class GiveCmd implements CommandInterface{	
 	
     private Main plugin;
     
-    public giveCmd(Main plugin) {
+    public GiveCmd(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -39,14 +39,25 @@ public class giveCmd implements CommandInterface{
 			   	}catch(NumberFormatException e){
 				   	if(sender instanceof Player) {
 				   		player = (Player) sender;   
-				   		MainAPI.sendMSG("This is not an integer: &c" + args[3], player);    									   		
+				   		MainAPI.sendMessage("This is not an integer: &c" + args[3], player);    									   		
 				   	}else{
-				   		plugin.getLogger().info("This is not an integer: &c" + args[3]);
+				   		plugin.getLogger().info("This is not an integer: " + args[3]);
 				   	}
 			   		return true;
 			   	}
 			   	
-			   	double boost = Double.parseDouble(args[2]);
+			   	double boost;
+			   	try {
+			   		boost = Double.parseDouble(args[2]);
+			   	}catch(NumberFormatException e) {
+				   	if(sender instanceof Player) {
+				   		player = (Player) sender;
+				   		MainAPI.sendMessage("Please provide a number. " + args[2] + " is not a number.", player);    			
+				   	}else{
+				   		plugin.getLogger().info("Please provide a number. " + args[2] + " is not a number.");
+				   	}   		
+			   		return true;
+			   	}
 				for(Player p : Bukkit.getOnlinePlayers()){
 					if(xpbAPI.hasBoost(p.getUniqueId())){
 						continue;
@@ -58,7 +69,7 @@ public class giveCmd implements CommandInterface{
 					
 				   	if(sender instanceof Player) {
 				   		player = (Player) sender;
-				   		MainAPI.sendMSG( "You have given &c"+boost+"x Boost &fto &call online players &ffor &c"+time+" seconds.", player);    			
+				   		MainAPI.sendMessage( "You have given &c"+boost+"x Boost &fto &call online players &ffor &c"+time+" seconds.", player);    			
 				   	}else{
 				   		plugin.getLogger().info("You have given "+boost+"x Boost to all online players for "+time+" seconds.");
 				   	}
@@ -80,16 +91,16 @@ public class giveCmd implements CommandInterface{
 				   			}catch (IllegalArgumentException e){
 							   	if(sender instanceof Player) {
 							   		player = (Player) sender;   
-							   		MainAPI.sendMSG("Paremeter " + type + " does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES", player);    									   		
+							   		MainAPI.sendMessage("Parameter " + type + " does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS", player);    									   		
 							   	}else{
-							   		plugin.getLogger().info("Paremeter " + type + "does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES" );
+							   		plugin.getLogger().info("Parameter " + type + "does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS" );
 							   	}
 				   				return true;
 				   			}
 				   			
 						   	if(sender instanceof Player) {
 						   		player = (Player) sender;
-						   		MainAPI.sendMSG( con + " &aON", player);    			
+						   		MainAPI.sendMessage( con + " &aON", player);    			
 						   	}else{
 						   		plugin.getLogger().info(con + " &aON");
 						   	}
@@ -117,7 +128,7 @@ public class giveCmd implements CommandInterface{
 				   	}catch(NumberFormatException e){
 					   	if(sender instanceof Player) {
 					   		player = (Player) sender;   
-					   		MainAPI.sendMSG("This is not an integer: &c" + args[3], player);    									   		
+					   		MainAPI.sendMessage("This is not an integer: &c" + args[3], player);    									   		
 					   	}else{
 					   		plugin.getLogger().info("This is not an integer: &c" + args[3]);
 					   	}
@@ -132,11 +143,11 @@ public class giveCmd implements CommandInterface{
 				   	XPBoost xpb = xpbAPI.getBoost(hrac.getUniqueId());
 				   	
 			   		//clearing conditions;  		
-			   		xpb.clearCondition();
+			   		xpb.clearConditions();
 				   	
 				   	if(sender instanceof Player) {
 				   		player = (Player) sender;
-				   		MainAPI.sendMSG("You have given &c"+boost+"x Boost &fto &c"+hrac.getName()+" &ffor &c"+time+" seconds.", player);    			
+				   		MainAPI.sendMessage("You have given &c"+boost+"x Boost &fto &c"+hrac.getName()+" &ffor &c"+time+" seconds.", player);    			
 				   		
 				   	}else{
 				   		plugin.getLogger().info("You have given "+boost+"x Boost to "+hrac.getName()+" for "+time+" seconds.");
@@ -153,7 +164,7 @@ public class giveCmd implements CommandInterface{
 				   		String[] spit1 = boosttypes.split(",");
 				   		
 				   		//clearing conditions;  		
-				   		xpb.clearCondition();
+				   		xpb.clearConditions();
 				   		
 				   		for(String type : spit1){
 				   			Condition con;
@@ -162,16 +173,16 @@ public class giveCmd implements CommandInterface{
 				   			}catch (IllegalArgumentException e){
 							   	if(sender instanceof Player) {
 							   		player = (Player) sender;   
-							   		MainAPI.sendMSG("Paremeter " + type + " does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES", player);    									   		
+							   		MainAPI.sendMessage("Parameter " + type + " does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS", player);    									   		
 							   	}else{
-							   		plugin.getLogger().info("Paremeter " + type + "does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES" );
+							   		plugin.getLogger().info("Parameter " + type + "does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS" );
 							   	}
 				   				return true;
 				   			}
 				   			
 						   	if(sender instanceof Player) {
 						   		player = (Player) sender;
-						   		MainAPI.sendMSG( con + " &aON", player);    			
+						   		MainAPI.sendMessage( con + " &aON", player);    			
 						   	}else{
 						   		plugin.getLogger().info(con + " &aON");
 						   	}
@@ -189,7 +200,7 @@ public class giveCmd implements CommandInterface{
     			}else{
 				   	if(sender instanceof Player) {
 				   		player = (Player) sender;
-				   		MainAPI.sendMSG("Player " + args[1] + " is not online.", player);    			
+				   		MainAPI.sendMessage("Player " + args[1] + " is not online.", player);    			
 				   	}else{
 				   		plugin.getLogger().info("Player " + args[1] + " is not online.");
 				   	}
@@ -197,7 +208,7 @@ public class giveCmd implements CommandInterface{
     		}else{
 			   	if(sender instanceof Player) {
 			   		player = (Player) sender;
-			   		MainAPI.sendMSG( "Usage: &c/xpboost give <player/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]", player);
+			   		MainAPI.sendMessage( "Usage: &c/xpboost give <player/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]", player);
 			   	}else{
 			   		plugin.getLogger().info("Usage: /xpboost give <player/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]");
 			   	}

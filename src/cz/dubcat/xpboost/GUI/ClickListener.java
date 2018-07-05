@@ -42,12 +42,12 @@ public class ClickListener implements Listener{
         				if (i == slot){
         					
         					if(xpbAPI.hasBoost(id)){
-    						    MainAPI.sendMSG(Main.getLang().getString("lang.boostactive"), player);
+    						    MainAPI.sendMessage(Main.getLang().getString("lang.boostactive"), player);
     			        		return;
         					}
         					
         					if(Main.factions_enabled && Main.factions.getBoolean("settings.allow_one_boost_only") && xpbAPI.getFactionBoost(player) != null){
-        						MainAPI.sendMSG(Main.getLang().getString("lang.factions_one_boost"), player);
+        						MainAPI.sendMessage(Main.getLang().getString("lang.factions_one_boost"), player);
         						return;
         					}
         					
@@ -56,7 +56,7 @@ public class ClickListener implements Listener{
         						if(!player.hasPermission(Main.getPlugin().getConfig().getString("boost." + key + ".permission.perm"))){
         							String message = Main.getPlugin().getConfig().getString("boost." + key + ".permission.msg");
         							message = message.replaceAll("%perm%", Main.getPlugin().getConfig().getString("boost." + key + ".permission.perm"));
-        							MainAPI.sendMSG(message, player);
+        							MainAPI.sendMessage(message, player);
         							return;
         						}
         					}
@@ -72,7 +72,7 @@ public class ClickListener implements Listener{
 							    			.replaceAll("%time%", time+"")
 							    			.replaceAll("%money%", Main.getPlugin().getConfig().getString("boost." + key + ".cost"))
 				  							.replaceAll("%boost%", Main.getPlugin().getConfig().getString("boost." + key + ".boost"));
-    						    MainAPI.sendMSG(message, player);
+    						    MainAPI.sendMessage(message, player);
 				  				Main.economy.withdrawPlayer(player, Main.getPlugin().getConfig().getDouble("boost." + key + ".cost"));
 				  				
 				  				xpbAPI.setPlayerBoost(player.getUniqueId(), Main.getPlugin().getConfig().getDouble("boost." + key + ".boost"), Main.getPlugin().getConfig().getInt("boost." + key + ".time"));
@@ -88,7 +88,7 @@ public class ClickListener implements Listener{
 						    	
 				  				String message = Main.getLang().getString("lang.buyfail");
 				  				message = message.replaceAll("%money%", Main.getPlugin().getConfig().getString("boost." + key + ".cost"));
-    						    MainAPI.sendMSG(message, player);		    	
+    						    MainAPI.sendMessage(message, player);		    	
 						    }
 						    break;
         				}

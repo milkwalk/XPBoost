@@ -7,13 +7,13 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class xpboostMain implements CommandInterface{
+public class XpboostMainCmd implements CommandInterface{
 
 	
 	
     private Main plugin;
     
-    public xpboostMain(Main plugin) {
+    public XpboostMainCmd(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -22,12 +22,12 @@ public class xpboostMain implements CommandInterface{
     public boolean onCommand(CommandSender sender, Command cmd,String commandLabel, String[] args) {
     if(sender instanceof Player) {    
 	    Player player = (Player) sender;       
-	  	MainAPI.sendMSG(Main.getLang().getString("lang.menu.row1"), player);
-	  	MainAPI.sendMSG(Main.getLang().getString("lang.menu.row2"), player);
-	  	MainAPI.sendMSG(Main.getLang().getString("lang.menu.row3"), player);
+	  	MainAPI.sendMessage(Main.getLang().getString("lang.menu.row1"), player);
+	  	MainAPI.sendMessage(Main.getLang().getString("lang.menu.row2"), player);
+	  	MainAPI.sendMessage(Main.getLang().getString("lang.menu.row3"), player);
 	      if (player.hasPermission("xpboost.admin")){
 		    	  for(int i = 4; i < 11;i++){
-		    		  MainAPI.sendMSG(Main.getLang().getString("lang.menu.row"  +i), player);
+		    		  MainAPI.sendMessage(Main.getLang().getString("lang.menu.row"  +i), player);
 		    	  }
 	    	  }
     }else{

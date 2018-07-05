@@ -32,7 +32,7 @@ public class CommandListener implements Listener{
 	    
 	    for(String cmd : cmdlist){
 	    	if(cmd.equalsIgnoreCase(finalcmd)){
-	    		MainAPI.sendMSG(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
+	    		MainAPI.sendMessage(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
 	    		
 	    		MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);
 	    		

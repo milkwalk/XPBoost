@@ -47,7 +47,7 @@ public class FactionsClickListener implements Listener {
         				if (i == slot){
         					
         					if(xpbAPI.hasFactionBoost(faction)){
-    						    MainAPI.sendMSG(Main.getLang().getString("lang.faction_active_boost"), player);
+    						    MainAPI.sendMessage(Main.getLang().getString("lang.faction_active_boost"), player);
     			        		return;
         					}
         					
@@ -56,13 +56,13 @@ public class FactionsClickListener implements Listener {
         						if(!player.hasPermission(Main.getPlugin().getConfig().getString("boost." + key + ".permission.perm"))){
         							String message = Main.getPlugin().getConfig().getString("boost." + key + ".permission.msg");
         							message = message.replaceAll("%perm%", Main.getPlugin().getConfig().getString("boost." + key + ".permission.perm"));
-        							MainAPI.sendMSG(message, player);
+        							MainAPI.sendMessage(message, player);
         							return;
         						}
         					}
         					
         					if(Main.factions.getBoolean("boost." + key + ".onlyowners") && !faction.getLeader().equals(fplayer)){
-        						MainAPI.sendMSG(Main.getLang().getString("lang.factions_only_owners"), player);
+        						MainAPI.sendMessage(Main.getLang().getString("lang.factions_only_owners"), player);
         						return;
         					}
         					
@@ -81,7 +81,7 @@ public class FactionsClickListener implements Listener {
 							    
 							    for(MPlayer p : faction.getMPlayers()){
 					    			if(Bukkit.getServer().getPlayer(p.getUuid()) != null && Bukkit.getServer().getPlayer(p.getUuid()).isOnline())
-					    				MainAPI.sendMSG(message, p.getUuid());	
+					    				MainAPI.sendMessage(message, p.getUuid());	
 							    }
     						    
 				  				Main.economy.withdrawPlayer(player, Main.getPlugin().getConfig().getDouble("boost." + key + ".cost"));
@@ -98,7 +98,7 @@ public class FactionsClickListener implements Listener {
 						    } else{						    	
 				  				String message = Main.getLang().getString("lang.buyfail");
 				  				message = message.replaceAll("%money%", Main.getPlugin().getConfig().getString("boost." + key + ".cost"));
-    						    MainAPI.sendMSG(message, player);		    	
+    						    MainAPI.sendMessage(message, player);		    	
 						    }
 						    break;
         				}

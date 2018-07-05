@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class globalCmd implements CommandInterface{
+public class GlobalCmd implements CommandInterface{
 	
     private Main plugin;
     
-    public globalCmd(Main plugin) {
+    public GlobalCmd(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -37,9 +37,9 @@ public class globalCmd implements CommandInterface{
 			   	
 			    if(sender instanceof Player) {
 			    	player = (Player) sender;
-			    	MainAPI.sendMSG("You have successfully set global boost to &a" + globalboost, player);
+			    	MainAPI.sendMessage("You have successfully set global boost to &a" + globalboost, player);
 			    	if(!Main.GLOBAL_BOOST.isEnabled())
-			    		MainAPI.sendMSG("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
+			    		MainAPI.sendMessage("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
 			    }else{
 			    	plugin.getLogger().info("You have successfully set a global boost to " + globalboost);
 			    }
@@ -57,9 +57,9 @@ public class globalCmd implements CommandInterface{
 			   	
 			    if(sender instanceof Player) {
 			    	player = (Player) sender;
-			    	MainAPI.sendMSG("You have successfully set global boost to &a" + globalboost +" &ffor &a" + time +" Seconds", player);
+			    	MainAPI.sendMessage("You have successfully set global boost to &a" + globalboost +" &ffor &a" + time +" Seconds", player);
 			    	if(!Main.GLOBAL_BOOST.isEnabled())
-			    		MainAPI.sendMSG("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
+			    		MainAPI.sendMessage("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
 			    }else{
 			    	plugin.getLogger().info("You have successfully set a global boost to " + globalboost + "for " + time + " Seconds");
 			    }
@@ -67,7 +67,7 @@ public class globalCmd implements CommandInterface{
 		}else{
 			if(sender instanceof Player) {
 				player = (Player) sender;
-				MainAPI.sendMSG( "Usage: &c/xpboost global <boost> [time in seconds]", player);
+				MainAPI.sendMessage( "Usage: &c/xpboost global <boost> [time in seconds]", player);
 			}else{
 				plugin.getLogger().info("Usage: /xpboost global <boost> [time in seconds]");
 			}

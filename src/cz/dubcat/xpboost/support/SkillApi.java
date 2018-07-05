@@ -21,7 +21,7 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 public class SkillApi implements Listener{	
 	
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
-	private static Condition CONDITION_NAME = Condition.SKILLAPI;
+	private static final Condition CONDITION_NAME = Condition.SKILLAPI;
 	
     private boolean expbug = false;
     

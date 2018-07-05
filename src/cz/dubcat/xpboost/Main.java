@@ -27,17 +27,17 @@ import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.cmds.CommandHandler;
-import cz.dubcat.xpboost.cmds.clearCmd;
-import cz.dubcat.xpboost.cmds.factionCmd;
-import cz.dubcat.xpboost.cmds.giveCmd;
-import cz.dubcat.xpboost.cmds.globalCmd;
-import cz.dubcat.xpboost.cmds.guiCmd;
-import cz.dubcat.xpboost.cmds.infoCmd;
-import cz.dubcat.xpboost.cmds.itemCommand;
-import cz.dubcat.xpboost.cmds.offCmd;
-import cz.dubcat.xpboost.cmds.onCmd;
-import cz.dubcat.xpboost.cmds.reloadCmd;
-import cz.dubcat.xpboost.cmds.xpboostMain;
+import cz.dubcat.xpboost.cmds.ClearCmd;
+import cz.dubcat.xpboost.cmds.FactionCmd;
+import cz.dubcat.xpboost.cmds.GiveCmd;
+import cz.dubcat.xpboost.cmds.GlobalCmd;
+import cz.dubcat.xpboost.cmds.GuiCmd;
+import cz.dubcat.xpboost.cmds.InfoCmd;
+import cz.dubcat.xpboost.cmds.ItemCmd;
+import cz.dubcat.xpboost.cmds.GlobalOffCmd;
+import cz.dubcat.xpboost.cmds.GlobalOnCmd;
+import cz.dubcat.xpboost.cmds.ReloadCmd;
+import cz.dubcat.xpboost.cmds.XpboostMainCmd;
 import cz.dubcat.xpboost.config.ConfigManager;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
@@ -51,16 +51,17 @@ import cz.dubcat.xpboost.events.ServerList;
 import cz.dubcat.xpboost.events.Signs;
 import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
+import cz.dubcat.xpboost.support.JobsReborn;
 import cz.dubcat.xpboost.support.McMMO;
 import cz.dubcat.xpboost.support.RPGmE;
 import cz.dubcat.xpboost.support.SkillApi;
-import cz.dubcat.xpboost.versions.actionBar;
-import cz.dubcat.xpboost.versions.actionBar1_1;
-import cz.dubcat.xpboost.versions.actionBar1_11;
-import cz.dubcat.xpboost.versions.actionBar1_12;
-import cz.dubcat.xpboost.versions.actionBar1_9;
-import cz.dubcat.xpboost.versions.actionBar1_94;
-import cz.dubcat.xpboost.versions.actionbarInterface;
+import cz.dubcat.xpboost.versions.ActionBar_1_8;
+import cz.dubcat.xpboost.versions.ActionBar1_01;
+import cz.dubcat.xpboost.versions.ActionBar1_11;
+import cz.dubcat.xpboost.versions.ActionBar1_12;
+import cz.dubcat.xpboost.versions.ActionBar1_9;
+import cz.dubcat.xpboost.versions.ActionBar1_94;
+import cz.dubcat.xpboost.versions.ActionbarInterface;
 import net.milkbowl.vault.economy.Economy;
 
 public class Main extends JavaPlugin{
@@ -72,10 +73,9 @@ public class Main extends JavaPlugin{
 	public static GlobalBoost GLOBAL_BOOST;
     public static Economy economy = null;
     
-    public static Debug debug;
+    public static Debug debug;   
     
-    
-    private actionbarInterface actionbar;
+    private ActionbarInterface actionbar;
     private static Main plugin;
     public static int config_version = 1;
     
@@ -92,19 +92,19 @@ public class Main extends JavaPlugin{
     public void registerCommands() {
     	CommandHandler handler = new CommandHandler();
     	
-        handler.register("xpboost", new xpboostMain(this));
+        handler.register("xpboost", new XpboostMainCmd(this));
            
-        handler.register("gui", new guiCmd());
-        handler.register("info", new infoCmd());
-        handler.register("reload", new reloadCmd(this));
-        handler.register("give", new giveCmd(this));
-        handler.register("on", new onCmd(this));
-        handler.register("off", new offCmd(this));
-        handler.register("clear", new clearCmd(this));
-        handler.register("item", new itemCommand(this));
-        handler.register("global", new globalCmd(this));
-    	handler.register("faction", new factionCmd());
-    	handler.register("factions", new factionCmd());
+        handler.register("gui", new GuiCmd());
+        handler.register("info", new InfoCmd());
+        handler.register("reload", new ReloadCmd(this));
+        handler.register("give", new GiveCmd(this));
+        handler.register("on", new GlobalOnCmd(this));
+        handler.register("off", new GlobalOffCmd(this));
+        handler.register("clear", new ClearCmd(this));
+        handler.register("item", new ItemCmd(this));
+        handler.register("global", new GlobalCmd(this));
+    	handler.register("faction", new FactionCmd());
+    	handler.register("factions", new FactionCmd());
         
         getCommand("xpboost").setExecutor(handler);
         getCommand("xpb").setExecutor(handler);
@@ -199,7 +199,15 @@ public class Main extends JavaPlugin{
         	getServer().getPluginManager().registerEvents(new RPGmE(), this);
         }
 	    
-	    
+	    //JobsReborn
+        Plugin jobsReborn = this.getServer().getPluginManager().getPlugin("Jobs");
+        
+        if(jobsReborn == null) {
+        	log.warning("Jobs not found, disabling support.");
+        } else {
+        	log.info("Found Jobs, enabling support.");           
+        	getServer().getPluginManager().registerEvents(new JobsReborn(), this);
+        }     
 	    
         Plugin bossbarapi = this.getServer().getPluginManager().getPlugin("BossBarAPI");
         
@@ -346,12 +354,12 @@ public class Main extends JavaPlugin{
     }
     
     private void initializePlaceholder() {
-        if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-        	
+        if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {        	
             PlaceholderAPI.registerPlaceholder(this, "xpboost_hasboost", event -> String.valueOf(xpbAPI.hasBoost(event.getPlayer().getUniqueId())));
             PlaceholderAPI.registerPlaceholder(this, "xpboost_boost", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getBoost()));
             PlaceholderAPI.registerPlaceholder(this, "xpboost_boost_time", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getBoostTime()));
-            PlaceholderAPI.registerPlaceholder(this, "xpboost_timeleft", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getTimeRemaining()));
+            PlaceholderAPI.registerPlaceholder(this, "xpboost_timeleft", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getTimeRemaining()));           
+            PlaceholderAPI.registerPlaceholder(this, "xpboost_type", event -> String.valueOf(xpbAPI.getBoost(event.getPlayer().getUniqueId()).getConditions().toString()));
         }
 
     }
@@ -369,22 +377,22 @@ public class Main extends JavaPlugin{
         getLogger().info("Server version " + version);
 
         if (version.equals("v1_8_R3")) {
-            actionbar = new actionBar(this);
+            actionbar = new ActionBar_1_8(this);
             getServer().getPluginManager().registerEvents(new ClickListener_18(), this); 
         } else if (version.equals("v1_9_R1")) {
-            actionbar = new actionBar1_9(this);
+            actionbar = new ActionBar1_9(this);
             getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }else if (version.equals("v1_9_R2")) {
-            actionbar = new actionBar1_94(this);
+            actionbar = new ActionBar1_94(this);
             getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }else if (version.equals("v1_10_R1")){
-        	actionbar = new actionBar1_1(this);
+        	actionbar = new ActionBar1_01(this);
         	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }else if(version.equals("v1_11_R1")){
-        	actionbar = new actionBar1_11(this);
+        	actionbar = new ActionBar1_11(this);
         	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }else if(version.equals("v1_12_R1")) {
-        	actionbar = new actionBar1_12(this);
+        	actionbar = new ActionBar1_12(this);
         	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
         }
         

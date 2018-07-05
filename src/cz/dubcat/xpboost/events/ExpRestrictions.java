@@ -12,11 +12,9 @@ import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.xpbAPI;
 
 public class ExpRestrictions implements Listener{
-
 	
 	@EventHandler
 	public void onExpBottle(ExpBottleEvent event){
-		//int amont = event.getExperience();
 		if(Main.getPlugin().getConfig().getInt("settings.xpbottlemode") == 2){
 			event.setExperience(0);
 		}
@@ -29,15 +27,7 @@ public class ExpRestrictions implements Listener{
         if ((event.getAction() == Action.RIGHT_CLICK_BLOCK  || event.getAction() == Action.RIGHT_CLICK_AIR)&& Main.getPlugin().getConfig().getInt("settings.xpbottlemode") == 3 && xpbAPI.hasBoost(event.getPlayer().getUniqueId())) {
             Player player = event.getPlayer();   
             if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.EXP_BOTTLE){
-            	event.setCancelled(true);
-            	
-            	/*ThrownExpBottle expb = (ThrownExpBottle) player.getWorld().spawnEntity(player.getLocation(),EntityType.THROWN_EXP_BOTTLE);
-            	expb.setVelocity(new Vector(0,10,0));
-            	expb.setShooter(player);
-            	
-            	ExperienceOrb orb = (ExperienceOrb) player.getWorld().spawnEntity(player.getLocation(), EntityType.EXPERIENCE_ORB);*/         
-            	
-            	
+            	event.setCancelled(true);                  	
             }
         }
 	}

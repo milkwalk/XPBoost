@@ -33,7 +33,7 @@ public class BossBarN extends BukkitRunnable{
 					s.removePlayer(p);
 				}
 				
-				int lenght =	xpb.getBoostTime();
+				int lenght = xpb.getBoostTime();
 				float calc1 = ((float)xpb.getTimeRemaining())/(float)(lenght);
 				
 				String message = MainAPI.colorizeText(Main.getLang().getString("lang.bossbar").replaceAll("%boost%", xpb.getBoost()+""));
@@ -45,7 +45,7 @@ public class BossBarN extends BukkitRunnable{
 	      		      calc1, // Progress (0.0 - 1.0)
 	      		      lenght, // Timeout
 	      		      20); // Timeout-interval		
-			}else{
+			}else if(BossBarAPI.hasBar(p)){
 				BossBarAPI.removeBar(p);
 			}
 		}	

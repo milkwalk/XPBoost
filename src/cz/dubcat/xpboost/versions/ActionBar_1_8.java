@@ -20,12 +20,12 @@ import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 
 
 
-public class actionBar implements actionbarInterface{
+public class ActionBar_1_8 implements ActionbarInterface{
 	
 	
 	private Main plugin;
     
-    public actionBar(Main plugin) {
+    public ActionBar_1_8(Main plugin) {
         this.plugin = plugin;
     }
     

@@ -14,12 +14,12 @@ import cz.dubcat.xpboost.api.MainAPI.Debug;
 import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class clearCmd implements CommandInterface{
+public class ClearCmd implements CommandInterface{
 	
     private Main plugin;
-    private static String msg = "You have successfully removed boost from &a";
+    private static final String MESSAGE = "You have successfully removed boost from &a";
     
-    public clearCmd(Main plugin) {
+    public ClearCmd(Main plugin) {
         this.plugin = plugin;
     }
     
@@ -49,9 +49,9 @@ public class clearCmd implements CommandInterface{
 					   	
  				    if(sender instanceof Player) {
 				    	player = (Player) sender;
-				    	MainAPI.sendMSG(msg + hrac.getName(), player);
+				    	MainAPI.sendMessage(MESSAGE + hrac.getName(), player);
 				    }else{
-				    	plugin.getLogger().info(msg + hrac.getName());
+				    	plugin.getLogger().info(MESSAGE + hrac.getName());
 				    }
 
     			}else if(Bukkit.getServer().getOfflinePlayer(args[1]) != null){
@@ -73,15 +73,15 @@ public class clearCmd implements CommandInterface{
 				   	
 				    if(sender instanceof Player) {
 				    	player = (Player) sender;
-				    	MainAPI.sendMSG(msg + p.getName(), player);
+				    	MainAPI.sendMessage(MESSAGE + p.getName(), player);
 				    }else{
-				    	plugin.getLogger().info(msg + p.getName());
+				    	plugin.getLogger().info(MESSAGE + p.getName());
 				    }
     			}
     		}else{
     			if(sender instanceof Player) {
     				player = (Player) sender;
-    				MainAPI.sendMSG("Usage: &c/xpboost clear <player>", player);
+    				MainAPI.sendMessage("Usage: &c/xpboost clear <player>", player);
     			}else{
     				plugin.getLogger().info("Usage: /xpboost clear <player>");
     			}

@@ -20,7 +20,7 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 public class Heroes implements Listener{
 	
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
-	private static Condition CONDITION_NAME = Condition.HEROES;
+	private static final Condition CONDITION_NAME = Condition.HEROES;
 	
 	@EventHandler
 	public void gainXp(ExperienceChangeEvent event){
@@ -30,7 +30,7 @@ public class Heroes implements Listener{
 		
     	ExperienceType skill = event.getSource();
     	UUID id = player.getUniqueId();
-		
+    	
 		if(xpbAPI.hasBoost(id)){			
 			XPBoost xpb = xpbAPI.getBoost(id);
 			if(xpb.hasCondition(CONDITION_NAME))
@@ -57,7 +57,7 @@ public class Heroes implements Listener{
 			    message = message.replaceAll("%newexp%", expnew+"");
 			    message = message.replaceAll("%oldexp%", exp+"");
 			    message = message.replaceAll("%source%", skill+"");
-			    MainAPI.sendMSG(message, player);
+			    MainAPI.sendMessage(message, player);
 		    }     
 		}
 		

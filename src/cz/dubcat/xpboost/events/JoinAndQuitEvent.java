@@ -19,7 +19,7 @@ public class JoinAndQuitEvent implements Listener{
 		if(Main.getPlugin().getConfig().getBoolean("settings.globalboost.notification")){
 			GlobalBoost gl = Main.GLOBAL_BOOST;
 			if(gl.isEnabled())
-				MainAPI.sendMSG(Main.getLang().getString("lang.joinnotmsg").replaceAll("%boost%", gl.getGlobalBoost()+""), player);	
+				MainAPI.sendMessage(Main.getLang().getString("lang.joinnotmsg").replaceAll("%boost%", gl.getGlobalBoost()+""), player);	
 	    }
 		
 		MainAPI.loadPlayer(player);	

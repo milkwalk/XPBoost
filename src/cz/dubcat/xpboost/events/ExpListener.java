@@ -18,7 +18,7 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 public class ExpListener implements Listener{
 
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
-	private static Condition CONDITION_NAME = Condition.VANILLA;
+	private static final Condition CONDITION_NAME = Condition.VANILLA;
 	
 	@EventHandler
     public void onExpChange(PlayerExpChangeEvent event){
@@ -61,7 +61,7 @@ public class ExpListener implements Listener{
 						.replaceAll("%newexp%", expnew+"")
 			    		.replaceAll("%oldexp%", exp+"");
 				
-				MainAPI.sendMSG(message, player);
+				MainAPI.sendMessage(message, player);
 		    }
 		}
     }

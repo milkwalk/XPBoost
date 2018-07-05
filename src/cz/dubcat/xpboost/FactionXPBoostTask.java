@@ -19,7 +19,7 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 public class FactionXPBoostTask  implements Runnable{
 	
 	public BukkitTask id;
-
+	
 	public void setId(BukkitTask id){
 		 this.id = id;	
 	}
@@ -44,7 +44,7 @@ public class FactionXPBoostTask  implements Runnable{
 			    		@Override
 			    		public void run() {
 			    			if(Bukkit.getServer().getPlayer(p.getUuid()) != null && Bukkit.getServer().getPlayer(p.getUuid()).isOnline())
-			    				MainAPI.sendMSG(message, p.getUuid());	
+			    				MainAPI.sendMessage(message, p.getUuid());	
 			    		}
 			    	}, 0L);
 				} 	

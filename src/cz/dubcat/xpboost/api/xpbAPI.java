@@ -45,7 +45,7 @@ public class xpbAPI {
 		if(!Main.factions_enabled || MPlayer.get(p).getFaction().isNone() || !hasFactionBoost(MPlayer.get(p).getFaction()) || (Main.factions.getBoolean("settings.allow_one_boost_only") && hasBoost(p.getUniqueId())))
 			return null;
 		
-		return  Main.factions_boost.get(MPlayer.get(p).getFaction());
+		return Main.factions_boost.get(MPlayer.get(p).getFaction());
 		
 	}
 	

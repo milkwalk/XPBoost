@@ -14,35 +14,38 @@ public class BoostTaskCheck extends BukkitRunnable{
     	
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
+        gl.setEnabled(false);
         
-        if (Main.getPlugin().getConfig().getBoolean("settings.day.monday") && day == 2){
-        	gl.setEnabled(true);
-        }
-        
-        if (Main.getPlugin().getConfig().getBoolean("settings.day.tuesday")&& day == 3){
-        	gl.setEnabled(true);
-        }
-        
-    	if (Main.getPlugin().getConfig().getBoolean("settings.day.wednesday") && day == 4){
-        	gl.setEnabled(true);
-    	}
-    	
-    	if (Main.getPlugin().getConfig().getBoolean("settings.day.thursday") && day == 5){
-        	gl.setEnabled(true);
-    	}
-    	
-    	if (Main.getPlugin().getConfig().getBoolean("settings.day.friday") && day == 6){
-        	gl.setEnabled(true);
-    	}
-
-    	if (Main.getPlugin().getConfig().getBoolean("settings.day.saturday") && day == 7){
-        	gl.setEnabled(true);
-    	} 
-    	
-    	if (Main.getPlugin().getConfig().getBoolean("settings.day.sunday") && day == 1){
-        	gl.setEnabled(true);
-    	}
-		
+        switch(day) {
+        	case 2:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.monday"))
+        			gl.setEnabled(true);
+        		break;
+        	case 3:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.tuesday"))
+        			gl.setEnabled(true);
+        		break; 
+        	case 4:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.wednesday"))
+        			gl.setEnabled(true);
+        		break;
+        	case 5:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.thursday"))
+        			gl.setEnabled(true);
+        		break;
+        	case 6:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.friday"))
+        			gl.setEnabled(true);
+        		break;
+        	case 7:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.saturday"))
+        			gl.setEnabled(true);
+        		break;
+        	case 1:
+        		if(Main.getPlugin().getConfig().getBoolean("settings.day.sunday"))
+        			gl.setEnabled(true);
+        		break;
+        }		
 	}
 
 }

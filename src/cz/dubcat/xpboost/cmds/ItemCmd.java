@@ -14,11 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class itemCommand implements CommandInterface{
+public class ItemCmd implements CommandInterface{
 
     private Main plugin;
     
-    public itemCommand(Main plugin) {
+    public ItemCmd(Main plugin) {
         this.plugin = plugin;
     }
 
@@ -45,7 +45,7 @@ public class itemCommand implements CommandInterface{
     		//player not found
     		if(hrac ==null || !hrac.isOnline()){ 			
         		if(sender instanceof Player) {
-        			MainAPI.sendMSG("Player is not online", (Player) sender);
+        			MainAPI.sendMessage("Player is not online", (Player) sender);
         		}else{
         			plugin.getLogger().info("Player is not online.");
         		}
@@ -73,7 +73,7 @@ public class itemCommand implements CommandInterface{
 			hrac.getInventory().addItem(item);
     		
     		if(sender instanceof Player) {
-    			MainAPI.sendMSG("XPBoost item of &c"+boost+"x boost &ffor &c" + time + "s &fhas been given to &c" + name, (Player) sender);
+    			MainAPI.sendMessage("XPBoost item of &c"+boost+"x boost &ffor &c" + time + "s &fhas been given to &c" + name, (Player) sender);
     		}else{
     			plugin.getLogger().info("XPBoost item of "+boost+"x boost for " + time + " seconds has been given to " + name);
     		}
@@ -81,7 +81,7 @@ public class itemCommand implements CommandInterface{
     	}else{
 		   	if(sender instanceof Player) {
 		   		player = (Player) sender;
-		   		MainAPI.sendMSG("Usage: &c/xpboost item <player> <boost> <time>", player);
+		   		MainAPI.sendMessage("Usage: &c/xpboost item <player> <boost> <time>", player);
 		   	}else{
 		   		plugin.getLogger().info("Usage: /xpboost item <player> <boost> <time>");
 		   	}

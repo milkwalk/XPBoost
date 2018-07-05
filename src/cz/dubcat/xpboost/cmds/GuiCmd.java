@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class guiCmd implements CommandInterface{
+public class GuiCmd implements CommandInterface{
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd,String commandLabel, String[] args) {

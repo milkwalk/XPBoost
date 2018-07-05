@@ -1,5 +1,5 @@
 package cz.dubcat.xpboost.versions;
 
-public interface actionbarInterface {
+public interface ActionbarInterface {
 	public void shedul();
 }

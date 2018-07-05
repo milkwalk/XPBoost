@@ -55,7 +55,7 @@ public class CommandHandler implements CommandExecutor
 				}
                   return true;
               } else {
-                  MainAPI.sendMSG("This command doesnt exist.", (Player) sender);
+                  MainAPI.sendMessage("This command doesnt exist.", (Player) sender);
                   return true;
               }
           }

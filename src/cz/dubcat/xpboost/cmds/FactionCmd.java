@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class factionCmd  implements CommandInterface{
+public class FactionCmd  implements CommandInterface{
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd,String commandLabel, String[] args) {

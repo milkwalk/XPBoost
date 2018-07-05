@@ -17,9 +17,11 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 public class XPBoostTask implements Runnable{
 	
 	public BukkitTask id;
+	private static String MESSAGE;
 
 	public void setId(BukkitTask id){
 		 this.id = id;	
+		 MESSAGE = Main.getLang().getString("lang.boostfisnish");
 	}
 		
 
@@ -32,16 +34,14 @@ public class XPBoostTask implements Runnable{
 			Map.Entry<UUID, XPBoost> pair = it.next();
 			XPBoost xpb = pair.getValue();
 
-			if(xpb.getTimeRemaining() == 0){
-    	    	String message = Main.getLang().getString("lang.boostfisnish");
-	    	
+			if(xpb.getTimeRemaining() == 0){    	
     	    	//SEND MESSAGE
     	    	Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
 		    		@Override
 		    		public void run() {
-		    	    	MainAPI.sendMSG(message, xpb.getUUID());	
+		    	    	MainAPI.sendMessage(MESSAGE, xpb.getUUID());	
 		    		}
-		    	}, 0L);
+		    	});
 		    	
     	    	MainAPI.debug("Removed boost from UUID " + xpb.getUUID(), Debug.NORMAL);
 				mp.remove(xpb.getUUID());

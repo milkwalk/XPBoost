@@ -30,12 +30,22 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 public class MainAPI {
 	
 	public enum Debug{
-		OFF,NORMAL,ALL;
+		
+		OFF(0),NORMAL(1),ALL(2);		
+	    private final int value;   
+	    
+	    private Debug(int val) {
+	        value = val;
+	    }
+	    
+	    public int getValue() {
+	    	return value;
+	    }
 	}
 	
 	public enum Condition{
-		VANILLA,SKILLAPI,MCMMO,RPGME,HEROES,ALL;
-		public static Condition[] CONDITIONS = new Condition[] {VANILLA,SKILLAPI,MCMMO,RPGME,HEROES};
+		VANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS,ALL;
+		public static Condition[] CONDITIONS = new Condition[] {VANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS};
 	}
 	
     public static File playersyml;
@@ -225,18 +235,18 @@ public class MainAPI {
     	}
     }
     
-    public static void debug(String srt, Debug val){   	
-    	if(Main.debug == val){
+    public static void debug(String srt, Debug val){
+    	if(Main.debug != Debug.OFF && Main.debug.getValue() >= val.getValue()){
     		Main.getLog().info(srt);
     	}   	
     }
     
-	public static void sendMSG(String string, UUID player){
+	public static void sendMessage(String string, UUID player){
 		Bukkit.getServer().getPlayer(player).sendMessage(colorizeText(Main.getLang().getString("lang.prefix") + string));
 	}
     
     
-	public static void sendMSG(String string, Player player){
+	public static void sendMessage(String string, Player player){
 		player.sendMessage(colorizeText(Main.getLang().getString("lang.prefix") + string));
 	}
     
@@ -246,26 +256,7 @@ public class MainAPI {
     }
     
 	public static String stripColours(String string) {
-		string = string.replaceAll(ChatColor.BLACK + "", "");
-		string = string.replaceAll(ChatColor.DARK_BLUE + "", "");
-		string = string.replaceAll(ChatColor.DARK_GREEN + "", "");
-		string = string.replaceAll(ChatColor.DARK_AQUA + "", "");
-		string = string.replaceAll(ChatColor.DARK_RED + "", "");
-		string = string.replaceAll(ChatColor.DARK_PURPLE + "", "");
-		string = string.replaceAll(ChatColor.GOLD + "", "");
-		string = string.replaceAll(ChatColor.GRAY + "", "");
-		string = string.replaceAll(ChatColor.DARK_GRAY + "", "");
-		string = string.replaceAll(ChatColor.BLUE + "", "");
-		string = string.replaceAll(ChatColor.GREEN + "", "");
-		string = string.replaceAll(ChatColor.AQUA + "", "");
-		string = string.replaceAll(ChatColor.RED + "", "");
-		string = string.replaceAll(ChatColor.LIGHT_PURPLE + "", "");
-		string = string.replaceAll(ChatColor.YELLOW + "", "");
-		string = string.replaceAll(ChatColor.WHITE + "", "");
-		string = string.replaceAll(ChatColor.BOLD + "", "");
-		string = string.replaceAll(ChatColor.WHITE + "", "");
-		string = string.replaceAll(ChatColor.STRIKETHROUGH + "", "");
-		return string;
+		return ChatColor.stripColor(string);
 	}
     
     
@@ -302,7 +293,7 @@ public class MainAPI {
 		Faction faction = getPlayerFaction(player);
 		
 		if(faction.isNone()){
-			sendMSG(Main.getLang().getString("lang.factions_nofaction"),player);
+			sendMessage(Main.getLang().getString("lang.factions_nofaction"),player);
 			return;
 		}
 		
