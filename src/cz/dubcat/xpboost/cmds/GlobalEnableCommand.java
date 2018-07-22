@@ -7,32 +7,30 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class GlobalOffCmd implements CommandInterface{
+public class GlobalEnableCommand implements CommandInterface{	
 	
     private Main plugin;
     
-    public GlobalOffCmd(Main plugin) {
+    public GlobalEnableCommand(Main plugin) {
         this.plugin = plugin;
     }
 
-
 	@Override
     public boolean onCommand(CommandSender sender, Command cmd,String commandLabel, String[] args) {
-    	Player player;
+    	Player player = null;
     	if(sender instanceof Player) {
     		player = (Player) sender;
-    		if (!(player.hasPermission("xpboost.admin"))  && !(player.hasPermission("xpboost.off"))){
+    		if (!(player.hasPermission("xpboost.admin")) && !(player.hasPermission("xpboost.on"))){
     			return false;
     		}
     	}
     	
-	   	Main.GLOBAL_BOOST.setEnabled(false);
+	   	Main.GLOBAL_BOOST.setEnabled(true);
 	   	
     	if(sender instanceof Player) {
-    		player = (Player) sender;
-    		MainAPI.sendMessage("Global &c"+Main.GLOBAL_BOOST.getGlobalBoost()+"x Boost&f is now OFF.", player);
+    		MainAPI.sendMessage("Global &c" + Main.GLOBAL_BOOST.getGlobalBoost() + "x Boost&f is now ON.", player);
     	}else{
-    		plugin.getLogger().info("Global "+Main.GLOBAL_BOOST.getGlobalBoost() +"x Boost is now OFF.");
+    		plugin.getLogger().info("Global " + Main.GLOBAL_BOOST.getGlobalBoost() + "x Boost is now ON.");
     	}
     	
         return false;

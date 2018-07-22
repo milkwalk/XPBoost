@@ -9,8 +9,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.Debug;
 
 public class CommandListener implements Listener{
 	
@@ -18,7 +18,7 @@ public class CommandListener implements Listener{
 	public void onCommand(PlayerCommandPreprocessEvent e){
 	    Player p = e.getPlayer();
 	    
-	    if(!xpbAPI.hasBoost(p.getUniqueId()))
+	    if(!XPBoostAPI.hasBoost(p.getUniqueId()))
 	    	return;
 	    
 	    if(!Main.getPlugin().getConfig().getBoolean("settings.disabledcommands.enabled"))
@@ -30,16 +30,11 @@ public class CommandListener implements Listener{
 	    String[] command = e.getMessage().split(" ");
 	    String finalcmd = command[0];
 	    
-	    for(String cmd : cmdlist){
-	    	if(cmd.equalsIgnoreCase(finalcmd)){
-	    		MainAPI.sendMessage(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
-	    		
-	    		MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);
-	    		
-				e.setCancelled(true);
-	    	}
-	    }
-	 
+	    if(cmdlist.contains(finalcmd)) {
+    		MainAPI.sendMessage(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);		
+    		MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);		
+			e.setCancelled(true);	    	
+	    } 
 	}
 
 }

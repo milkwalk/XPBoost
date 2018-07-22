@@ -1,17 +1,18 @@
 package cz.dubcat.xpboost.config;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
+import cz.dubcat.xpboost.constructors.Debug;
 
 public class ConfigManager {
 	
 	public void setLine(String key, Object content, FileConfiguration cfg){
-		if(!cfg.isSet(key) || !cfg.contains(key))
+		if(!cfg.contains(key))
 			cfg.set(key, content);
 	}
 	
@@ -19,9 +20,17 @@ public class ConfigManager {
 		cfg.set(key, content);	
 	}
 	
+	public void loadDefaultConfig() {
+		Main.getPlugin().getConfig().addDefault("database.type", "file");
+		Main.getPlugin().getConfig().addDefault("database.host", "localhost");
+		Main.getPlugin().getConfig().addDefault("database.port", 3306);
+		Main.getPlugin().getConfig().addDefault("database.user", "root");
+		Main.getPlugin().getConfig().addDefault("database.password", "root");
+	}
+	
 	public void loadLangFile(){
 		FileConfiguration cfg = Main.lang;
-		
+
 		setLine("lang.prefix", "&f[&aXPBoost&f] ", cfg);
 		setLine("lang.doublexpnot", "&fYou got &a%newexp% XP &finstead of &a%oldexp% XP", cfg);
 		setLine("lang.actionbar", "&a%boost%x XP boost is active", cfg);
@@ -31,9 +40,9 @@ public class ConfigManager {
 		setLine("lang.boostcountdown", "&fSeconds remaining: &6", cfg);
 		setLine("lang.boostinfodeny", "&fYou dont have any active boosts.", cfg);
 		setLine("lang.xpbuy", "&c%boost%x &fXP boost &fis on for &a%time% seconds &c(%money%$).", cfg);
-		setLine("lang.gui", "&cXP Boost Shop.", cfg);
+		setLine("lang.gui", "&cXPBoost Shop", cfg);
 		setLine("lang.xptitle", "&a%boost%x XP Boost.", cfg);
-		setLine("lang.xplore", "&c%boost%x XP Boost for %time% seconds%newline%&aPrice: &f&l%money%$", cfg);
+		setLine("lang.boostlore", Arrays.asList("&c%boost%x XP Boost for %time% seconds", "&aPrice: &f&l%money%$"), cfg);
 		setLine("lang.buyfail", "&cYou dont have enough money to purchase this boost! &a(%money%$)", cfg);
 		setLine("lang.boostactive", "&cYour boost is still active!", cfg);
 		setLine("lang.joinnotmsg", "&f&lGlobal XP Boost of %boost%x is currently &f&aenabled &f&lfor everyone!", cfg);
@@ -53,23 +62,24 @@ public class ConfigManager {
 		setLine("lang.item.lore3", "&8Right-Click to gain boost.", cfg);
 		setLine("lang.reload", "&fConfig has been reloaded", cfg);
 		
-		setLine("lang.menu.row1", "/xpboost gui &f- Opens up GUI", cfg);
-		setLine("lang.menu.row2", "/xpboost info &f- Shows time remaining", cfg);
-		setLine("lang.menu.row3", "/xpboost factions &f- Opens up a factions GUI", cfg);
-		setLine("lang.menu.row4", "/xpboost on/off &f - Enables/disables global XP Boost", cfg);
-		setLine("lang.menu.row5", "/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost", cfg);
-		setLine("lang.menu.row6", "/xpboost clear <name> &f - Clears active boost", cfg);
-		setLine("lang.menu.row7", "/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player", cfg);
-		setLine("lang.menu.row8", "/xpboost global <boost> [time in seconds]- Changes global boost multiplier", cfg);
-		setLine("lang.menu.row9", "/xpboost reload &f - Reloads config", cfg);
-		setLine("lang.menu.row10", "What ever is inside [] is &coptional", cfg);
-		
+		setLine("lang.pluginmenu", Arrays.asList(
+						"/xpboost gui &f- Opens up GUI", 
+						"/xpboost info &f- Shows time remaining", 
+						"/xpboost factions &f- Opens up a factions GUI", 
+						"/xpboost on/off &f - Enables/disables global XP Boost", 
+						"/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost", 
+						"/xpboost clear <name> &f - Clears active boost", 
+						"/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player", 
+						"/xpboost global <boost> [time in seconds]- Changes global boost multiplier", 
+						"/xpboost reload &f - Reloads config", 
+						"What ever is inside [] is &coptional"
+						), cfg);
 		
 		try {
-			Main.lang.save(Main.lang_file);
+			Main.lang.save(Main.langFile);
 		} catch (IOException e) {
-			MainAPI.debug("Could not save language file.", Debug.ALL);
 			e.printStackTrace();
+			MainAPI.debug("Could not save language file.", Debug.NORMAL);
 		}				
 	}
 	
@@ -80,14 +90,11 @@ public class ConfigManager {
 		setLine("settings.allow_one_boost_only", false, cfg);
 		setLine("boost.boost1.enabled", true, cfg);
 		setLine("boost.boost1.onlyowners", true, cfg);
-		//ArrayList<String> list = new ArrayList<String>();
-		//list.add("test");
-		String[] array = {"test"};
-		setLine("boost.boost1.restricted_factions", array, cfg);
+		setLine("boost.boost1.restricted_factions", Arrays.asList("test"), cfg);
 		
 		setLine("boost.boost2.enabled", true, cfg);
 		setLine("boost.boost2.onlyowners", false, cfg);
-		setLine("boost.boost2.restricted_factions", array, cfg);
+		setLine("boost.boost2.restricted_factions", Arrays.asList("test"), cfg);
 		
 		try {
 			cfg.save(Main.factions_file);

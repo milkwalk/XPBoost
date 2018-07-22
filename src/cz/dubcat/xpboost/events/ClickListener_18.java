@@ -12,19 +12,18 @@ import org.bukkit.inventory.ItemStack;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.xpbAPI;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
+import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.Debug;
 
 public class ClickListener_18 implements Listener{
 	
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void rightClick(PlayerInteractEvent event){
-        
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) {
+        Action action = event.getAction();
+        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
             
-            Player player = event.getPlayer();
-            
+            Player player = event.getPlayer();       
             if(player.getItemInHand() != null && player.getItemInHand().getType() == Material.getMaterial(Main.getPlugin().getConfig().getString("settings.itemmaterial"))){
             	ItemStack item = player.getItemInHand();
             	if(item.getItemMeta() !=null && item.getItemMeta().getDisplayName() != null && item.getItemMeta().getLore() != null){
@@ -56,13 +55,13 @@ public class ClickListener_18 implements Listener{
             		
             		if(nazev.equals(name) || nazev.contains(MainAPI.stripColours(name)) || nazev.contains(name) || nazev.equals(name)){
             			
-            			if(xpbAPI.hasBoost(player.getUniqueId())){
+            			if(XPBoostAPI.hasBoost(player.getUniqueId())){
             				MainAPI.sendMessage(Main.getLang().getString("lang.boostactive"), player);
             				event.setCancelled(true);
             				return;
             			}
             			
-            			xpbAPI.setPlayerBoost(player.getUniqueId(), boost, time);
+            			XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, time);
             			
             			MainAPI.sendMessage(Main.getLang().getString("lang.xpbuy").replace("%boost%", ""+boost).replace("%time%", ""+time).replace("%money%", ""), player);
             			

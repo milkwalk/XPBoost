@@ -7,11 +7,11 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class GlobalCmd implements CommandInterface{
+public class GlobalCommand implements CommandInterface{
 	
     private Main plugin;
     
-    public GlobalCmd(Main plugin) {
+    public GlobalCommand(Main plugin) {
         this.plugin = plugin;
     }
 

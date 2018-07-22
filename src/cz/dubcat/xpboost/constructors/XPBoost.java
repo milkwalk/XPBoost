@@ -3,8 +3,6 @@ package cz.dubcat.xpboost.constructors;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.bukkit.Bukkit;
-
 import com.massivecraft.factions.entity.Faction;
 
 import cz.dubcat.xpboost.api.MainAPI;
@@ -16,7 +14,7 @@ public class XPBoost{
 	private double boost = 1;
 	private long endtime;
 	private ConcurrentHashMap<Condition, Boolean> conditions = new ConcurrentHashMap<Condition, Boolean>();
-	private ConcurrentHashMap<String, Boolean> advancedOptions = new ConcurrentHashMap<String, Boolean>();
+	private ConcurrentHashMap<String, BoostOptions> advancedOptions = new ConcurrentHashMap<String, BoostOptions>();
 	private int boostTime;
 	private Faction faction;
 	
@@ -50,34 +48,31 @@ public class XPBoost{
 		return boost;
 	}
 	
+	public void setEndTime(long time) {
+		endtime = time;
+	}
 	
-	/* Add time to boost (in milliseconds) */
-	public void addTimeToBoost(long time){	
+	/* Adds time to the boost (in milliseconds) */
+	public void addTime(long time){	
 		endtime += time;
 	}
 	
-	/* Substract time from boost (in milliseconds) */
-	public void substractTimeFromBoost(long time){	
+	/* Substracts time from the boost (in milliseconds) */
+	public void substractTime(long time){	
 		endtime -= time;
+	}	
+
+	/**
+	 * This method overrides boost's boost and duration
+	 * @param boost Boost
+	 */
+	public void setBoost(double boost){
+		this.boost = boost;	
 	}
 	
-	/* Add time to boost (in milliseconds) 
-	 * */
-	public void addBoost(double boost, long time){
-		
-		if(boost == this.boost)
-			endtime += time;
-		else
-			setBoost(boost, time);
-	}
-	
-	/* Override boost */
-	public void setBoost(double boost, long endtime){
-		this.boost = boost;
-		this.endtime = endtime;		
-	}
-	
-	/* Time when boost will end (in milliseconds) */
+	/**
+	 * @return long Time when boost will end in milliseconds
+	 */
 	public long getEndTime(){
 		return endtime;
 	}
@@ -111,18 +106,9 @@ public class XPBoost{
 	public boolean hasCondition(Condition condition){
 		if(conditions.containsKey(condition)){
 			return conditions.get(condition);
-		}else{
-			return true;
 		}
-	}
-	
-	@Deprecated
-	public String getName(){
-		if(Bukkit.getServer().getPlayer(this.uiid) != null && Bukkit.getServer().getPlayer(this.uiid).isOnline()){
-			return Bukkit.getServer().getPlayer(this.uiid).getName();
-		}else{
-			return Bukkit.getServer().getOfflinePlayer(this.uiid).getName();
-		}
+			
+		return true;
 	}
 	
 	/* HashMap of all conditions */
@@ -139,8 +125,12 @@ public class XPBoost{
 		conditions.clear();
 	}
 	
-	/* Save current boost to a file */
-	public void savePlayerFile(){
-		MainAPI.saveOfflinePlayer(this.uiid, this);
+	public ConcurrentHashMap<String, BoostOptions> getAdvancedOptions() {
+		return advancedOptions;
+	}
+	
+	/* Save current boost */
+	public void saveBoost(){
+		MainAPI.savePlayer(this.uiid);
 	}
 }

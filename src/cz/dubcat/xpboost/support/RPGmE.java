@@ -9,8 +9,8 @@ import org.bukkit.event.Listener;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import net.flamedek.rpgme.events.SkillExpGainEvent;
@@ -31,16 +31,21 @@ public class RPGmE implements Listener{
     	float exp = e.getExp();
 		float expnew = 0;
 		 
-		if(xpbAPI.hasBoost(id)){			
-			XPBoost xpb = xpbAPI.getBoost(id);
-			if(xpb.hasCondition(CONDITION_NAME))
-				expnew = Math.round(exp * xpb.getBoost());
-			else
-				return;
+		if(XPBoostAPI.hasBoost(id)){			
+			XPBoost xpb = XPBoostAPI.getBoost(id);
+			if(xpb.hasCondition(CONDITION_NAME)) {
+				if(xpb.getAdvancedOptions().containsKey("RPGME")) {
+					if(xpb.getAdvancedOptions().get("RPGME").isAllowedType(e.getSkill().name())) {
+						expnew += (int) Math.round(exp * xpb.getBoost());
+					}		
+				}else {
+					expnew += Math.round(exp * xpb.getBoost());
+				}
+			}
 		}
 		
-		if(xpbAPI.getFactionBoost(player) != null){
-			XPBoost faction_boost = xpbAPI.getFactionBoost(player);
+		if(XPBoostAPI.getFactionBoost(player) != null){
+			XPBoost faction_boost = XPBoostAPI.getFactionBoost(player);
 			expnew += (int) Math.round(exp * faction_boost.getBoost());
 			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to RPGmeXP, Player: " + player.getName(), Debug.ALL);
 		}

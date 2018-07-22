@@ -1,0 +1,135 @@
+##########################################################
+# EXAMPLE BOOST (And all possible values you can change) #
+##########################################################
+#
+#boost:
+#  boost1:
+#   enabled: true #|Enable or disable boost option *REQUIRED*
+#   boost: 2.0 #|XP multiplier *REQUIRED*
+#   cost: 500.0 #|Currency cost *REQUIRED*
+#   time: 300 #|Duration of the effect in seconds *REQUIRED*
+#   title: '&4%boost%x XPBoost &f(%money% $) Custom Title' #|You can specify custom titles for different boosts if title is not present default preset will be used Placeholders: %boost%,%money%,%time% *OPTIONAL*
+#   item_type: SLIME_BALL #|*OPTIONAL*
+#   glowing: true #|Do you want this boost to appear enchanted/glowing? *OPTIONAL*
+#   lore: #|Yep, you can set custom lore for the boost, this is optional. If lore is not set, default preset will be used.
+#   - 'Boost with custom lore'
+#   - '%boost%x for %time% Seconds' #| %boost%, %money% and %time% placeholders are avaliable inside lore.
+#   permissons: #|*OPTIONAL*
+#     required_permission: 'xpboost.guest' #|Permission that is required to buy this boost
+#     fail_message: '&cNo permission' #|Message when player does not have a permission
+#   behaviour:  #|You can specify a 'behaviour' of each boost and set which XP will be affected, this is optional. Default everything is true *OPTIONAL*
+#     VANILLA: true  #|This XP Boost will be only viable for vanilla xp.
+#     SKILLAPI: false #|This XP boost will be disabled for skillapi if you've got one.
+#     MCMMO: false #|Same but for mcmmo
+#     RPGME: false #|Same but for rgme
+#     HEROES: false #|Same but for heroes
+#     JOBS: false #|Same but for JobsReborn
+#   advanced: *OPTIONAL*
+#    //Here you can set specifically what kind of exp you want to be affected for each supported plugin. 
+#    //The format is:
+#
+#    // PLUGIN: | The name of the plugin SKILLAPI/MCMMO/RPGME etc.
+#    //   default: true/false | Default setting for every experience type
+#    //   experience_type: true/false | Individual setting for each experience type
+#
+#    //If nothing is set here, all experience will be affected otherwise it will affect only the ones that are listed below.
+#    //If you wish to block some type of experience just add ' block' at the end.
+#    //example for MCMMO, this boost will affect only MCMMO swords experience
+#    MCMMO:
+#      default: false //disabling everyhting by default
+#      swords: true //enabling swords experience
+#
+
+boost1:
+  enabled: true
+  boost: 1.5
+  cost: 500.0
+  time: 300
+  title: '&4%boost%x XPBoost &f(%money% $) Custom Title'
+  item_type: SLIME_BALL
+  glowing: true
+  lore:
+  - 'Boost with custom lore'
+  - '%boost%x for %time% Seconds'
+  permissions:
+    required_permission: 'xpboost.guest'
+    fail_message: '&fThis boost requires &c%perm% &fpermission.'
+  behaviour:
+    VANILLA: true
+    SKILLAPI: false
+    HEROES: true
+    JOBS: true
+    MCMMO: true
+  advanced:
+    #Here you can choose specifically what kind of experience will be affected by the boost
+    SKILLAPI: #this boost will ignore crafting experience from SKILLAPI
+      default: true #Default sets the value for everything else 
+      crafting: false
+    MCMMO: #this boost will ONLY affect EXCAVATION experience from MCMMO
+      default: false
+      excavation: true
+    HEROES: #this boost will ignore farming and killing experience from HEROES
+      farming: false
+      killing: false
+boost2:
+  enabled: true
+  boost: 2.0
+  cost: 800.0
+  time: 250
+  item_type: DIAMOND_SWORD
+  title: '&4MCMMO Swords Skill &f| %boost%x Boost'
+  lore:
+  - '&fThis will help you to improve'
+  - '&fyour swords skill in MCMMO'
+  - ''
+  - '&6%money% Coins &l| &6Duration %time%s'
+  behaviour:
+    SKILLAPI: false
+    RPGME: false
+    MCMMO: true
+  advanced:
+    MCMMO:
+      default: false
+      swords: true
+boost3:
+  enabled: true
+  boost: 2.5
+  cost: 1500
+  time: 350
+  permissions:
+    required_permission: 'xpboost.vip'
+    fail_message: '&cThis boost is only for &aVIP &cusers. (%perm%)'
+  behaviour:
+    VANILLA: true
+    SKILLAPI: false
+    MCMMO: true
+    RPGME: false
+boost4:
+  enabled: true
+  boost: 3.0
+  cost: 3000.0
+  time: 350
+boost5:
+  enabled: true
+  boost: 3.5
+  cost: 5000.0
+  time: 1000
+  permissions:
+    required_permission: 'xpboost.vip'
+    fail_message: '&cThis boost is only for &aVIP &cusers. (%perm%)'
+boost6:
+  enabled: false
+  boost: 4.0
+  cost: 7000.0
+  time: 300
+  permissions:
+    required_permission: 'xpboost.mod'
+    fail_message: '&cThis boost is only for &aMOD &cusers. (%perm%)'
+boost7:
+  enabled: false
+  boost: 5.0
+  cost: 10000.0
+  time: 300
+  permissions:
+    required_permission: 'xpboost.admin'
+    fail_message: '&cThis boost is only for &aADMIN &cusers. (%perm%)'

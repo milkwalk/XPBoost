@@ -1,13 +1,13 @@
 package cz.dubcat.xpboost.support;
 
-import java.util.UUID;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.Main;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 
@@ -27,10 +27,10 @@ public class Placeholder extends EZPlaceholderHook {
     	
         
         if (identifier.equals("hasboost")) {
-            return xpbAPI.hasBoost(id) ? "yes" : "no";
+            return XPBoostAPI.hasBoost(id) ? "yes" : "no";
         }
     	
-    	XPBoost xpb = xpbAPI.getBoost(id);
+        XPBoost xpb = XPBoostAPI.getBoost(id);
     	
     	if(xpb == null){
     		

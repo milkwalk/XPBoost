@@ -2,7 +2,6 @@ package cz.dubcat.xpboost.constructors;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
 
 public class GlobalBoost {
 	

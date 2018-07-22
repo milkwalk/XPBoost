@@ -1,4 +1,4 @@
-package cz.dubcat.xpboost.GUI;
+package cz.dubcat.xpboost.gui;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -14,8 +14,8 @@ import com.massivecraft.factions.entity.MPlayer;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.xpbAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
 public class FactionsClickListener implements Listener {
@@ -46,7 +46,7 @@ public class FactionsClickListener implements Listener {
         				i++;
         				if (i == slot){
         					
-        					if(xpbAPI.hasFactionBoost(faction)){
+        					if(XPBoostAPI.hasFactionBoost(faction)){
     						    MainAPI.sendMessage(Main.getLang().getString("lang.faction_active_boost"), player);
     			        		return;
         					}
@@ -86,9 +86,9 @@ public class FactionsClickListener implements Listener {
     						    
 				  				Main.economy.withdrawPlayer(player, Main.getPlugin().getConfig().getDouble("boost." + key + ".cost"));
 				  				
-				  				xpbAPI.setFactionBoost(faction, Main.getPlugin().getConfig().getDouble("boost." + key + ".boost"), Main.getPlugin().getConfig().getInt("boost." + key + ".time"));
+				  				XPBoostAPI.setFactionBoost(faction, Main.getPlugin().getConfig().getDouble("boost." + key + ".boost"), Main.getPlugin().getConfig().getInt("boost." + key + ".time"));
 				  				
-				  				XPBoost xpb = xpbAPI.getFactionBoost(faction);
+				  				XPBoost xpb = XPBoostAPI.getFactionBoost(faction);
 				  				
 				  				if(Main.getPlugin().getConfig().contains("boost." + key + ".behaviour")){
 					  				for(String cond : Main.getPlugin().getConfig().getConfigurationSection("boost." + key + ".behaviour").getKeys(false)){

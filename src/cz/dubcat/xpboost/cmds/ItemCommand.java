@@ -14,11 +14,11 @@ import org.bukkit.inventory.meta.ItemMeta;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class ItemCmd implements CommandInterface{
+public class ItemCommand implements CommandInterface{
 
     private Main plugin;
     
-    public ItemCmd(Main plugin) {
+    public ItemCommand(Main plugin) {
         this.plugin = plugin;
     }
 

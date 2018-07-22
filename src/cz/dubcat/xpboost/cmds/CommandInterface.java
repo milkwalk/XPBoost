@@ -1,12 +1,8 @@
 package cz.dubcat.xpboost.cmds;
 
-import java.sql.SQLException;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
-public interface CommandInterface {
-	 
-public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) throws SQLException;
-
+public interface CommandInterface {	 
+	public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args);
 }

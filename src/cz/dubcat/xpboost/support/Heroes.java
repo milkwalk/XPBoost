@@ -12,8 +12,8 @@ import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
@@ -31,16 +31,22 @@ public class Heroes implements Listener{
     	ExperienceType skill = event.getSource();
     	UUID id = player.getUniqueId();
     	
-		if(xpbAPI.hasBoost(id)){			
-			XPBoost xpb = xpbAPI.getBoost(id);
-			if(xpb.hasCondition(CONDITION_NAME))
-				expnew = Math.round(exp * xpb.getBoost());
-			else
-				return;
+		if(XPBoostAPI.hasBoost(id)){			
+			XPBoost xpb = XPBoostAPI.getBoost(id);
+			
+			if(xpb.hasCondition(CONDITION_NAME)) {
+				if(xpb.getAdvancedOptions().containsKey("HEROES")) {
+					if(xpb.getAdvancedOptions().get("HEROES").isAllowedType(skill.name())) {
+						expnew += (int) Math.round(exp * xpb.getBoost());
+					}		
+				}else {	
+					expnew += Math.round(exp * xpb.getBoost());
+				}
+			}
 		}
 		
-		if(xpbAPI.getFactionBoost(player) != null){
-			XPBoost faction_boost = xpbAPI.getFactionBoost(player);
+		if(XPBoostAPI.getFactionBoost(player) != null){
+			XPBoost faction_boost = XPBoostAPI.getFactionBoost(player);
 			expnew += (int) Math.round(exp * faction_boost.getBoost());
 			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to HeroesXP, Player: " + player.getName(), Debug.ALL);
 		}

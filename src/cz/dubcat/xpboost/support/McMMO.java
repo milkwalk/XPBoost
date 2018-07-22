@@ -13,8 +13,8 @@ import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
@@ -42,16 +42,21 @@ public class McMMO implements Listener{
 		 int expnew = 0;
 		 if (expbug) return;
 		 
-		if(xpbAPI.hasBoost(id)){			
-			XPBoost xpb = xpbAPI.getBoost(id);
-			if(xpb.hasCondition(CONDITION_NAME))
-				expnew =  (int) Math.round(exp * xpb.getBoost());
-			else
-				return;
+		if(XPBoostAPI.hasBoost(id)){			
+			XPBoost xpb = XPBoostAPI.getBoost(id);		
+			if(xpb.hasCondition(CONDITION_NAME)) {		
+				if(xpb.getAdvancedOptions().containsKey("MCMMO")) {
+					if(xpb.getAdvancedOptions().get("MCMMO").isAllowedType(skill.name())) {
+						expnew += (int) Math.round(exp * xpb.getBoost());
+					}		
+				}else {
+					expnew += (int) Math.round(exp * xpb.getBoost());
+				}
+			}	
 		}
 		
-		if(xpbAPI.getFactionBoost(player) != null){
-			XPBoost faction_boost = xpbAPI.getFactionBoost(player);
+		if(XPBoostAPI.getFactionBoost(player) != null){
+			XPBoost faction_boost = XPBoostAPI.getFactionBoost(player);
 			expnew += (int) Math.round(exp * faction_boost.getBoost());
 			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to McMMOXP, Player: " + player.getName(), Debug.ALL);
 		}

@@ -20,7 +20,7 @@ public class Signs implements Listener {
 		Block block = e.getBlock();
 		if (block.getState() instanceof Sign){
 
-			if (e.getLine(0).equalsIgnoreCase(Main.getPlugin().getConfig().getString("settings.sign.line1")) && !e.getLine(0).isEmpty()){
+			if (!e.getLine(0).isEmpty() && e.getLine(0).equalsIgnoreCase(Main.getPlugin().getConfig().getString("settings.sign.line1"))){
 				Player player = e.getPlayer();
 				if (player.hasPermission("xpboost.admin")){
 					e.setLine(0, MainAPI.colorizeText(Main.getPlugin().getConfig().getString("settings.sign.line1")));
@@ -34,9 +34,7 @@ public class Signs implements Listener {
 					
 				}else{
 					e.setCancelled(true);
-				}
-						
-			
+				}	
 			}
 		}
 	}
@@ -46,7 +44,7 @@ public class Signs implements Listener {
 		Block block = event.getClickedBlock();
 		Player player = event.getPlayer();
 		Action action = event.getAction();
-		  if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == Material.SIGN_POST || block.getState().getType() == Material.WALL_SIGN)) {
+		if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == Material.SIGN_POST || block.getState().getType() == Material.WALL_SIGN)) {
 			  Sign sign = (Sign) block.getState();
 			  if (sign.getLine(0).equalsIgnoreCase(MainAPI.colorizeText(Main.getPlugin().getConfig().getString("settings.sign.line1")))){
 				  if (player.hasPermission("xpboost.use") || player.hasPermission("xpboost.gui")){  

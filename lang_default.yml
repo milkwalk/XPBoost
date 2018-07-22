@@ -46,14 +46,14 @@ lang:
     lore2: '&fDuration: &a%time% Seconds'
     lore3: '&8Right-Click to gain boost.'
   reload: '&fConfig has been reloaded'
-  menu:
-    row1: '/xpboost gui &f- Opens up GUI'
-    row2: '/xpboost info &f- Shows time remaining'
-    row3: '/xpboost factions &f- Opens up a factions GUI'
-    row4: '/xpboost on/off &f - Enables/disables global XP Boost'
-    row5: '/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost'
-    row6: '/xpboost clear <name> &f - Clears active boost'
-    row7: '/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player'
-    row8: '/xpboost global <boost> [time] - Changes global boost multiplier'
-    row9: '/xpboost reload &f - Reloads config'
-    row10: 'What ever is inside [] is &coptional'
+  pluginmenu:
+  - /xpboost gui &f- Opens up GUI
+  - /xpboost info &f- Shows time remaining
+  - /xpboost factions &f- Opens up a factions GUI
+  - /xpboost on/off &f - Enables/disables global XP Boost
+  - /xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost
+  - /xpboost clear <name> &f - Clears active boost
+  - /xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player
+  - /xpboost global <boost> [time in seconds]- Changes global boost multiplier
+  - /xpboost reload &f - Reloads config
+  - What ever is inside [] is &coptional

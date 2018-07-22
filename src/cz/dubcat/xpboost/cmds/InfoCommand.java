@@ -10,10 +10,10 @@ import org.bukkit.entity.Player;
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class InfoCmd implements CommandInterface{
+public class InfoCommand implements CommandInterface{
     
     @Override
     public boolean onCommand(CommandSender sender, Command cmd,String commandLabel, String[] args) {
@@ -21,25 +21,23 @@ public class InfoCmd implements CommandInterface{
     	if (player.hasPermission("xpboost.use") || player.hasPermission("xpboost.info")){
     		UUID id = player.getUniqueId();
     		
-    		if(xpbAPI.hasBoost(id)){
-    			XPBoost xpb = xpbAPI.getBoost(id);
+    		if(XPBoostAPI.hasBoost(id)){
+    			XPBoost xpb = XPBoostAPI.getBoost(id);
+    			MainAPI.sendMessage("Boost: &6" + xpb.getBoost(), player);
     			MainAPI.sendMessage(Main.getLang().getString("lang.boostcountdown") + xpb.getTimeRemaining(), player);
     			if(xpb.getConditions().size() > 0) {
-    				StringBuilder sb = new StringBuilder("Boost type: ");
+    				MainAPI.sendMessage("Boost type: ", player);
     				for(Entry<Condition, Boolean> set : xpb.getConditions().entrySet()) {
     					if(set.getValue())
-    						sb.append("&a" + set.getKey().name() + " ");
-    					else
-    						sb.append("&c" + set.getKey().name() + " ");
+    						MainAPI.sendMessage("  &a" + set.getKey().name(), player);
     				}
-    				
-    				MainAPI.sendMessage(MainAPI.colorizeText(sb.toString()), player);
     			}
     		}else{
     			MainAPI.sendMessage(Main.getLang().getString("lang.boostinfodeny"), player);
     		}
     	}
-        return false;
+    	
+        return true;
     }
 
 }

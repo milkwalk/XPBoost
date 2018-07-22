@@ -1,5 +1,7 @@
 package cz.dubcat.xpboost.versions;
 
-public interface ActionbarInterface {
-	public void shedul();
+import org.bukkit.entity.Player;
+
+public interface ActionbarInterface {	
+	public void sendActionBarMessage(Player player, String message);
 }

@@ -13,12 +13,11 @@ import org.bukkit.inventory.ItemStack;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Debug;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.Debug;
 
 public class ClickListener_ALL implements Listener{
 
-	
 	@EventHandler
 	public void rightClick(PlayerInteractEvent event){
 		
@@ -61,18 +60,13 @@ public class ClickListener_ALL implements Listener{
             		
             		if(nazev.equals(name) || nazev.contains(MainAPI.stripColours(name)) || nazev.contains(name) || nazev.equals(name)){
             			
-            			if(xpbAPI.hasBoost(player.getUniqueId())){
+            			if(XPBoostAPI.hasBoost(player.getUniqueId())){
             				MainAPI.sendMessage( Main.getLang().getString("lang.boostactive"), player);
             				event.setCancelled(true);
             				return;
             			}
             			
-            			
-            			
-            			//String[] split = nazev.split(" ");
-            			//double boost = Double.parseDouble(split[0]);
-            			
-            			xpbAPI.setPlayerBoost(player.getUniqueId(), boost, time);
+            			XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, time);
             			
             			MainAPI.sendMessage(Main.getLang().getString("lang.xpbuy").replace("%boost%", ""+boost).replace("%time%", ""+time).replace("%money%", ""), player);
             			

@@ -10,7 +10,7 @@ import org.inventivetalent.bossbar.BossBarAPI;
 
 import cz.dubcat.xpboost.Main;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.xpbAPI;
+import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import net.md_5.bungee.api.chat.TextComponent;
 
@@ -26,8 +26,8 @@ public class BossBarN extends BukkitRunnable{
     	
 		for(Player p : Bukkit.getServer().getOnlinePlayers()){
 			UUID id = p.getUniqueId();
-			if(xpbAPI.hasBoost(id)){
-				XPBoost xpb = xpbAPI.getBoost(id);
+			if(XPBoostAPI.hasBoost(id)){
+				XPBoost xpb = XPBoostAPI.getBoost(id);
 				
 				for(BossBar s: BossBarAPI.getBossBars(p)){
 					s.removePlayer(p);

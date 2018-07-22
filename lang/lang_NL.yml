@@ -1,0 +1,45 @@
+lang:
+  prefix: '&f[&aXPBoost&f] '
+  doublexpnot: '&fJe hebt &a%newexp% XP ontvangen &fin plaats van &a%oldexp% XP'
+  actionbar: '&a%boost%x XP boost is actief'
+  bossbar: '&a%boost%x XP boost is actief'
+  motd: "&c%boost%x &aXP Multiplier is ingeschakeld! Join NU! \n &f&lDit is de tweede lijn!\
+    \ &c%players%/%max%"
+  boostfisnish: '&cJe XP boost is verlopen.'
+  boostcountdown: '&fSeconden resterend: &6'
+  boostinfodeny: '&fJe hebt geen actieve boosts.'
+  xpbuy: '&c%boost%x &fXP boost &fis ingeschakeld voor &a%time% seconden &c(%money%$).'
+  gui: '&cXP Boost Winkel.'
+  xptitle: '&a%boost%x XP Boost.'
+  xplore: '&c%boost%x XP Boost voor %time% seconden%newline%&aPrijs: &f&l%money%$'
+  buyfail: '&cJe hebt niet genoeg geld om deze boost te kopen! &a(%money%$)'
+  boostactive: '&cJe boost is nog steeds actief!'
+  joinnotmsg: '&f&lGlobale XP Boost van %boost%x is momenteel &f&aingeschakeld &f&lvoor iedereen!'
+  cmdblock: '&cU mag het commando niet uitvoeren terwijl boost actief is. &a(%cmd%)'
+  itemname: '&a%boost%x XPBoost'
+  factions_gui_name: '&cFaction XPBoost Winkel'
+  factions_nofaction: '&cJe bent geen lid van een faction.'
+  factions_active_boost: Je faction heeft al een actieve boost!
+  factions_only_owners: Deze boost kan alleen de eigenaar van de faction kopen!
+  factions_expire: '&cBoost voor jouw factiion is verlopen!'
+  factions_buy: '&c%player% &fheeft een boost van &c%boost%x &fgekocht voor de hele faction
+    voor &c%time% seconden!'
+  factions_one_boost: Je kunt geen boosts kopen terwijl een faction boost actief is.
+  item:
+    lore1: '&fBoost: &a%boost%x'
+    lore2: '&fDuur: &a%time% Seconden'
+    lore3: '&8Rechter Muisklik om de boost te ontvangen!'
+  reload: '&fDe configuratie is herladen.'
+  pluginmenu:
+  - /xpboost gui &f- Opent de GUI
+  - /xpboost info &f- Laat de resterende tijd zien
+  - /xpboost factions &f- Opent de factions GUI
+  - /xpboost on/off &f - Schakelt de globale XP Boost in/uit
+  - /xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Geeft een speler een boost
+  - /xpboost clear <name> &f - Wist actieve boost
+  - /xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player
+  - /xpboost global <boost> [time in seconds]- Wijzigt de globale multiplier voor boosts
+  - /xpboost reload &f - Herlaad de configuratie
+  - Wat tussen [] staat is &cniet verplicht.
+#Translation to Dutch done by https://www.spigotmc.org/members/kevinnl.30974/
+#Vertaling naar het Nederlands gedaan door https://www.spigotmc.org/members/kevinnl.30974/
