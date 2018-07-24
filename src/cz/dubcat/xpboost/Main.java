@@ -64,6 +64,7 @@ import cz.dubcat.xpboost.versions.ActionBar1_11;
 import cz.dubcat.xpboost.versions.ActionBar1_12;
 import cz.dubcat.xpboost.versions.ActionBar1_9;
 import cz.dubcat.xpboost.versions.ActionBar1_94;
+import cz.dubcat.xpboost.versions.ActionBar1_3;
 import cz.dubcat.xpboost.versions.ActionBar_1_8;
 import cz.dubcat.xpboost.versions.ActionbarInterface;
 import net.milkbowl.vault.economy.Economy;
@@ -445,6 +446,9 @@ public class Main extends JavaPlugin{
         }else if(version.equals("v1_12_R1")) {
         	actionbar = new ActionBar1_12();
         	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this); 
+        } else if(version.equals("v1_13_R1")) {
+        	actionbar = new ActionBar1_3();
+        	getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);       	
         }
         
         return actionbar != null;

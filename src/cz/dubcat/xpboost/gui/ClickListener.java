@@ -56,7 +56,7 @@ public class ClickListener implements Listener{
         						}
         					}  					
 	
-						    if(Main.economy.hasAccount(player)) {
+						    if(Main.economy.has(player, Main.boostCfg.getDouble(key + ".cost"))) {
 							    int time = Main.boostCfg.getInt(key + ".time");
 							    double boost = Main.boostCfg.getDouble(key + ".boost");
 							    

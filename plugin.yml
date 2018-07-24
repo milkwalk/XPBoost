@@ -1,6 +1,6 @@
 name: XPBoost
 author: Qifi (elving21)
-version: 2.0
+version: 2.06
 main: cz.dubcat.xpboost.Main
 commands:
     xpboost:
