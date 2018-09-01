@@ -13,12 +13,12 @@ public class ActionBar1_12 implements ActionbarInterface {
 
 	@Override
 	public void sendActionBarMessage(Player player, String message) {
-    	CraftPlayer p = (CraftPlayer) player;
-        IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
-        ChatMessageType type =  ChatMessageType.a((byte)2);
-        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, type);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppoc);	
-        MainAPI.debug("Sent action bar message to " + p.getName(), Debug.ALL);
+		CraftPlayer p = (CraftPlayer) player;
+		IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+		ChatMessageType type = ChatMessageType.a((byte) 2);
+		PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, type);
+		((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppoc);
+		MainAPI.debug("Sent action bar message to " + p.getName(), Debug.ALL);
 	}
 
 }

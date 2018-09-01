@@ -12,29 +12,29 @@ import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 
-public class CommandListener implements Listener{
-	
-	@EventHandler
-	public void onCommand(PlayerCommandPreprocessEvent e){
-	    Player p = e.getPlayer();
-	    
-	    if(!XPBoostAPI.hasBoost(p.getUniqueId()))
-	    	return;
-	    
-	    if(!Main.getPlugin().getConfig().getBoolean("settings.disabledcommands.enabled"))
-	    	return;
-	    
-	    @SuppressWarnings("unchecked")
-	    List<String> cmdlist  = (List<String>) Main.getPlugin().getConfig().getList("settings.disabledcommands.list");
+public class CommandListener implements Listener {
 
-	    String[] command = e.getMessage().split(" ");
-	    String finalcmd = command[0];
-	    
-	    if(cmdlist.contains(finalcmd)) {
-    		MainAPI.sendMessage(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);		
-    		MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);		
-			e.setCancelled(true);	    	
-	    } 
+	@EventHandler
+	public void onCommand(PlayerCommandPreprocessEvent e) {
+		Player p = e.getPlayer();
+
+		if (!XPBoostAPI.hasBoost(p.getUniqueId()))
+			return;
+
+		if (!Main.getPlugin().getConfig().getBoolean("settings.disabledcommands.enabled"))
+			return;
+
+		@SuppressWarnings("unchecked")
+		List<String> cmdlist = (List<String>) Main.getPlugin().getConfig().getList("settings.disabledcommands.list");
+
+		String[] command = e.getMessage().split(" ");
+		String finalcmd = command[0];
+
+		if (cmdlist.contains(finalcmd)) {
+			MainAPI.sendMessage(Main.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
+			MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);
+			e.setCancelled(true);
+		}
 	}
 
 }

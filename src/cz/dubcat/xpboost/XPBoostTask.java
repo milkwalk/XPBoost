@@ -20,56 +20,56 @@ import cz.dubcat.xpboost.constructors.DbUtils;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class XPBoostTask extends BukkitRunnable{
-	
+public class XPBoostTask extends BukkitRunnable {
+
 	private static String MESSAGE;
 
 	public XPBoostTask() {
 		MESSAGE = Main.getLang().getString("lang.boostfisnish");
-	}		
+	}
 
 	@Override
 	public void run() {
-    	ConcurrentHashMap<UUID, XPBoost> mp = Main.allplayers;
-    	Iterator<Entry<UUID, XPBoost>> it = mp.entrySet().iterator();    	
-    	
-    	while (it.hasNext()) {      			
+		ConcurrentHashMap<UUID, XPBoost> mp = Main.allplayers;
+		Iterator<Entry<UUID, XPBoost>> it = mp.entrySet().iterator();
+
+		while (it.hasNext()) {
 			Map.Entry<UUID, XPBoost> pair = it.next();
 			XPBoost xpb = pair.getValue();
 
-			if(xpb.getTimeRemaining() <= 0){
-				
-    	    	//SEND MESSAGE
-    	    	Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
-		    		@Override
-		    		public void run() {
-		    			Bukkit.getPlayer(xpb.getUUID()).playSound(Bukkit.getPlayer(xpb.getUUID()).getLocation(), Sound.BLOCK_TRIPWIRE_CLICK_OFF, 5f, 5f);
-		    	    	MainAPI.sendMessage(MESSAGE, xpb.getUUID());	
-		    		}
-		    	});		    	
-				
-				
-				if(Database.type == DType.FILE) {
+			if (xpb.getTimeRemaining() <= 0) {
+
+				// SEND MESSAGE
+				Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(), new Runnable() {
+					@Override
+					public void run() {
+						Bukkit.getPlayer(xpb.getUUID()).playSound(Bukkit.getPlayer(xpb.getUUID()).getLocation(),
+								Sound.BLOCK_TRIPWIRE_CLICK_OFF, 5f, 5f);
+						MainAPI.sendMessage(MESSAGE, xpb.getUUID());
+					}
+				});
+
+				if (Database.type == DType.FILE) {
 					File file = MainAPI.setPlayerFile(xpb.getUUID());
 					file.delete();
-				}else {
-					PreparedStatement ps = null;	
-					try {			
-						//readding new value
+				} else {
+					PreparedStatement ps = null;
+					try {
+						// readding new value
 						ps = Database.getConnection().prepareStatement("DELETE FROM xpboost WHERE uuid=?");
-						ps.setString(1, xpb.getUUID().toString());	
+						ps.setString(1, xpb.getUUID().toString());
 						ps.execute();
-					}catch(SQLException e) {
+					} catch (SQLException e) {
 						e.printStackTrace();
 					} finally {
 						DbUtils.closeQuietly(ps);
-					}	
+					}
 				}
-				
+
 				MainAPI.debug("Removed boost from UUID " + xpb.getUUID(), Debug.NORMAL);
 				mp.remove(xpb.getUUID());
 			}
-    	}		
+		}
 	}
 
 }

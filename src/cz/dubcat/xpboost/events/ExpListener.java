@@ -15,54 +15,55 @@ import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class ExpListener implements Listener{
+public class ExpListener implements Listener {
 
 	private static GlobalBoost gl = Main.GLOBAL_BOOST;
 	private static final Condition CONDITION_NAME = Condition.VANILLA;
-	
+
 	@EventHandler
-    public void onExpChange(PlayerExpChangeEvent event){
-		
-		if(Main.getPlugin().getConfig().getBoolean("settings.disablevanillaxp")){
+	public void onExpChange(PlayerExpChangeEvent event) {
+
+		if (Main.getPlugin().getConfig().getBoolean("settings.disablevanillaxp")) {
 			return;
 		}
-		
-        Player player = event.getPlayer();
-        
-        int exp = event.getAmount();
-        UUID id = player.getUniqueId(); 
-        int expnew = 0;
-        
-		if(XPBoostAPI.hasBoost(id)){			
+
+		Player player = event.getPlayer();
+
+		int exp = event.getAmount();
+		UUID id = player.getUniqueId();
+		int expnew = 0;
+
+		if (XPBoostAPI.hasBoost(id)) {
 			XPBoost xpb = XPBoostAPI.getBoost(id);
-			if(xpb.hasCondition(CONDITION_NAME))
-				expnew =  (int) Math.round(exp * xpb.getBoost());
+			if (xpb.hasCondition(CONDITION_NAME))
+				expnew = (int) Math.round(exp * xpb.getBoost());
 			else
 				return;
 		}
-		
-		if(XPBoostAPI.getFactionBoost(player) != null){
+
+		if (XPBoostAPI.getFactionBoost(player) != null) {
 			XPBoost faction_boost = XPBoostAPI.getFactionBoost(player);
 			expnew += (int) Math.round(exp * faction_boost.getBoost());
-			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to HeroesXP, Player: " + player.getName(), Debug.ALL);
+			MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to HeroesXP, Player: "
+					+ player.getName(), Debug.ALL);
 		}
-		
-		if(gl.isEnabled()){
+
+		if (gl.isEnabled()) {
 			expnew += (int) Math.round(exp * gl.getGlobalBoost());
 		}
-		
-		if(expnew > 0){
+
+		if (expnew > 0) {
 			event.setAmount(expnew);
-			
-			MainAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP (" + CONDITION_NAME+ ")" , Debug.NORMAL);
-			
-			if (Main.getPlugin().getConfig().getBoolean("settings.doublexpmsg")){
-				String message = Main.getLang().getString("lang.doublexpnot")
-						.replaceAll("%newexp%", expnew+"")
-			    		.replaceAll("%oldexp%", exp+"");
-				
+
+			MainAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP ("
+					+ CONDITION_NAME + ")", Debug.NORMAL);
+
+			if (Main.getPlugin().getConfig().getBoolean("settings.doublexpmsg")) {
+				String message = Main.getLang().getString("lang.doublexpnot").replaceAll("%newexp%", expnew + "")
+						.replaceAll("%oldexp%", exp + "");
+
 				MainAPI.sendMessage(message, player);
-		    }
+			}
 		}
-    }
+	}
 }
