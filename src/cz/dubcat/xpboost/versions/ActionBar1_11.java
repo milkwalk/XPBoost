@@ -10,13 +10,13 @@ import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
 
 public class ActionBar1_11 implements ActionbarInterface {
 
-	@Override
-	public void sendActionBarMessage(Player player, String message) {
-		CraftPlayer p = (CraftPlayer) player;
-		IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
-		PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);
-		((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppoc);
-		MainAPI.debug("Sent action bar message to " + p.getName(), Debug.ALL);
-	}
+    @Override
+    public void sendActionBarMessage(Player player, String message) {
+        CraftPlayer p = (CraftPlayer) player;
+        IChatBaseComponent cbc = ChatSerializer.a("{\"text\": \"" + message + "\"}");
+        PacketPlayOutChat ppoc = new PacketPlayOutChat(cbc, (byte) 2);
+        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppoc);
+        MainAPI.debug("Sent action bar message to " + p.getName(), Debug.ALL);
+    }
 
 }
