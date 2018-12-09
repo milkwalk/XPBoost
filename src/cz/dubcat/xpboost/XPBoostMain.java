@@ -86,44 +86,13 @@ public class XPBoostMain extends JavaPlugin {
     public static int config_version = 1;
     private static Database db = new Database();
     private Metrics metrics = null;
-
-    // lang
-    public static File langFile;
+    public static File langFile; // lang
     public static FileConfiguration lang;
-
-    // factions
-    public static File factions_file;
+    public static File factions_file; // factions
     public static FileConfiguration factions;
-
     public static File boostFile;
     public static FileConfiguration boostCfg;
-
     public static boolean factions_enabled = false;
-
-    public void registerCommands() {
-        CommandHandler handler = new CommandHandler();
-
-        handler.register("xpboost", new MainCommand());
-
-        OpenGuiCommand oCmd = new OpenGuiCommand();
-        handler.register("gui", oCmd);
-        handler.register("shop", oCmd);
-        handler.register("buy", oCmd);
-
-        handler.register("info", new InfoCommand());
-        handler.register("reload", new ReloadCommand(this));
-        handler.register("give", new GiveBoostCommand());
-        handler.register("on", new GlobalEnableCommand(this));
-        handler.register("off", new GlobalDisableCommand(this));
-        handler.register("clear", new ClearCommand());
-        handler.register("item", new ItemCommand(this));
-        handler.register("global", new GlobalCommand(this));
-        handler.register("faction", new FactionCommand());
-        handler.register("factions", new FactionCommand());
-
-        getCommand("xpboost").setExecutor(handler);
-        getCommand("xpb").setExecutor(handler);
-    }
 
     @Override
     public void onEnable() {
@@ -327,8 +296,9 @@ public class XPBoostMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ExpRestrictions(), this);
 
         // Auto global boost task
-        if (getConfig().getBoolean("settings.periodicalDayCheck"))
+        if (getConfig().getBoolean("settings.periodicalDayCheck")) {
             new BoostTaskCheck().runTaskTimer(XPBoostMain.getPlugin(), 0, 100);
+        }
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
@@ -417,6 +387,74 @@ public class XPBoostMain extends JavaPlugin {
         getLogger().info("Disabled.");
     }
 
+    public static Plugin getPlugin() {
+        return plugin;
+    }
+
+    public static FileConfiguration getLang() {
+        return lang;
+    }
+
+    public static Logger getLog() {
+        return XPBoostMain.getPlugin().getLogger();
+    }
+
+    public static ActionbarInterface getActionbar() {
+        return actionbar;
+    }
+
+    public Debug reloadDebug() {
+        int debug = XPBoostMain.getPlugin().getConfig().getInt("settings.debug");
+
+        if (debug == 0)
+            return Debug.OFF;
+        else if (debug == 1)
+            return Debug.NORMAL;
+        else if (debug == 2)
+            return Debug.ALL;
+
+        return Debug.OFF;
+    }
+
+    public static Database getDb() {
+        return db;
+    }
+    
+    private void registerCommands() {
+        CommandHandler handler = new CommandHandler();
+
+        handler.register("xpboost", new MainCommand());
+
+        OpenGuiCommand oCmd = new OpenGuiCommand();
+        handler.register("gui", oCmd);
+        handler.register("shop", oCmd);
+        handler.register("buy", oCmd);
+
+        handler.register("info", new InfoCommand());
+        handler.register("reload", new ReloadCommand(this));
+        handler.register("give", new GiveBoostCommand());
+        handler.register("on", new GlobalEnableCommand(this));
+        handler.register("off", new GlobalDisableCommand(this));
+        handler.register("clear", new ClearCommand());
+        handler.register("item", new ItemCommand(this));
+        handler.register("global", new GlobalCommand(this));
+        handler.register("faction", new FactionCommand());
+        handler.register("factions", new FactionCommand());
+
+        getCommand("xpboost").setExecutor(handler);
+        getCommand("xpb").setExecutor(handler);
+    }
+    
+    private boolean setupEconomy() {
+        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
+                .getRegistration(net.milkbowl.vault.economy.Economy.class);
+        if (economyProvider != null) {
+            economy = economyProvider.getProvider();
+        }
+
+        return (economy != null);
+    }
+    
     private void initializePlaceholder() {
         if (Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
             PlaceholderAPI.registerPlaceholder(this, "xpboost_hasboost",
@@ -468,48 +506,5 @@ public class XPBoostMain extends JavaPlugin {
         }
 
         return actionbar != null;
-    }
-
-    public static Plugin getPlugin() {
-        return plugin;
-    }
-
-    public static FileConfiguration getLang() {
-        return lang;
-    }
-
-    public static Logger getLog() {
-        return XPBoostMain.getPlugin().getLogger();
-    }
-
-    public static ActionbarInterface getActionbar() {
-        return actionbar;
-    }
-
-    private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-                .getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
-        }
-
-        return (economy != null);
-    }
-
-    public Debug reloadDebug() {
-        int debug = XPBoostMain.getPlugin().getConfig().getInt("settings.debug");
-
-        if (debug == 0)
-            return Debug.OFF;
-        else if (debug == 1)
-            return Debug.NORMAL;
-        else if (debug == 2)
-            return Debug.ALL;
-
-        return Debug.OFF;
-    }
-
-    public static Database getDb() {
-        return db;
     }
 }
