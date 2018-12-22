@@ -1,38 +1,39 @@
 lang:
   prefix: '&f[&a经验增益&f] '
-  #The message that player gets when he gets XP and boost is active
+  #玩家在经验增益生效时获取经验的信息
   doublexpnot: '&f您获得了 &a%newexp% 经验&f而非 &a%oldexp% 经验'
-  #The action bar message when boost is activated, %timeleft% placeholder can be used here
+  #当启用经验增益时的工具栏消息，可使用 %timeleft% 占位符
   actionbar: '&a%boost% 倍经验增益生效中'
-  #Boss bar message, BossBarAPI needed for that
+  #Boss 栏消息，需要 BossBarAPI
   bossbar: '&a%boost% 倍经验增益生效中'
-  #If motdon is set to true and global boost is active, motd is gonna change to this Some place holders you can use: (%max% = number of slots, %players% = number of online players)
+  #若 motdon 设置为 true 且启用了全局经验增益，motd 将更改为下方的信息。
+  # 可使用的占位符: (%max% = 最大玩家数，%players% = 在线玩家数)
   motd: "&c%boost% &a倍经验增益现已启用！快来加入服务器！ \n &f&l这是第二行消息！ &c%players%/%max%"
-  #MSG when boost finishes
+  #经验增益结束时的消息
   boostfisnish: '&c您的增益已过期。'
-  #/xpboost info command output
+  #/xpboost info 命令输出
   boostcountdown: '&f剩余时间: &6'
-  #MSG on /xpboost info when boost is not active
+  #当无经验增益时的 /xpboost info 输出
   boostinfodeny: '&f您没有生效中的增益。'
-  #Message when player buys XP boost
+  #当玩家购买经验增益时的信息
   xpbuy: '&f持续 &a%time% 秒的 &c%boost% &f倍经验增益 &c(%money%$)'
-  #The name of the Inventory when player opens GUI
+  #玩家开启界面时的菜单名称
   gui: '&c经验增益商店'
-  #Name of the EXP Bottle in GUI
+  #界面内的经验瓶名称
   xptitle: '&a%boost% 倍经验增益'
-  #Lore of the EXP Bottle in GUI, to start a new line put '%newline%'
+  #界面内的经验瓶属性消息，可使用 '%newline%' 跳至下一行
   xplore: '&c持续 %time% 秒的 %boost% 倍禁言增益%newline%&a价格: &f&l%money%$'
-  #Message on failed buy
+  #购买失败时的消息
   buyfail: '&c您的余额不足以购买此增益！&a(%money%$)'
-  #Message on buy when boost is still active
+  #增益生效时的购买消息
   boostactive: '&c您的增益仍处于生效中！'
-  #Notification message on join when global boost is enabled
+  #全局经验增益启用时的加入提示消息
   joinnotmsg: '&f&l全服 %boost% 倍经验增益现已为所有玩家&f&a启用！'
-  #Blocked command message when boost is active
+  #禁止在经验增益时使用特定命令的消息
   cmdblock: '&c经验增益生效中不允许执行 &a%cmd% &c命令 :('
-  #name of the given item you can use %boost% or %time% placeholders
+  #物品名称，您可使用 %boost% 或 %time% 占位符
   itemname: '&a%boost% 倍经验增益'
-  #name of faction XPBoost GUI menu
+  #帮派经验增益界面菜单
   factions_gui_name: '&c帮派经验增益商店'
   factions_nofaction: '&c您不是帮派的一员。'
   factions_active_boost: '您的帮派已有生效中的经验增益！'
@@ -40,7 +41,7 @@ lang:
   factions_expire: '&c您帮派的经验增益已过期！'
   factions_buy: '&c%player% &f已为全帮派购买持续 &c%time% 秒&c的 %boost% 倍&f经验增益！'
   factions_one_boost: '您无法在帮派经验增益生效时再次购买其他增益。'
-  #Three lores on a given item, you can have up to 5 lines
+  #物品上的三个属性消息，您可最多添加 5 行
   item:
     lore1: '&f增益: &a%boost% 倍'
     lore2: '&f持续: &a%time% 秒'
