@@ -14,7 +14,7 @@ database:
 
 settings:
   config_version: 1
-  #Supported languages: ENG (English) | NL (Dutch)
+  #Supported languages: ENG (English) | NL (Dutch) | ZHS (Simplified Chinese)
   #If you've got a translation to some other language send it to me :)
   language: 'ENG'
   #Enable debug 0 = disabled | 1 = Normal | 2 = All information (Mostly useless for you)
