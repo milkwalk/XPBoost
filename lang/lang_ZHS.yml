@@ -1,0 +1,61 @@
+lang:
+  prefix: '&f[&a经验增益&f] '
+  #玩家在经验增益生效时获取经验的信息
+  doublexpnot: '&f您获得了 &a%newexp% 经验&f而非 &a%oldexp% 经验'
+  #当启用经验增益时的工具栏消息，可使用 %timeleft% 占位符
+  actionbar: '&a%boost% 倍经验增益生效中'
+  #Boss 栏消息，需要 BossBarAPI
+  bossbar: '&a%boost% 倍经验增益生效中'
+  #若 motdon 设置为 true 且启用了全局经验增益，motd 将更改为下方的信息。
+  # 可使用的占位符: (%max% = 最大玩家数，%players% = 在线玩家数)
+  motd: "&c%boost% &a倍经验增益现已启用！快来加入服务器！ \n &f&l这是第二行消息！ &c%players%/%max%"
+  #经验增益结束时的消息
+  boostfisnish: '&c您的增益已过期。'
+  #/xpboost info 命令输出
+  boostcountdown: '&f剩余时间: &6'
+  #当无经验增益时的 /xpboost info 输出
+  boostinfodeny: '&f您没有生效中的增益。'
+  #当玩家购买经验增益时的信息
+  xpbuy: '&f持续 &a%time% 秒的 &c%boost% &f倍经验增益 &c(%money%$)'
+  #玩家开启界面时的菜单名称
+  gui: '&c经验增益商店'
+  #界面内的经验瓶名称
+  xptitle: '&a%boost% 倍经验增益'
+  #界面内的经验瓶属性消息，可使用 '%newline%' 跳至下一行
+  xplore: '&c持续 %time% 秒的 %boost% 倍禁言增益%newline%&a价格: &f&l%money%$'
+  #购买失败时的消息
+  buyfail: '&c您的余额不足以购买此增益！&a(%money%$)'
+  #增益生效时的购买消息
+  boostactive: '&c您的增益仍处于生效中！'
+  #全局经验增益启用时的加入提示消息
+  joinnotmsg: '&f&l全服 %boost% 倍经验增益现已为所有玩家&f&a启用！'
+  #禁止在经验增益时使用特定命令的消息
+  cmdblock: '&c经验增益生效中不允许执行 &a%cmd% &c命令 :('
+  #物品名称，您可使用 %boost% 或 %time% 占位符
+  itemname: '&a%boost% 倍经验增益'
+  #帮派经验增益界面菜单
+  factions_gui_name: '&c帮派经验增益商店'
+  factions_nofaction: '&c您不是帮派的一员。'
+  factions_active_boost: '您的帮派已有生效中的经验增益！'
+  factions_only_owners: '此经验增益仅可被帮派首领购买！'
+  factions_expire: '&c您帮派的经验增益已过期！'
+  factions_buy: '&c%player% &f已为全帮派购买持续 &c%time% 秒&c的 %boost% 倍&f经验增益！'
+  factions_one_boost: '您无法在帮派经验增益生效时再次购买其他增益。'
+  #物品上的三个属性消息，您可最多添加 5 行
+  item:
+    lore1: '&f增益: &a%boost% 倍'
+    lore2: '&f持续: &a%time% 秒'
+    lore3: '&8右击获取经验增益。'
+  reload: '&f配置已重新载入完成。'
+  pluginmenu:
+  - /xpboost gui &f- 开启界面
+  - /xpboost info &f- 显示剩余时间
+  - /xpboost factions &f- 开启帮派界面
+  - /xpboost on/off &f - 启用/禁用全服经验增益
+  - /xpboost give <名称/all> <增益> <时间> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - 给予玩家/所有人（all）经验增益，可选择特定插件
+  - /xpboost clear <名称> &f - 清除生效中的经验增益
+  - /xpboost item <玩家> <增益> <时间>&f - 给予玩家经验增益物品
+  - /xpboost global <增益> [秒数]- 更改经验增益倍数
+  - /xpboost reload &f - 重新载入配置
+  - [] 内为&c可选项
+  # Translated on 2018-12-22 (UTC+8) by f0rb1d@Github.com, Spigot username is the same as it.
