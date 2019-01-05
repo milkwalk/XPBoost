@@ -33,9 +33,6 @@ public class ReloadCommand implements CommandInterface {
                 XPBoostMain.lang = YamlConfiguration.loadConfiguration(XPBoostMain.langFile);
             }
 
-            XPBoostMain.factions_file = new File(XPBoostMain.getPlugin().getDataFolder() + "/factions.yml");
-            XPBoostMain.factions = YamlConfiguration.loadConfiguration(XPBoostMain.factions_file);
-
             XPBoostMain.boostFile = new File(XPBoostMain.getPlugin().getDataFolder() + "/boosts.yml");
             XPBoostMain.boostCfg = YamlConfiguration.loadConfiguration(XPBoostMain.boostFile);
 

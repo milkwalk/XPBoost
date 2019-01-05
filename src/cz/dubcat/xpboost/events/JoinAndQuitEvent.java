@@ -19,16 +19,17 @@ public class JoinAndQuitEvent implements Listener {
 
         if (XPBoostMain.getPlugin().getConfig().getBoolean("settings.globalboost.notification")) {
             GlobalBoost gl = XPBoostMain.GLOBAL_BOOST;
-            if (gl.isEnabled())
+            if (gl.isEnabled()) {
                 MainAPI.sendMessage(
                         XPBoostMain.getLang().getString("lang.joinnotmsg").replaceAll("%boost%", gl.getGlobalBoost() + ""),
                         player);
+            }
         }
 
         XPBoost boost = MainAPI.loadPlayer(player.getUniqueId());
-
-        if (boost != null)
+        if (boost != null) {
             XPBoostMain.allplayers.put(player.getUniqueId(), boost);
+        }
     }
 
     @EventHandler

@@ -18,14 +18,15 @@ public class CommandListener implements Listener {
     public void onCommand(PlayerCommandPreprocessEvent e) {
         Player p = e.getPlayer();
 
-        if (!XPBoostAPI.hasBoost(p.getUniqueId()))
+        if (!XPBoostAPI.hasBoost(p.getUniqueId())) {
             return;
+        }
 
-        if (!XPBoostMain.getPlugin().getConfig().getBoolean("settings.disabledcommands.enabled"))
+        if (!XPBoostMain.getPlugin().getConfig().getBoolean("settings.disabledcommands.enabled")) {
             return;
+        }
 
-        @SuppressWarnings("unchecked")
-        List<String> cmdlist = (List<String>) XPBoostMain.getPlugin().getConfig().getList("settings.disabledcommands.list");
+        List<String> cmdlist = XPBoostMain.getPlugin().getConfig().getStringList("settings.disabledcommands.list");
 
         String[] command = e.getMessage().split(" ");
         String finalcmd = command[0];

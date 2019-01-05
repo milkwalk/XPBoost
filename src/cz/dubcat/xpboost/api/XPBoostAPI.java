@@ -2,11 +2,6 @@ package cz.dubcat.xpboost.api;
 
 import java.util.UUID;
 
-import org.bukkit.entity.Player;
-
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
-
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -30,18 +25,13 @@ public class XPBoostAPI {
     }
 
     /**
-     * Method for getting player's XPBoost objects
+     * Method for getting player's XPBoost
      * 
      * @param uuid
-     * @return XPBoost Returns existing XPBoost object of the player or null f
-     *         deosn't exist
+     * @return XPBoost Returns existing XPBoost object for the player or null if boost doesn't exist
      */
     public static XPBoost getBoost(UUID uuid) {
-        if (hasBoost(uuid)) {
-            return XPBoostMain.allplayers.get(uuid);
-        } else {
-            return null;
-        }
+        return XPBoostMain.allplayers.get(uuid);
     }
 
     /**
@@ -62,13 +52,13 @@ public class XPBoostAPI {
                 xpb.addTime(duration * 1000);
                 MainAPI.debug("Adding boost of " + boost + "x for UUID " + uuid + " endTime: " + (duration * 1000),
                         Debug.NORMAL);
-                MainAPI.debug("Player's boost time has been extended UUID " + xpb.getUUID(), Debug.NORMAL);
+                MainAPI.debug("Player's boost time has been extended UUID " + xpb.getUuid(), Debug.NORMAL);
                 return xpb;
             }
 
             xpb.setBoost(boost);
-            xpb.setEndTime(System.currentTimeMillis() + duration * 1000);
-            MainAPI.debug("Setting boost of " + boost + "x for UUID " + uuid + " endTime: " + xpb.getEndTime(),
+            xpb.setEndtime(System.currentTimeMillis() + duration * 1000);
+            MainAPI.debug("Setting boost of " + boost + "x for UUID " + uuid + " endTime: " + xpb.getEndtime(),
                     Debug.NORMAL);
         } else {
             xpb = new XPBoost(uuid, boost, (System.currentTimeMillis() + duration * 1000));
@@ -98,42 +88,6 @@ public class XPBoostAPI {
      */
     public static XPBoost getOfflineBoost(UUID uuid) {
         return MainAPI.loadPlayer(uuid);
-    }
-
-    public static boolean hasFactionBoost(Faction faction) {
-        if (faction.isNone()) {
-            return false;
-        }
-        
-        return XPBoostMain.factions_boost.containsKey(faction);
-    }
-
-    public static XPBoost getFactionBoost(Player player) {
-        if (!XPBoostMain.factions_enabled || MPlayer.get(player).getFaction().isNone()
-                || !hasFactionBoost(MPlayer.get(player).getFaction())
-                || (XPBoostMain.factions.getBoolean("settings.allow_one_boost_only") && hasBoost(player.getUniqueId())))
-            return null;
-
-        return XPBoostMain.factions_boost.get(MPlayer.get(player).getFaction());
-
-    }
-
-    public static XPBoost getFactionBoost(Faction faction) {
-        if (!XPBoostMain.factions_enabled || faction.isNone() || !hasFactionBoost(faction)) {
-            return null;
-        }
-
-        return XPBoostMain.factions_boost.get(faction);
-    }
-
-    public static void setFactionBoost(Faction f, double boost, int time) {
-        if (f.isNone()) {
-            return;
-        }
-
-        XPBoost newxpb = new XPBoost(f, boost, (System.currentTimeMillis() + time * 1000));
-        XPBoostMain.factions_boost.put(f, newxpb);
-        MainAPI.debug("Creating new boost " + boost + "x for Faction " + f.getName(), Debug.NORMAL);
     }
 
 }

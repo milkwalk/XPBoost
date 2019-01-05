@@ -10,7 +10,6 @@ import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
-import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import net.flamedek.rpgme.events.SkillExpGainEvent;
@@ -42,13 +41,6 @@ public class RPGmE implements Listener {
                     expnew += Math.round(exp * xpb.getBoost());
                 }
             }
-        }
-
-        if (XPBoostAPI.getFactionBoost(player) != null) {
-            XPBoost faction_boost = XPBoostAPI.getFactionBoost(player);
-            expnew += (int) Math.round(exp * faction_boost.getBoost());
-            MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to RPGmeXP, Player: "
-                    + player.getName(), Debug.ALL);
         }
 
         if (gl.isEnabled()) {

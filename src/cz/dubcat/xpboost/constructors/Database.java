@@ -9,8 +9,7 @@ import org.bukkit.Bukkit;
 import cz.dubcat.xpboost.XPBoostMain;
 
 public class Database {
-
-    private static final String table_sql = "CREATE TABLE IF NOT EXISTS `xpboost` ("
+    private final String table_sql = "CREATE TABLE IF NOT EXISTS `xpboost` ("
             + "`id` int(11) NOT NULL AUTO_INCREMENT,"
             + "`uuid` varchar(100) CHARACTER SET utf8 COLLATE utf8_czech_ci NOT NULL," + "`boost` double(8,2) NOT NULL,"
             + "`endtime` bigint(20) NOT NULL," + "`conditions` tinytext CHARACTER SET utf8 COLLATE utf8_czech_ci,"
@@ -39,7 +38,7 @@ public class Database {
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
-            XPBoostMain.getPlugin().getLogger().warning("Could not connect to the database. Disabling plugin...");
+            XPBoostMain.getPlugin().getLogger().severe("Could not connect to the database. Disabling plugin...");
             Bukkit.getPluginManager().disablePlugin(XPBoostMain.getPlugin());
         }
         return false;

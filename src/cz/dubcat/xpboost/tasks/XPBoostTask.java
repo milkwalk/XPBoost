@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
@@ -17,7 +16,7 @@ import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.constructors.Database;
 import cz.dubcat.xpboost.constructors.Database.DType;
-import cz.dubcat.xpboost.constructors.DbUtils;
+import cz.dubcat.xpboost.utils.DbUtils;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
@@ -31,7 +30,7 @@ public class XPBoostTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        ConcurrentHashMap<UUID, XPBoost> mp = XPBoostMain.allplayers;
+        Map<UUID, XPBoost> mp = XPBoostMain.allplayers;
         Iterator<Entry<UUID, XPBoost>> it = mp.entrySet().iterator();
 
         while (it.hasNext()) {
@@ -39,26 +38,21 @@ public class XPBoostTask extends BukkitRunnable {
             XPBoost xpb = pair.getValue();
 
             if (xpb.getTimeRemaining() <= 0) {
-
-                // SEND MESSAGE
-                Bukkit.getScheduler().scheduleSyncDelayedTask(XPBoostMain.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getPlayer(xpb.getUUID()).playSound(Bukkit.getPlayer(xpb.getUUID()).getLocation(),
+                Bukkit.getScheduler().scheduleSyncDelayedTask(XPBoostMain.getPlugin(), () -> {
+                        Bukkit.getPlayer(xpb.getUuid()).playSound(Bukkit.getPlayer(xpb.getUuid()).getLocation(),
                                 Sound.BLOCK_TRIPWIRE_CLICK_OFF, 5f, 5f);
-                        MainAPI.sendMessage(MESSAGE, xpb.getUUID());
-                    }
+                        MainAPI.sendMessage(MESSAGE, xpb.getUuid());
                 });
 
                 if (Database.type == DType.FILE) {
-                    File file = MainAPI.setPlayerFile(xpb.getUUID());
+                    File file = MainAPI.setPlayerFile(xpb.getUuid());
                     file.delete();
                 } else {
                     PreparedStatement ps = null;
                     try {
                         // readding new value
                         ps = Database.getConnection().prepareStatement("DELETE FROM xpboost WHERE uuid=?");
-                        ps.setString(1, xpb.getUUID().toString());
+                        ps.setString(1, xpb.getUuid().toString());
                         ps.execute();
                     } catch (SQLException e) {
                         e.printStackTrace();
@@ -67,8 +61,8 @@ public class XPBoostTask extends BukkitRunnable {
                     }
                 }
 
-                MainAPI.debug("Removed boost from UUID " + xpb.getUUID(), Debug.NORMAL);
-                mp.remove(xpb.getUUID());
+                MainAPI.debug("Removed boost from UUID " + xpb.getUuid(), Debug.NORMAL);
+                mp.remove(xpb.getUuid());
             }
         }
     }

@@ -82,25 +82,4 @@ public class ConfigManager {
         }
     }
 
-    public void loadFactionsFile() {
-        FileConfiguration cfg = XPBoostMain.factions;
-
-        setLine("settings.enabled", false, cfg);
-        setLine("settings.allow_one_boost_only", false, cfg);
-        setLine("boost.boost1.enabled", true, cfg);
-        setLine("boost.boost1.onlyowners", true, cfg);
-        setLine("boost.boost1.restricted_factions", Arrays.asList("test"), cfg);
-
-        setLine("boost.boost2.enabled", true, cfg);
-        setLine("boost.boost2.onlyowners", false, cfg);
-        setLine("boost.boost2.restricted_factions", Arrays.asList("test"), cfg);
-
-        try {
-            cfg.save(XPBoostMain.factions_file);
-        } catch (IOException e) {
-            MainAPI.debug("Could not save factions file.", Debug.ALL);
-            e.printStackTrace();
-        }
-    }
-
 }

@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -32,18 +31,17 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-import com.avaje.ebean.text.json.JsonElement;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.FactionColl;
-import com.massivecraft.factions.entity.MPlayer;
+import com.google.gson.JsonElement;
 
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.constructors.BoostOptions;
 import cz.dubcat.xpboost.constructors.Database;
 import cz.dubcat.xpboost.constructors.Database.DType;
-import cz.dubcat.xpboost.constructors.DbUtils;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
+import cz.dubcat.xpboost.utils.DbUtils;
+import cz.dubcat.xpboost.utils.PlayerDataManager;
+import cz.dubcat.xpboost.utils.XMaterial;
 
 public class MainAPI {
 
@@ -54,9 +52,7 @@ public class MainAPI {
 
     public static File playersyml;
     public static FileConfiguration playerCfg;
-
-    public static File factionsyml;
-    public static FileConfiguration factionCfg;
+    public static PlayerDataManager playerData;;
 
     public static XPBoost loadPlayer(UUID uuid) {
         double boost = 0;
@@ -195,12 +191,9 @@ public class MainAPI {
 
             if (Database.type == DType.FILE) {
                 setPlayerFile(uuid);
-                // RESET EVERYTHIGN
                 setPlayerVariable("xp", "");
-
-                // SAVE NEW INFO >.<
                 setPlayerVariable("xp.boost", xpb.getBoost());
-                setPlayerVariable("xp.endtime", xpb.getEndTime());
+                setPlayerVariable("xp.endtime", xpb.getEndtime());
 
                 Iterator<Entry<Condition, Boolean>> it = xpb.getConditions().entrySet().iterator();
                 while (it.hasNext()) {
@@ -240,7 +233,7 @@ public class MainAPI {
                             "INSERT INTO xpboost (uuid,boost,endtime,conditions,advanced) VALUES (?,?,?,?,?)");
                     ps.setString(1, uuid.toString());
                     ps.setDouble(2, xpb.getBoost());
-                    ps.setLong(3, xpb.getEndTime());
+                    ps.setLong(3, xpb.getEndtime());
 
                     JSONObject json = new JSONObject();
                     Iterator<Entry<Condition, Boolean>> it = xpb.getConditions().entrySet().iterator();
@@ -282,69 +275,6 @@ public class MainAPI {
         }
     }
 
-    public static boolean loadAllFactions() {
-        File[] files = new File(XPBoostMain.getPlugin().getDataFolder() + "/factions/").listFiles();
-
-        if (files == null || files.length == 0)
-            return false;
-
-        for (File file : files) {
-            if (!file.isDirectory()) {
-                loadFaction(file.getName().replaceAll(".yml", ""));
-            }
-        }
-        return true;
-    }
-
-    public static void loadFaction(String faction) {
-        Faction f = FactionColl.get().getByName(faction);
-        File file = setFactionFile(f);
-
-        double boost = 0;
-        long endtime = 0;
-
-        if (faction.contains("xp.boost")) {
-            boost = (double) getFactionVariable("xp.boost");
-        }
-
-        if (faction.contains("xp.endtime")) {
-            try {
-                endtime = (long) getFactionVariable("xp.endtime");
-            } catch (ClassCastException e) {
-                return;
-            }
-        }
-
-        if (endtime > System.currentTimeMillis()) {
-            XPBoost xpb = new XPBoost(f, boost, endtime);
-            XPBoostMain.factions_boost.put(f, xpb);
-        } else {
-            file.delete();
-        }
-    }
-
-    public static void saveFaction(Faction f, XPBoost xpb) {
-        setFactionFile(f);
-
-        if (XPBoostAPI.hasFactionBoost(f)) {
-
-            setFactionFile(f);
-            // RESET EVERYTHIGN
-            setFactionVariable("xp", "");
-
-            // SAVE NEW INFO >.<
-            setFactionVariable("xp.boost", xpb.getBoost());
-            setFactionVariable("xp.endtime", xpb.getEndTime());
-
-            Iterator<Entry<Condition, Boolean>> it = xpb.getConditions().entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry<Condition, Boolean> pair = it.next();
-                setFactionVariable("xp.condition." + pair.getKey(), pair.getValue());
-                it.remove();
-            }
-        }
-    }
-
     public static File setPlayerFile(UUID uuid) {
         playersyml = new File(XPBoostMain.getPlugin().getDataFolder() + "/players/" + uuid + ".yml");
         playerCfg = YamlConfiguration.loadConfiguration(playersyml);
@@ -365,26 +295,6 @@ public class MainAPI {
         return playerCfg.get(cesta);
     }
 
-    public static File setFactionFile(Faction faction) {
-        factionsyml = new File(XPBoostMain.getPlugin().getDataFolder() + "/factions/" + faction.getName() + ".yml");
-        factionCfg = YamlConfiguration.loadConfiguration(factionsyml);
-
-        return factionsyml;
-    }
-
-    public static void setFactionVariable(String cesta, Object variable) {
-        factionCfg.set(cesta, variable);
-        saveFactionFile();
-    }
-
-    public static void saveFactionFile() {
-        saveCustomYml(factionCfg, factionsyml);
-    }
-
-    public static Object getFactionVariable(String cesta) {
-        return factionCfg.get(cesta);
-    }
-
     public static void saveCustomYml(FileConfiguration ymlConfig, File ymlFile) {
         try {
             ymlConfig.save(ymlFile);
@@ -400,8 +310,7 @@ public class MainAPI {
     }
 
     public static void sendMessage(String string, UUID player) {
-        Bukkit.getServer().getPlayer(player)
-                .sendMessage(colorizeText(XPBoostMain.getLang().getString("lang.prefix") + string));
+        sendMessage(string, Bukkit.getServer().getPlayer(player));
     }
 
     public static void sendMessage(String string, CommandSender sender) {
@@ -447,67 +356,8 @@ public class MainAPI {
         inv.setItem(Slot, item);
     }
 
-    public static Faction getPlayerFaction(Player p) {
-        return MPlayer.get(p).getFaction();
-    }
-
-    public static void openFactionBoostShop(Player player) {
-        int i = -1;
-
-        int amount = 1;
-
-        Faction faction = getPlayerFaction(player);
-
-        if (faction.isNone()) {
-            sendMessage(XPBoostMain.getLang().getString("lang.factions_nofaction"), player);
-            return;
-        }
-
-        for (String key : XPBoostMain.factions.getConfigurationSection("boost").getKeys(false)) {
-            if (XPBoostMain.factions.getBoolean("boost." + key + ".enabled") == true) {
-                amount++;
-            }
-        }
-
-        if (amount > 9 && amount <= 18) {
-            amount = 18;
-        } else if (amount > 18) {
-            amount = 27;
-        } else {
-            amount = 9;
-        }
-
-        Inventory GUI = Bukkit.createInventory(null, amount,
-                colorizeText(XPBoostMain.getLang().getString("lang.factions_gui_name")));
-
-        for (String key : XPBoostMain.factions.getConfigurationSection("boost").getKeys(false)) {
-            if (XPBoostMain.factions.getBoolean("boost." + key + ".enabled") == true) {
-                i++;
-                int cost = XPBoostMain.getPlugin().getConfig().getInt("boost." + key + ".cost");
-                int time = XPBoostMain.getPlugin().getConfig().getInt("boost." + key + ".time");
-                double boost = XPBoostMain.getPlugin().getConfig().getDouble("boost." + key + ".boost");
-                Material mat = Material.EXP_BOTTLE;
-
-                if (XPBoostMain.getPlugin().getConfig().contains("boost." + key + ".item_type")) {
-                    mat = Material.valueOf(XPBoostMain.getPlugin().getConfig().getString("boost." + key + ".item_type"));
-                }
-
-                MainAPI.createDisplay(mat, GUI, i,
-                        (XPBoostMain.getPlugin().getConfig().getString("boost." + key + ".title") != null) ? MainAPI
-                                .colorizeText(XPBoostMain.getPlugin().getConfig().getString("boost." + key + ".title"))
-                                .replaceAll("%boost%", boost + "").replaceAll("%money%", cost + "")
-                                .replaceAll("%time%", time + "")
-                                : MainAPI.colorizeText(
-                                        XPBoostMain.getLang().getString("lang.xptitle").replaceAll("%boost%", boost + "")),
-                        Arrays.asList(XPBoostMain.getLang().getString("lang.xplore")));
-                player.openInventory(GUI);
-            }
-        }
-    }
-
     public static void openXpBoostShop(Player player) {
         int i = -1;
-
         int amount = 1;
         for (String key : XPBoostMain.boostCfg.getConfigurationSection("").getKeys(false)) {
             if (XPBoostMain.boostCfg.getBoolean(key + ".enabled") == true) {
@@ -515,27 +365,30 @@ public class MainAPI {
             }
         }
 
-        if (amount > 9 && amount <= 18) {
+        if (amount > 9) {
             amount = 18;
         } else if (amount > 18) {
             amount = 27;
-        } else {
+        } else if (amount > 27) {
+            amount = 36;
+        } else if (amount > 36) {
+            amount = 45;
+        } else { 
             amount = 9;
         }
 
         Inventory GUI = Bukkit.createInventory(null, amount, colorizeText(XPBoostMain.getLang().getString("lang.gui")));
-
         for (String key : XPBoostMain.boostCfg.getConfigurationSection("").getKeys(false)) {
             if (XPBoostMain.boostCfg.getBoolean(key + ".enabled") == true) {
                 i++;
                 int cost = XPBoostMain.boostCfg.getInt(key + ".cost");
                 int time = XPBoostMain.boostCfg.getInt(key + ".time");
                 double boost = XPBoostMain.boostCfg.getDouble(key + ".boost");
-                Material mat = Material.EXP_BOTTLE;
+                Material defaultMaterial = XMaterial.EXPERIENCE_BOTTLE.parseMaterial();
 
                 if (XPBoostMain.boostCfg.contains(key + ".item_type")) {
                     try {
-                        mat = Material.valueOf(XPBoostMain.boostCfg.getString(key + ".item_type"));
+                        defaultMaterial = Material.valueOf(XPBoostMain.boostCfg.getString(key + ".item_type"));
                     } catch (IllegalArgumentException e) {
                         e.printStackTrace();
                         XPBoostMain.getLog().log(Level.SEVERE, "ItemType '" + XPBoostMain.boostCfg.getString(key + ".item_type")
@@ -545,10 +398,11 @@ public class MainAPI {
 
                 List<String> lore = XPBoostMain.getLang().getStringList("lang.boostlore");
 
-                if (XPBoostMain.boostCfg.contains(key + ".lore"))
+                if (XPBoostMain.boostCfg.contains(key + ".lore")) {
                     lore = XPBoostMain.boostCfg.getStringList(key + ".lore");
+                }
 
-                MainAPI.createDisplay(mat, GUI, i,
+                MainAPI.createDisplay(defaultMaterial, GUI, i,
                         (XPBoostMain.boostCfg.getString(key + ".title") != null)
                                 ? XPBoostMain.boostCfg.getString(key + ".title").replaceAll("%boost%", boost + "")
                                         .replaceAll("%money%", cost + "").replaceAll("%time%", time + "")

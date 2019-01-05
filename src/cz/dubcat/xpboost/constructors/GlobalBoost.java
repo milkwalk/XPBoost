@@ -2,7 +2,9 @@ package cz.dubcat.xpboost.constructors;
 
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
+import lombok.Data;
 
+@Data
 public class GlobalBoost {
 
     private boolean enabled;
@@ -14,12 +16,7 @@ public class GlobalBoost {
         this.boost = XPBoostMain.getPlugin().getConfig().getDouble("settings.globalboost.multiplier");
     }
 
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
     public double getGlobalBoost() {
-
         if (time != 0) {
             if (System.currentTimeMillis() > time) {
                 enabled = false;
@@ -28,26 +25,12 @@ public class GlobalBoost {
             }
 
         }
-
+        
         return this.boost;
-    }
-
-    public void setBoost(double boost) {
-        this.boost = boost;
-    }
-
-    public void setEnabled(boolean bol) {
-        this.enabled = bol;
-    }
-
-    public long getTime() {
-
-        return time;
     }
 
     public void setTime(int time) {
         long new_time = System.currentTimeMillis() + time * 1000;
-
         this.time = new_time;
     }
 

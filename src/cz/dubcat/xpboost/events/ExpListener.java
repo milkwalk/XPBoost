@@ -41,13 +41,6 @@ public class ExpListener implements Listener {
                 return;
         }
 
-        if (XPBoostAPI.getFactionBoost(player) != null) {
-            XPBoost faction_boost = XPBoostAPI.getFactionBoost(player);
-            expnew += (int) Math.round(exp * faction_boost.getBoost());
-            MainAPI.debug("Faction boost of " + faction_boost.getBoost() + "x has been applied to HeroesXP, Player: "
-                    + player.getName(), Debug.ALL);
-        }
-
         if (gl.isEnabled()) {
             expnew += (int) Math.round(exp * gl.getGlobalBoost());
         }

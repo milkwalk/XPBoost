@@ -21,18 +21,19 @@ public class ClickListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
-
-        if (event.getInventory().getName().equals(MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.gui")))) {
-            UUID id = player.getUniqueId();
-            ItemStack clicked = event.getCurrentItem();
+        String inventoryName = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.gui"));
+        
+        if (event.getInventory().getName().equals(inventoryName)) {
+            UUID playerUuid = player.getUniqueId();
+            ItemStack clickedItem = event.getCurrentItem();
             int slot = event.getSlot();
             int i = -1;
 
-            if (clicked != null && clicked.getType() != Material.AIR) {
+            if (clickedItem != null && clickedItem.getType() != Material.AIR) {
                 event.setCancelled(true);
                 player.closeInventory();
 
-                if (XPBoostAPI.hasBoost(id)) {
+                if (XPBoostAPI.hasBoost(playerUuid)) {
                     MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
                     return;
                 }
@@ -41,13 +42,6 @@ public class ClickListener implements Listener {
                     if (XPBoostMain.boostCfg.getBoolean(key + ".enabled") == true) {
                         i++;
                         if (i == slot) {
-
-                            if (XPBoostMain.factions_enabled && XPBoostMain.factions.getBoolean("settings.allow_one_boost_only")
-                                    && XPBoostAPI.getFactionBoost(player) != null) {
-                                MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.factions_one_boost"), player);
-                                return;
-                            }
-
                             if (XPBoostMain.boostCfg.contains(key + ".permissions")) {
                                 if (!player.hasPermission(
                                         XPBoostMain.boostCfg.getString(key + ".permissions.required_permission"))) {
@@ -58,7 +52,9 @@ public class ClickListener implements Listener {
                                     return;
                                 }
                             }
-
+                            System.out.println("cost: " + XPBoostMain.boostCfg.getDouble(key + ".cost"));
+                            System.out.println("wconomy: " + XPBoostMain.economy.getBalance(player));
+                            System.out.println("player: " + player.getName());
                             if (XPBoostMain.economy.has(player, XPBoostMain.boostCfg.getDouble(key + ".cost"))) {
                                 int time = XPBoostMain.boostCfg.getInt(key + ".time");
                                 double boost = XPBoostMain.boostCfg.getDouble(key + ".boost");
@@ -80,20 +76,17 @@ public class ClickListener implements Listener {
                                 }
 
                                 if (XPBoostMain.boostCfg.contains(key + ".advanced")) {
-
-                                    for (String pluginName : XPBoostMain.boostCfg.getConfigurationSection(key + ".advanced")
-                                            .getKeys(false)) {
+                                    for (String pluginName : XPBoostMain.boostCfg.getConfigurationSection(key + ".advanced").getKeys(false)) {
                                         BoostOptions options = new BoostOptions(pluginName.toUpperCase());
 
-                                        for (String option : XPBoostMain.boostCfg
-                                                .getConfigurationSection(key + ".advanced." + pluginName)
-                                                .getKeys(false)) {
-                                            if (option.equalsIgnoreCase("default"))
+                                        for (String option : XPBoostMain.boostCfg.getConfigurationSection(key + ".advanced." + pluginName).getKeys(false)) {
+                                            if (option.equalsIgnoreCase("default")) {
                                                 options.setEnabledByDefault(XPBoostMain.boostCfg
                                                         .getBoolean(key + ".advanced." + pluginName + "." + option));
-                                            else
+                                            } else {
                                                 options.getOptions().put(option.toUpperCase(), XPBoostMain.boostCfg
                                                         .getBoolean(key + ".advanced." + pluginName + "." + option));
+                                            }
                                         }
 
                                         xpb.getAdvancedOptions().put(pluginName.toUpperCase(), options);

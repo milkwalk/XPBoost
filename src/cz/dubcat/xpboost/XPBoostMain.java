@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.Calendar;
-import java.util.Map.Entry;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
@@ -20,14 +20,11 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.massivecraft.factions.entity.Faction;
-
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.commands.ClearCommand;
 import cz.dubcat.xpboost.commands.CommandHandler;
-import cz.dubcat.xpboost.commands.FactionCommand;
 import cz.dubcat.xpboost.commands.GiveBoostCommand;
 import cz.dubcat.xpboost.commands.GlobalCommand;
 import cz.dubcat.xpboost.commands.GlobalDisableCommand;
@@ -39,20 +36,18 @@ import cz.dubcat.xpboost.commands.OpenGuiCommand;
 import cz.dubcat.xpboost.commands.ReloadCommand;
 import cz.dubcat.xpboost.config.ConfigManager;
 import cz.dubcat.xpboost.constructors.Database;
+import cz.dubcat.xpboost.constructors.Database.DType;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
-import cz.dubcat.xpboost.constructors.Database.DType;
-import cz.dubcat.xpboost.events.ClickListener_18;
-import cz.dubcat.xpboost.events.ClickListener_ALL;
 import cz.dubcat.xpboost.events.CommandListener;
 import cz.dubcat.xpboost.events.ExpListener;
 import cz.dubcat.xpboost.events.ExpRestrictions;
 import cz.dubcat.xpboost.events.JoinAndQuitEvent;
 import cz.dubcat.xpboost.events.ServerList;
 import cz.dubcat.xpboost.events.Signs;
+import cz.dubcat.xpboost.events.XpBoostItemListener;
 import cz.dubcat.xpboost.gui.ClickListener;
-import cz.dubcat.xpboost.gui.FactionsClickListener;
 import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
 import cz.dubcat.xpboost.support.JobsReborn;
@@ -61,38 +56,24 @@ import cz.dubcat.xpboost.support.RPGmE;
 import cz.dubcat.xpboost.support.SkillApi;
 import cz.dubcat.xpboost.tasks.ActionBarTask;
 import cz.dubcat.xpboost.tasks.BoostTaskCheck;
-import cz.dubcat.xpboost.tasks.FactionXPBoostTask;
 import cz.dubcat.xpboost.tasks.XPBoostTask;
-import cz.dubcat.xpboost.versions.ActionBar1_01;
-import cz.dubcat.xpboost.versions.ActionBar1_11;
-import cz.dubcat.xpboost.versions.ActionBar1_12;
-import cz.dubcat.xpboost.versions.ActionBar1_9;
-import cz.dubcat.xpboost.versions.ActionBar1_94;
-import cz.dubcat.xpboost.versions.ActionBar1_3;
-import cz.dubcat.xpboost.versions.ActionBar_1_8;
-import cz.dubcat.xpboost.versions.ActionbarInterface;
+import cz.dubcat.xpboost.utils.DayUtil;
 import net.milkbowl.vault.economy.Economy;
 
 public class XPBoostMain extends JavaPlugin {
 
     private Logger log;
-    public static ConcurrentHashMap<UUID, XPBoost> allplayers = new ConcurrentHashMap<UUID, XPBoost>();
-    public static ConcurrentHashMap<Faction, XPBoost> factions_boost;
+    public static Map<UUID, XPBoost> allplayers = new ConcurrentHashMap<>();
     public static GlobalBoost GLOBAL_BOOST;
     public static Economy economy = null;
     public static Debug debug;
-    private static ActionbarInterface actionbar;
     private static XPBoostMain plugin;
-    public static int config_version = 1;
     private static Database db = new Database();
     private Metrics metrics = null;
-    public static File langFile; // lang
+    public static File langFile;
     public static FileConfiguration lang;
-    public static File factions_file; // factions
-    public static FileConfiguration factions;
     public static File boostFile;
     public static FileConfiguration boostCfg;
-    public static boolean factions_enabled = false;
 
     @Override
     public void onEnable() {
@@ -102,12 +83,14 @@ public class XPBoostMain extends JavaPlugin {
         cfg.loadDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
-
+        
         if (XPBoostMain.getPlugin().getConfig().getString("database.type").equalsIgnoreCase("mysql")) {
-            if (db.loadMysql())
+            if (db.loadMysql()) {
                 log.info("Connected to the MySQL database.");
-            else
+            } else {
+                getServer().getPluginManager().disablePlugin(this);
                 return;
+            }
         }
 
         File boostFileGen = new File(XPBoostMain.getPlugin().getDataFolder() + "/boosts.yml");
@@ -120,23 +103,7 @@ public class XPBoostMain extends JavaPlugin {
             }
         }
 
-        File targetFile = new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_NL.yml");
-        if (!targetFile.exists()) {
-            InputStream stream = getClass().getResourceAsStream("/lang/lang_NL.yml");
-            try {
-                FileUtils.copyInputStreamToFile(stream, targetFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (!XPBoostMain.getPlugin().getConfig().contains("settings.config_version")
-                || XPBoostMain.getPlugin().getConfig().getInt("settings.config_version") < XPBoostMain.config_version) {
-            this.log.warning(
-                    "&cYou config is out of date, regenerate you config fille or add required keys for the full functionality of the plugin. You version: &a"
-                            + XPBoostMain.getPlugin().getConfig().getInt("settings.config_version") + " &cnewest version: &a"
-                            + XPBoostMain.config_version);
-        }
+        this.copyLangFiles();
 
         // language
         if (getConfig().contains("settings.language")) {
@@ -148,22 +115,19 @@ public class XPBoostMain extends JavaPlugin {
             lang = YamlConfiguration.loadConfiguration(langFile);
         }
 
-        factions_file = new File(getDataFolder() + "/factions.yml");
-        factions = YamlConfiguration.loadConfiguration(factions_file);
-
         boostFile = new File(getDataFolder() + "/boosts.yml");
         boostCfg = YamlConfiguration.loadConfiguration(boostFile);
 
         // load configs
         cfg.loadLangFile();
-        cfg.loadFactionsFile();
-
         // INITIALIZE GLOBAL BOOST
         GLOBAL_BOOST = new GlobalBoost();
-
         // SETUP VAULT
-        setupEconomy();
-
+        if (!setupEconomy() ) {
+            log.severe("Disabled due to no Vault dependency found!");
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
         // LOAD DEBUG
         debug = reloadDebug();
 
@@ -175,116 +139,75 @@ public class XPBoostMain extends JavaPlugin {
             MainAPI.debug("Disabling metrics.", Debug.NORMAL);
         }
 
-        // SUPPORT
-        // ----------------------------------------------------------------------------
         // MCMMO
         Plugin mcmmo = this.getServer().getPluginManager().getPlugin("mcMMO");
-
         if (mcmmo != null || getServer().getPluginManager().getPlugin("McMMO") != null) {
             log.info("Found McMMO, enabling support.");
             getServer().getPluginManager().registerEvents(new McMMO(this), this);
 
-            if (metrics != null)
+            if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "McMMO"));
+            }
         }
 
         // Heroes
         Plugin heroes = this.getServer().getPluginManager().getPlugin("Heroes");
-
         if (heroes != null) {
             log.info("Found Heroes, enabling support.");
             getServer().getPluginManager().registerEvents(new Heroes(), this);
 
-            if (metrics != null)
+            if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "Heroes"));
+            }
         }
 
         // SkillAPI
         Plugin skillapi = this.getServer().getPluginManager().getPlugin("SkillAPI");
-
         if (skillapi != null) {
             log.info("Found SkillAPI, enabling support");
             getServer().getPluginManager().registerEvents(new SkillApi(), this);
 
-            if (metrics != null)
+            if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "SkillAPI"));
+            }
         }
 
         // RpgMe
         Plugin rpgme = this.getServer().getPluginManager().getPlugin("RPGme");
-
         if (rpgme != null) {
             log.info("Found RPGme, enabling support.");
             getServer().getPluginManager().registerEvents(new RPGmE(), this);
 
-            if (metrics != null)
+            if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "RPGme"));
+            }
         }
 
         // JobsReborn
         Plugin jobsReborn = this.getServer().getPluginManager().getPlugin("Jobs");
-
         if (jobsReborn != null) {
             log.info("Found Jobs, enabling support.");
             getServer().getPluginManager().registerEvents(new JobsReborn(), this);
 
-            if (metrics != null)
+            if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "Jobs"));
+            }
         }
 
         Plugin bossbarapi = this.getServer().getPluginManager().getPlugin("BossBarAPI");
-
         // BOSS BAR
         if (bossbarapi != null) {
             log.info("Found BossBarAPI, enabling support.");
             new BossBarN().runTaskTimer(XPBoostMain.getPlugin(), 0, 100);
 
-            if (metrics != null)
+            if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "BossBarAPI"));
+            }
         }
-
-        Plugin factions = this.getServer().getPluginManager().getPlugin("Factions");
-
-        // Factions
-        if (factions == null) {
-            log.warning("Factions not found, disabling support.");
-        } else if (!XPBoostMain.factions.getBoolean("settings.enabled")) {
-            log.warning(
-                    "Factions support disabled, if you wish to use it, please set enabled to true in the factions.yml");
-        } else {
-
-            log.info("Found Factions, enabling support.");
-            factions_boost = new ConcurrentHashMap<Faction, XPBoost>();
-            factions_enabled = true;
-
-            MainAPI.loadAllFactions();
-
-            FactionXPBoostTask task = new FactionXPBoostTask();
-            task.setId(Bukkit.getServer().getScheduler().runTaskTimerAsynchronously(this, task, 0, 5));
-
-            getServer().getPluginManager().registerEvents(new FactionsClickListener(), this);
-
-            if (metrics != null)
-                metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "Factions"));
-        }
-
-        // END SUPPORT
-        // ----------------------------------------------------------------------------
-
-        // register commands
+        
         registerCommands();
-
-        // XPBOOST TASK
         new XPBoostTask().runTaskTimerAsynchronously(this, 0, 5);
-
-        // SETUP ACTION BAR
-        if (!setupActionbar()) {
-            getLogger().severe("Server version is not compatible with XPBoost!");
-            Bukkit.getPluginManager().disablePlugin(this);
-            return;
-        } else {
-            new ActionBarTask().runTaskTimerAsynchronously(this, 20, getConfig().getLong("settings.actiondelay"));
-        }
+        new ActionBarTask().runTaskTimerAsynchronously(this, 100, getConfig().getLong("settings.actiondelay"));
 
         // register events
         getServer().getPluginManager().registerEvents(new ExpListener(), this);
@@ -294,6 +217,7 @@ public class XPBoostMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ClickListener(), this);
         getServer().getPluginManager().registerEvents(new Signs(), this);
         getServer().getPluginManager().registerEvents(new ExpRestrictions(), this);
+        getServer().getPluginManager().registerEvents(new XpBoostItemListener(), this);
 
         // Auto global boost task
         if (getConfig().getBoolean("settings.periodicalDayCheck")) {
@@ -302,57 +226,10 @@ public class XPBoostMain extends JavaPlugin {
 
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-
-        switch (day) {
-        case 2:
-            if (getConfig().getBoolean("settings.day.monday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Monday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
-        case 3:
-            if (getConfig().getBoolean("settings.day.tuesday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Tuesday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
-        case 4:
-            if (getConfig().getBoolean("settings.day.wednesday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Wednesday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
-        case 5:
-            if (getConfig().getBoolean("settings.day.thursday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Thursday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
-        case 6:
-            if (getConfig().getBoolean("settings.day.friday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Friday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
-        case 7:
-            if (getConfig().getBoolean("settings.day.saturday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Saturday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
-        case 1:
-            if (getConfig().getBoolean("settings.day.sunday")) {
-                GLOBAL_BOOST.setEnabled(true);
-                MainAPI.sendMessage("&2WOHOO! Today is the Sunday! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!",
-                        Bukkit.getConsoleSender());
-            }
-            break;
+        String stringDay = DayUtil.getDayOfTheWeek(day);
+        if (getConfig().getBoolean("settings.day." + stringDay)) {
+            GLOBAL_BOOST.setEnabled(true);
+            MainAPI.sendMessage("&2WOHOO! Today is the " + stringDay + "! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!", Bukkit.getConsoleSender());
         }
 
         initializePlaceholder();
@@ -361,19 +238,9 @@ public class XPBoostMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
-        getLogger().info("Saving players....");
+        getLogger().info("Saving players");
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             MainAPI.savePlayer(p.getUniqueId());
-        }
-
-        if (factions_enabled) {
-            getLogger().info("Saving factions....");
-            for (Entry<Faction, XPBoost> pair : factions_boost.entrySet()) {
-                System.out.println(pair.getKey().getName());
-                MainAPI.saveFaction(pair.getKey(), pair.getValue());
-                MainAPI.debug("Saving active boost for faction " + pair.getKey().getName(), Debug.NORMAL);
-            }
         }
 
         if (Database.type == DType.MYSQL) {
@@ -396,11 +263,7 @@ public class XPBoostMain extends JavaPlugin {
     }
 
     public static Logger getLog() {
-        return XPBoostMain.getPlugin().getLogger();
-    }
-
-    public static ActionbarInterface getActionbar() {
-        return actionbar;
+        return Bukkit.getLogger();
     }
 
     public Debug reloadDebug() {
@@ -416,15 +279,14 @@ public class XPBoostMain extends JavaPlugin {
         return Debug.OFF;
     }
 
-    public static Database getDb() {
+    public static Database getDatabase() {
         return db;
     }
     
     private void registerCommands() {
         CommandHandler handler = new CommandHandler();
-
         handler.register("xpboost", new MainCommand());
-
+        
         OpenGuiCommand oCmd = new OpenGuiCommand();
         handler.register("gui", oCmd);
         handler.register("shop", oCmd);
@@ -438,21 +300,21 @@ public class XPBoostMain extends JavaPlugin {
         handler.register("clear", new ClearCommand());
         handler.register("item", new ItemCommand(this));
         handler.register("global", new GlobalCommand(this));
-        handler.register("faction", new FactionCommand());
-        handler.register("factions", new FactionCommand());
 
         getCommand("xpboost").setExecutor(handler);
         getCommand("xpb").setExecutor(handler);
     }
     
     private boolean setupEconomy() {
-        RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager()
-                .getRegistration(net.milkbowl.vault.economy.Economy.class);
-        if (economyProvider != null) {
-            economy = economyProvider.getProvider();
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
         }
-
-        return (economy != null);
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        economy = rsp.getProvider();
+        return economy != null;
     }
     
     private void initializePlaceholder() {
@@ -469,42 +331,26 @@ public class XPBoostMain extends JavaPlugin {
                     .valueOf(XPBoostAPI.getBoost(event.getPlayer().getUniqueId()).getConditions().toString()));
         }
     }
-
-    private boolean setupActionbar() {
-
-        String version;
-
-        try {
-            version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
-            return false;
+    
+    private void copyLangFiles() {
+        File langNl = new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_NL.yml");
+        if (!langNl.exists()) {
+            InputStream stream = getClass().getResourceAsStream("/lang/lang_NL.yml");
+            try {
+                FileUtils.copyInputStreamToFile(stream, langNl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        getLogger().info("Server version " + version);
-
-        if (version.equals("v1_8_R3")) {
-            actionbar = new ActionBar_1_8();
-            getServer().getPluginManager().registerEvents(new ClickListener_18(), this);
-        } else if (version.equals("v1_9_R1")) {
-            actionbar = new ActionBar1_9();
-            getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);
-        } else if (version.equals("v1_9_R2")) {
-            actionbar = new ActionBar1_94();
-            getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);
-        } else if (version.equals("v1_10_R1")) {
-            actionbar = new ActionBar1_01();
-            getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);
-        } else if (version.equals("v1_11_R1")) {
-            actionbar = new ActionBar1_11();
-            getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);
-        } else if (version.equals("v1_12_R1")) {
-            actionbar = new ActionBar1_12();
-            getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);
-        } else if (version.equals("v1_13_R1")) {
-            actionbar = new ActionBar1_3();
-            getServer().getPluginManager().registerEvents(new ClickListener_ALL(), this);
+        
+        File langZhs = new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_ZHS.yml");
+        if (!langZhs.exists()) {
+            InputStream stream = getClass().getResourceAsStream("/lang/lang_ZHS.yml");
+            try {
+                FileUtils.copyInputStreamToFile(stream, langZhs);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        return actionbar != null;
     }
 }

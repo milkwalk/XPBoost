@@ -19,7 +19,6 @@ public class GiveBoostCommand implements CommandInterface {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String commandLabel, String[] args) {
         // format /xpb give <player/all> <boost> <time> [coditions]
-
         if (sender.hasPermission("xpboost.admin")) {
             if (args.length == 4 || args.length == 5) {
 

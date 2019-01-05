@@ -1,4 +1,4 @@
-package cz.dubcat.xpboost.constructors;
+package cz.dubcat.xpboost.utils;
 
 import java.io.PrintWriter;
 import java.sql.Connection;

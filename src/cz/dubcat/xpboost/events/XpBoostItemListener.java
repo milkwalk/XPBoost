@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import cz.dubcat.xpboost.XPBoostMain;
@@ -15,21 +16,23 @@ import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 
-public class ClickListener_18 implements Listener {
+public class XpBoostItemListener implements Listener {
 
     @SuppressWarnings("deprecation")
     @EventHandler
     public void rightClick(PlayerInteractEvent event) {
-        Action action = event.getAction();
-        if (action == Action.RIGHT_CLICK_AIR || action == Action.RIGHT_CLICK_BLOCK) {
+
+        if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            EquipmentSlot e = event.getHand();
+            if (!e.equals(EquipmentSlot.HAND)) {
+                return;
+            }
 
             Player player = event.getPlayer();
-            if (player.getItemInHand() != null && player.getItemInHand().getType() == Material
-                    .getMaterial(XPBoostMain.getPlugin().getConfig().getString("settings.itemmaterial"))) {
-                ItemStack item = player.getItemInHand();
-                if (item.getItemMeta() != null && item.getItemMeta().getDisplayName() != null
-                        && item.getItemMeta().getLore() != null) {
-                    String nazev = item.getItemMeta().getDisplayName();
+            ItemStack item = player.getItemInHand();
+            if (item != null && item.getType() == Material.getMaterial(XPBoostMain.getPlugin().getConfig().getString("settings.itemmaterial"))) {
+                if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().hasLore()) {
+                    String itemName = item.getItemMeta().getDisplayName();
                     List<String> lore = item.getItemMeta().getLore();
 
                     int i = 0;
@@ -56,9 +59,7 @@ public class ClickListener_18 implements Listener {
                     String name = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.itemname")
                             .replace("%boost%", String.valueOf(boost)).replace("%time%", String.valueOf(time)));
 
-                    if (nazev.equals(name) || nazev.contains(MainAPI.stripColours(name)) || nazev.contains(name)
-                            || nazev.equals(name)) {
-
+                    if (itemName.equals(name) || itemName.contains(MainAPI.stripColours(name)) || itemName.contains(name)) {
                         if (XPBoostAPI.hasBoost(player.getUniqueId())) {
                             MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
                             event.setCancelled(true);
@@ -66,14 +67,12 @@ public class ClickListener_18 implements Listener {
                         }
 
                         XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, time);
-
                         MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.xpbuy").replace("%boost%", "" + boost)
                                 .replace("%time%", "" + time).replace("%money%", ""), player);
 
-                        player.setItemInHand(null);
-
+                        player.getInventory().setItemInMainHand(null);
+                        player.updateInventory();
                         event.setCancelled(true);
-
                     }
                 }
 
@@ -81,5 +80,4 @@ public class ClickListener_18 implements Listener {
 
         }
     }
-
 }

@@ -11,9 +11,9 @@ import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 
-public class Placeholder extends EZPlaceholderHook {
+public class PlaceholderAPI extends EZPlaceholderHook {
 
-    public Placeholder(XPBoostMain ourPlugin) {
+    public PlaceholderAPI(XPBoostMain ourPlugin) {
         super(ourPlugin, "xpboost");
     }
 

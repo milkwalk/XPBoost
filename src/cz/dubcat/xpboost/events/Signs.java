@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.utils.XMaterial;
 
 public class Signs implements Listener {
 
@@ -46,7 +47,7 @@ public class Signs implements Listener {
         Block block = event.getClickedBlock();
         Player player = event.getPlayer();
         Action action = event.getAction();
-        if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == Material.SIGN_POST
+        if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == XMaterial.WALL_SIGN.parseMaterial()
                 || block.getState().getType() == Material.WALL_SIGN)) {
             Sign sign = (Sign) block.getState();
             if (sign.getLine(0).equalsIgnoreCase(
