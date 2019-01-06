@@ -11,6 +11,7 @@
 ### Changed
 - refactored large portion of the plugin
 - minor improvements
+- use of NMS for actionbar messages
 
 ### Removed
 - factions support
