@@ -52,9 +52,7 @@ public class ClickListener implements Listener {
                                     return;
                                 }
                             }
-                            System.out.println("cost: " + XPBoostMain.boostCfg.getDouble(key + ".cost"));
-                            System.out.println("wconomy: " + XPBoostMain.economy.getBalance(player));
-                            System.out.println("player: " + player.getName());
+
                             if (XPBoostMain.economy.has(player, XPBoostMain.boostCfg.getDouble(key + ".cost"))) {
                                 int time = XPBoostMain.boostCfg.getInt(key + ".time");
                                 double boost = XPBoostMain.boostCfg.getDouble(key + ".boost");
