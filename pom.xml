@@ -25,6 +25,10 @@
   </build>
 
   <distributionManagement>
+    <repository>
+      <id>dubcat-public</id>
+      <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+    </repository>
     <snapshotRepository>
       <id>dubcat-public</id>
       <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
