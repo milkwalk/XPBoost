@@ -40,7 +40,7 @@ settings:
   #Enable/disable motd when global boost is active
   motdon: true
   #Boost end sound - the sound that is emitted when the boost ends
-  boostEndSound: HURT_FLESH
+  boostEndSound: BLOCK_TRIPWIRE_CLICK_OFF
   #Enable/disable actionbar message when boost is active
   actionbarmsg: true
   bossbar:
