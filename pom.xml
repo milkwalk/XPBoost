@@ -1,0 +1,190 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>cz.dubcat.plugins</groupId>
+  <artifactId>xpboost</artifactId>
+  <version>3.0.0</version>
+  
+  <properties>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+  
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.3</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
+  <distributionManagement>
+    <repository>
+      <id>dubcat-public</id>
+      <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+    </repository>
+    <snapshotRepository>
+      <id>dubcat-public</id>
+      <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+    </snapshotRepository>
+  </distributionManagement>
+  
+  <repositories>
+    <!-- Dubcat Public Repository -->
+    <repository>
+        <id>dubcat-public</id>
+        <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+    </repository>
+    <!-- PlaceholderAPI -->
+    <repository>
+        <id>placeholderapi</id>
+        <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
+    <!-- MVdW -->
+    <repository>
+      <id>mvdw-software</id>
+      <url>http://repo.mvdw-software.be/content/groups/public/</url>
+    </repository>
+    <!-- BossbarAPI -->
+    <repository>
+      <id>inventive-repo</id>
+      <url>https://repo.inventivetalent.org/content/groups/public/</url>
+    </repository>
+  </repositories>
+  
+  <dependencies>
+    <!-- Spigot -->
+    <dependency>
+        <groupId>org.spigotmc</groupId>
+        <artifactId>spigot-api</artifactId>
+        <version>1.13.2-R0.1-SNAPSHOT</version>
+        <scope>provided</scope>
+    </dependency>
+    <!-- MVdWPlaceholderAPI -->
+    <dependency>
+      <groupId>be.maximvdw</groupId>
+      <artifactId>MVdWPlaceholderAPI</artifactId>
+      <version>2.5.2-SNAPSHOT</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.spigotmc</groupId>
+          <artifactId>spigot</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- Placeholder API -->
+    <dependency>
+     <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>2.9.2</version>
+     <scope>provided</scope>
+    </dependency>
+    <!-- Skillapi -->
+    <dependency>
+      <groupId>com.sucy.skill</groupId>
+      <artifactId>skillapi</artifactId>
+      <version>3.108-SNAPSHOT</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Vault -->
+    <dependency>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>VaultAPI</artifactId>
+      <version>1.7</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Lombok -->
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.18.2</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Heroes -->
+    <dependency>
+      <groupId>com.herocraftonline.heroes</groupId>
+      <artifactId>Heroes</artifactId>
+      <version>1.5.5</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.spigotmc</groupId>
+          <artifactId>spigot-api</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.spigotmc</groupId>
+          <artifactId>spigot</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>net.milkbowl.vault</groupId>
+          <artifactId>Vault</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>net.milkbowl.vault</groupId>
+          <artifactId>Vault</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>me.desht</groupId>
+          <artifactId>scrollingmenusign</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>com.dthielke.herochat</groupId>
+          <artifactId>HeroChat</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- BossbarAPI -->
+    <dependency>
+      <groupId>org.inventivetalent</groupId>
+      <artifactId>bossbarapi</artifactId>
+      <version>2.4.1</version>
+      <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.mcstats.bukkit</groupId>
+          <artifactId>metrics-lite</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!-- MCMMO -->
+    <dependency>
+      <groupId>com.gmail.nossr50</groupId>
+      <artifactId>mcmmo</artifactId>
+      <version>1.6.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- RPGME -->
+    <dependency>
+      <groupId>net.flamedek</groupId>
+      <artifactId>rpgme</artifactId>
+      <version>1.0.2</version>
+      <scope>provided</scope>
+    </dependency>
+     <!-- Skillapi -->
+    <dependency>
+      <groupId>com.github.Eniripsa96</groupId>
+      <artifactId>skillapi</artifactId>
+      <version>3.108</version>
+      <scope>provided</scope>
+    </dependency>
+     <!-- Jobs -->
+    <dependency>
+      <groupId>jobs.reborn</groupId>
+      <artifactId>jobs</artifactId>
+      <version>4.9.5</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+    <dependency>
+        <groupId>commons-io</groupId>
+        <artifactId>commons-io</artifactId>
+        <version>2.6</version>
+    </dependency>
+  </dependencies>
+</project>

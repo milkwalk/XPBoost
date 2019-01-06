@@ -1,0 +1,80 @@
+package cz.dubcat.xpboost.utils;
+
+import java.lang.reflect.Constructor;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+public class ActionBar {
+    
+    private Class<?> chatSerializer; //old
+    
+    private Class<?> chatComponent; //common
+    private Class<?> packetActionbar;
+    
+    private Class<?> chatComponentTextClass; //new
+    private Class<?> chatMessageTypeClass;
+    private Object chatMessageType;
+    private boolean oldVersion = false;
+    
+    public ActionBar() {
+        try {
+            this.chatComponent = getNMSClass("IChatBaseComponent");
+            this.packetActionbar = getNMSClass("PacketPlayOutChat");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        try {
+            this.chatComponentTextClass = getNMSClass("ChatComponentText");
+            this.chatMessageTypeClass = getNMSClass("ChatMessageType");
+            Object[] chatMessageTypes = chatMessageTypeClass.getEnumConstants();
+            for (Object obj : chatMessageTypes) {
+                if (obj.toString().equals("GAME_INFO")) {
+                    this.chatMessageType = obj;
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            oldVersion = true;
+            try {
+                this.chatSerializer = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0];
+            } catch (Exception e1) {
+                e1.printStackTrace();
+            } 
+        }
+        
+    }
+    
+    public void sendActionBar(Player player, String message) {
+        try {
+            Object packet;
+            if(oldVersion) {
+                Constructor<?> ConstructorActionbar = packetActionbar.getDeclaredConstructor(chatComponent, byte.class);
+                Object actionbar = chatSerializer.getMethod("a", String.class).invoke(chatSerializer, "{\"text\": \"" + message + "\"}");
+                packet = ConstructorActionbar.newInstance(actionbar, (byte) 2);
+            } else {
+                Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance(message);
+                packet = packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
+            }
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    private Class<?> getNMSClass(String name) throws ClassNotFoundException {
+        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
+
+        return Class.forName("net.minecraft.server." + version + "." + name);
+    }
+    
+    private void sendPacket(Player player, Object packet) {
+        try {
+            Object handle = player.getClass().getMethod("getHandle").invoke(player);
+            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
+            playerConnection.getClass().getMethod("sendPacket", getNMSClass("Packet")).invoke(playerConnection, packet);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
