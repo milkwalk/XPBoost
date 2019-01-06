@@ -19,26 +19,28 @@ settings:
   language: 'ENG'
   #Enable debug 0 = disabled | 1 = Normal | 2 = All information (Mostly useless for you)
   debug: 0
-  #If you dont want to send metrics (statistics about the plugin)?
+  #If you dont want to send metrics (statistics about the plugin) set this to false
   metrics: true
   #Do you want to disable xp bottles? SELECT MODE 1 or 2 or 3
   #Mode 1: Normal behaviour
   #Mode 2: Set dropped XP from xp bottles to 0
   #Mode 3: Disallow players to drop EXP bottles while their boost is active
   xpbottlemode: 1
-  #if you want to use only SkillAPI/McMmmo/Heroes/RpgMe etc. experience for example, set this to true, and vanilla xp will be unaffected
+  #If you want to use only SkillAPI/McMmmo/Heroes/RpgMe etc. experience, set this to true and vanilla xp will be unaffected
   disablevanillaxp: false
   globalboost:
     #Global XP boost
     multiplier: 2.0
     #Enable/disable notification on join when global boost is active
     notification: true
-  #Do you want the message about the XP gained to appear
+  #Do you want the message about XP gain to appear
   doublexpmsg: true
-  #Actionban msg time delay in ticks, (20 ticks = 1 sec) default 5 sec
+  #Actionban message time delay in ticks, (20 ticks = 1 sec) default 5 sec
   actiondelay: 100
   #Enable/disable motd when global boost is active
   motdon: true
+  #Boost end sound - the sound that is emitted when the boost ends
+  boostEndSound: BLOCK_TRIPWIRE_CLICK_OFF
   #Enable/disable actionbar message when boost is active
   actionbarmsg: true
   bossbar:
@@ -58,7 +60,7 @@ settings:
     #if you dont need other lines, just leave it blank
     line3: ''
     line4: ''
-  #Days on which XP boost should be active for everyone! (change to true)
+  #Days on which XP boost should be active for everyone (change to true)
   day:
     monday: false
     teusday: false
@@ -67,7 +69,7 @@ settings:
     friday: false
     saturday: false
     sunday: false
-  #Disabled commands
+  #Disabled commands while XPBoost is active
   disabledcommands:
     #Do you want this feature to be enabled?
     enabled: true
