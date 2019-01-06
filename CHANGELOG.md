@@ -6,6 +6,7 @@
 - updated to the 1.13.2 Spigot
 - `%timeleft%` placeholder to the actionbar message
 - simplified Chinese (ZHS) language (thanks f0rb1d)
+- `boostEndSound` option to config under `settings`
 - maven
 
 ### Changed
