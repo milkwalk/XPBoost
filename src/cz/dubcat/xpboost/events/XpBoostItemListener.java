@@ -21,16 +21,20 @@ public class XpBoostItemListener implements Listener {
     @SuppressWarnings("deprecation")
     @EventHandler
     public void rightClick(PlayerInteractEvent event) {
-
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            EquipmentSlot e = event.getHand();
-            if (!e.equals(EquipmentSlot.HAND)) {
-                return;
-            }
-
             Player player = event.getPlayer();
             ItemStack item = player.getItemInHand();
+            
             if (item != null && item.getType() == Material.getMaterial(XPBoostMain.getPlugin().getConfig().getString("settings.itemmaterial"))) {
+                try {
+                    EquipmentSlot e = event.getHand();
+                    if (!e.equals(EquipmentSlot.HAND)) {
+                        return;
+                    }
+                } catch (Exception e) {
+                    //ignore
+                }
+                
                 if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().hasLore()) {
                     String itemName = item.getItemMeta().getDisplayName();
                     List<String> lore = item.getItemMeta().getLore();
@@ -75,9 +79,7 @@ public class XpBoostItemListener implements Listener {
                         event.setCancelled(true);
                     }
                 }
-
             }
-
         }
     }
 }
