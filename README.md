@@ -1,5 +1,5 @@
-# XPBoostV2
-Updated version of XPBoost
+# XPBoost
+Updated version of XPBoost spigot plugin.
 
 Download avaliable on https://www.spigotmc.org/resources/xp-boost.13537/
 
