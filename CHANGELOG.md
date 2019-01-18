@@ -1,6 +1,16 @@
 # Change Log
 
-## [3.0.0]
+## [3.0.1] - 6/01/2019
+
+### Removed
+
+- Direct placeholderapi dependency (use xpboost expansion for placeholders)
+
+### Fixed
+
+- Interaction event for < 1.9 version
+
+## [3.0.0] - 6/01/2019
 
 ### Added
 - updated to the 1.13.2 Spigot
@@ -17,6 +27,6 @@
 ### Removed
 - factions support
 
-## [2.0.6]
+## [2.0.6] - 5/01/2019
 
 Initial verstion
