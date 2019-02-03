@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
@@ -33,8 +32,8 @@ public class McMMO implements Listener {
     public void gainXp(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
         UUID id = player.getUniqueId();
-
-        PrimarySkillType skill = event.getSkill();
+        String enumSkillname = event.getSkill().name();
+        String skillName = event.getSkill().getName();
         int exp = (int) event.getRawXpGained();
         int expnew = 0;
         if (expbug) {
@@ -45,7 +44,7 @@ public class McMMO implements Listener {
             XPBoost xpb = XPBoostAPI.getBoost(id);
             if (xpb.hasCondition(CONDITION_NAME)) {
                 if (xpb.getAdvancedOptions().containsKey("MCMMO")) {
-                    if (xpb.getAdvancedOptions().get("MCMMO").isAllowedType(skill.name())) {
+                    if (xpb.getAdvancedOptions().get("MCMMO").isAllowedType(enumSkillname)) {
                         expnew += (int) Math.round(exp * xpb.getBoost());
                     }
                 } else {
@@ -60,14 +59,14 @@ public class McMMO implements Listener {
 
         if (expnew > 0) {
             expbug = true;
-            ExperienceAPI.addXP(player, skill.name(), expnew, "UNKNOWN");
+            ExperienceAPI.addXP(player, enumSkillname, expnew, "UNKNOWN");
             expbug = false;
 
             if (plugin.getConfig().getBoolean("settings.mcmmo.msg.enabled")) {
                 String message = plugin.getConfig().getString("settings.mcmmo.msg.msg");
                 message = message.replaceAll("%newexp%", expnew + "");
                 message = message.replaceAll("%oldexp%", exp + "");
-                message = message.replaceAll("%skill%", skill.getName());
+                message = message.replaceAll("%skill%", skillName);
                 MainAPI.sendMessage(message, player);
             }
         }

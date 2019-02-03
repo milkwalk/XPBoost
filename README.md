@@ -1,4 +1,4 @@
-http://maven.apps.dubcat.cz# XPBoost
+# XPBoost
 Updated version of XPBoost spigot plugin.
 
 Download avaliable on https://www.spigotmc.org/resources/xp-boost.13537/
