@@ -6,13 +6,7 @@ Download avaliable on https://www.spigotmc.org/resources/xp-boost.13537/
 ## Minecraft versions
 XPBoost is compatible with the following minecraft versions
 
-- 1.8.8
-- 1.9
-- 1.10
-- 1.11
--
-
-
+- 1.8.8 - 1.13.2
 
 ## Maven
 You will need to have Dubcat public repository added to your `pom.xml` under `<repositories>`
