@@ -1,5 +1,6 @@
 package cz.dubcat.xpboost.support;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
@@ -32,8 +33,20 @@ public class McMMO implements Listener {
     public void gainXp(McMMOPlayerXpGainEvent event) {
         Player player = event.getPlayer();
         UUID id = player.getUniqueId();
-        String enumSkillname = event.getSkill().name();
-        String skillName = event.getSkill().getName();
+        String enumSkillname = null;
+        String skillName = null;
+        try {
+            Object skillType = event.getClass().getMethod("getSkill").invoke(event);
+            skillName = (String) skillType.getClass().getMethod("getName").invoke(skillType);
+            enumSkillname = (String) skillType.getClass().getMethod("name").invoke(skillType);
+        } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException e) {
+            e.printStackTrace();
+            return;
+        }
+        if(enumSkillname == null || skillName == null) {
+            return;
+        }
         int exp = (int) event.getRawXpGained();
         int expnew = 0;
         if (expbug) {
