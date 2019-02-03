@@ -1,4 +1,4 @@
-# XPBoost
+http://maven.apps.dubcat.cz# XPBoost
 Updated version of XPBoost spigot plugin.
 
 Download avaliable on https://www.spigotmc.org/resources/xp-boost.13537/
@@ -11,7 +11,7 @@ You will need to have Dubcat public repository added to your `pom.xml` under `<r
 <!-- Dubcat Repository -->
 <repository>
   <id>dubcat-repo</id>
-  <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+  <url>http://maven.apps.dubcat.cz/repository/dubcat-public/</url>
 </repository>
 ```
 
