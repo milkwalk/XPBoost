@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cz.dubcat.plugins</groupId>
   <artifactId>xpboost</artifactId>
-  <version>3.0.1</version>
+  <version>3.0.2</version>
   
   <properties>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,11 +27,11 @@
   <distributionManagement>
     <repository>
       <id>dubcat-public</id>
-      <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+      <url>http://maven.apps.dubcat.cz/repository/dubcat-public/</url>
     </repository>
     <snapshotRepository>
       <id>dubcat-public</id>
-      <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+      <url>http://maven.apps.dubcat.cz/repository/dubcat-public/</url>
     </snapshotRepository>
   </distributionManagement>
   
@@ -39,7 +39,7 @@
     <!-- Dubcat Public Repository -->
     <repository>
         <id>dubcat-public</id>
-        <url>http://maven.dubcat.cz:8080/repository/dubcat-public/</url>
+        <url>http://maven.apps.dubcat.cz/repository/dubcat-public/</url>
     </repository>
     <!-- MVdW -->
     <repository>
@@ -144,7 +144,7 @@
     <dependency>
       <groupId>com.gmail.nossr50</groupId>
       <artifactId>mcmmo</artifactId>
-      <version>1.6.0</version>
+      <version>2.1.7</version>
       <scope>provided</scope>
     </dependency>
     <!-- RPGME -->

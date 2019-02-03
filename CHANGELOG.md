@@ -1,5 +1,15 @@
 # Change Log
 
+## [3.0.2] - 3/02/2019
+
+### Changed
+
+- Updated to the latest mcmmo (v2.1.7) version
+
+### Fixed
+
+- Fixed bug with xpboost item on 1.8 servers
+
 ## [3.0.1] - 18/01/2019
 
 ### Removed

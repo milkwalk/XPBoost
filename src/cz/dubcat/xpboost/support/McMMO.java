@@ -7,7 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import com.gmail.nossr50.api.ExperienceAPI;
-import com.gmail.nossr50.datatypes.skills.SkillType;
+import com.gmail.nossr50.datatypes.skills.PrimarySkillType;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
@@ -34,12 +34,12 @@ public class McMMO implements Listener {
         Player player = event.getPlayer();
         UUID id = player.getUniqueId();
 
-        SkillType skill = event.getSkill();
-        String convert = "" + skill;
+        PrimarySkillType skill = event.getSkill();
         int exp = (int) event.getRawXpGained();
         int expnew = 0;
-        if (expbug)
+        if (expbug) {
             return;
+        }
 
         if (XPBoostAPI.hasBoost(id)) {
             XPBoost xpb = XPBoostAPI.getBoost(id);
@@ -60,14 +60,14 @@ public class McMMO implements Listener {
 
         if (expnew > 0) {
             expbug = true;
-            ExperienceAPI.addXP(player, convert, expnew, "UNKNOWN");
+            ExperienceAPI.addXP(player, skill.name(), expnew, "UNKNOWN");
             expbug = false;
 
             if (plugin.getConfig().getBoolean("settings.mcmmo.msg.enabled")) {
                 String message = plugin.getConfig().getString("settings.mcmmo.msg.msg");
                 message = message.replaceAll("%newexp%", expnew + "");
                 message = message.replaceAll("%oldexp%", exp + "");
-                message = message.replaceAll("%skill%", skill + "");
+                message = message.replaceAll("%skill%", skill.getName());
                 MainAPI.sendMessage(message, player);
             }
         }
