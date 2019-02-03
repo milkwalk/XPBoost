@@ -6,10 +6,9 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class BoostOptions {
-
     private boolean enabledByDefault = true;
     private String pluginName;
-    private ConcurrentHashMap<String, Boolean> options = new ConcurrentHashMap<String, Boolean>();
+    private Map<String, Boolean> options = new ConcurrentHashMap<>();
 
     public BoostOptions(String pluginName) {
         this.pluginName = pluginName;
@@ -19,7 +18,7 @@ public class BoostOptions {
         return pluginName;
     }
 
-    public ConcurrentHashMap<String, Boolean> getOptions() {
+    public Map<String, Boolean> getOptions() {
         return options;
     }
 
@@ -32,10 +31,7 @@ public class BoostOptions {
     }
 
     public boolean isAllowedType(String expType) {
-        if (options.containsKey(expType.toUpperCase()))
-            return options.get(expType.toUpperCase());
-        else
-            return enabledByDefault;
+        return options.getOrDefault(expType.toUpperCase(), enabledByDefault);
     }
 
     @Override
