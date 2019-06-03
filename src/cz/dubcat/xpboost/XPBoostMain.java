@@ -47,7 +47,7 @@ import cz.dubcat.xpboost.events.JoinAndQuitEvent;
 import cz.dubcat.xpboost.events.ServerList;
 import cz.dubcat.xpboost.events.Signs;
 import cz.dubcat.xpboost.events.XpBoostItemListener;
-import cz.dubcat.xpboost.gui.ClickListener;
+import cz.dubcat.xpboost.gui.ShopClickListener;
 import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
 import cz.dubcat.xpboost.support.JobsReborn;
@@ -214,7 +214,7 @@ public class XPBoostMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new JoinAndQuitEvent(), this);
         getServer().getPluginManager().registerEvents(new ServerList(), this);
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
-        getServer().getPluginManager().registerEvents(new ClickListener(), this);
+        getServer().getPluginManager().registerEvents(new ShopClickListener(), this);
         getServer().getPluginManager().registerEvents(new Signs(), this);
         getServer().getPluginManager().registerEvents(new ExpRestrictions(), this);
         getServer().getPluginManager().registerEvents(new XpBoostItemListener(), this);

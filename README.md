@@ -15,7 +15,7 @@ You will need to have Dubcat public repository added to your `pom.xml` under `<r
 <!-- Dubcat Repository -->
 <repository>
   <id>dubcat-repo</id>
-  <url>http://maven.apps.dubcat.cz/repository/dubcat-public/</url>
+  <url>https://maven.dubcat.cz/repository/dubcat-public/</url>
 </repository>
 ```
 

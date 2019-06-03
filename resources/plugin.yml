@@ -1,6 +1,6 @@
-name: XPBoost
-author: Qifi (elving21)
-version: 3.0.1
+name: ${project.name}
+author: milkwalk
+version: ${project.version}
 main: cz.dubcat.xpboost.XPBoostMain
 commands:
     xpboost:

@@ -1,6 +1,5 @@
 package cz.dubcat.xpboost.events;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;
@@ -47,8 +46,7 @@ public class Signs implements Listener {
         Block block = event.getClickedBlock();
         Player player = event.getPlayer();
         Action action = event.getAction();
-        if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == XMaterial.WALL_SIGN.parseMaterial()
-                || block.getState().getType() == Material.WALL_SIGN)) {
+        if (action == Action.RIGHT_CLICK_BLOCK && (block.getState().getType() == XMaterial.WALL_SIGN.parseMaterial())) {
             Sign sign = (Sign) block.getState();
             if (sign.getLine(0).equalsIgnoreCase(
                     MainAPI.colorizeText(XPBoostMain.getPlugin().getConfig().getString("settings.sign.line1")))) {

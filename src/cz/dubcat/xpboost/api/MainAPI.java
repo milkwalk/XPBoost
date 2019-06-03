@@ -39,6 +39,7 @@ import cz.dubcat.xpboost.constructors.Database;
 import cz.dubcat.xpboost.constructors.Database.DType;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
+import cz.dubcat.xpboost.constructors.XPBoostInventoryHolder;
 import cz.dubcat.xpboost.utils.DbUtils;
 import cz.dubcat.xpboost.utils.PlayerDataManager;
 import cz.dubcat.xpboost.utils.XMaterial;
@@ -377,7 +378,7 @@ public class MainAPI {
             amount = 9;
         }
 
-        Inventory GUI = Bukkit.createInventory(null, amount, colorizeText(XPBoostMain.getLang().getString("lang.gui")));
+        Inventory GUI = Bukkit.createInventory(new XPBoostInventoryHolder(), amount, colorizeText(XPBoostMain.getLang().getString("lang.gui")));
         for (String key : XPBoostMain.boostCfg.getConfigurationSection("").getKeys(false)) {
             if (XPBoostMain.boostCfg.getBoolean(key + ".enabled") == true) {
                 i++;

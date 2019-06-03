@@ -13,15 +13,13 @@ import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.BoostAPI;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.constructors.XPBoostInventoryHolder;
 
-public class ClickListener implements Listener {
-
+public class ShopClickListener implements Listener {
     @EventHandler
     public void onInventoryClick(InventoryClickEvent event) {
-        Player player = (Player) event.getWhoClicked();
-        String inventoryName = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.gui"));
-        
-        if (event.getInventory().getName().equals(inventoryName)) {
+        if (event.getInventory().getHolder() instanceof XPBoostInventoryHolder) {
+            Player player = (Player) event.getWhoClicked();
             UUID playerUuid = player.getUniqueId();
             ItemStack clickedItem = event.getCurrentItem();
             int slot = event.getSlot();

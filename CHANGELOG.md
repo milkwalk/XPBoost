@@ -1,5 +1,13 @@
 # Change Log
 
+## [3.1.0] - 3/06/2019
+
+### Added
+- support for Minecraft 1.14.2
+
+### Changed
+- inventory recognition using `InventoryHolder`
+
 ## [3.0.2] - 3/02/2019
 
 ### Changed
