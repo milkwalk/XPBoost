@@ -2,7 +2,7 @@
 ## [3.2.0] - 2/10/2019
 ### Added
 - Vietnamese language (VN) thanks to @fecxica
-- MyPets support
+- MyPet support
 - command `/xpb giveDefinedBoost <player/all> <boostId> [durationInSeconds]` - gives a player (or everyone) some predefined boost _(boost does not have to be enabled in the config)_
 - ability to choose where you want your messages to appear in the `CHAT` or `ACTIONBAR` for `experienceGainedMessagesOptions` and `activeBoostReminderOptions` settings
 
