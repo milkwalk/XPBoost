@@ -38,7 +38,7 @@ public class GiveBoostCommand implements CommandInterface {
                     return true;
                 }
 
-                List<Condition> condToApply = new ArrayList<Condition>();
+                List<Condition> condToApply = new ArrayList<>();
 
                 // conditons
                 if (args.length == 5) {
@@ -50,7 +50,7 @@ public class GiveBoostCommand implements CommandInterface {
                         } catch (IllegalArgumentException e) {
                             MainAPI.sendMessage(
                                     "Parameter '" + c
-                                            + "' does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS",
+                                            + "' does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS,MYPET",
                                     sender);
                             return true;
                         }
@@ -62,38 +62,22 @@ public class GiveBoostCommand implements CommandInterface {
 
                 if (args[1].equalsIgnoreCase("all")) {
                     for (Player player : Bukkit.getOnlinePlayers()) {
-                        XPBoost xpb = XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, boostDuration);
-
-                        for (Condition c : Condition.values()) {
-                            if (condToApply.contains(c))
-                                xpb.putCondition(c, true);
-                            else
-                                xpb.putCondition(c, false);
-                        }
+                        this.giveBoost(player, boost, boostDuration, condToApply);
                     }
 
                     MainAPI.sendMessage("You have given &c" + boost + "x Boost &fto &call online players &ffor &c"
-                            + boostDuration + " seconds. &6" + condToApply.toString() + "", sender);
+                            + boostDuration + " seconds. &6" + condToApply.toString(), sender);
                 } else {
-
-                    if (Bukkit.getServer().getPlayer(args[1]) == null
-                            || !Bukkit.getServer().getPlayer(args[1]).isOnline()) {
+                    if (Bukkit.getServer().getPlayer(args[1]) == null || !Bukkit.getServer().getPlayer(args[1]).isOnline()) {
                         MainAPI.sendMessage("Player " + args[1] + " is not online.", sender);
+                        
                         return true;
                     }
-
-                    XPBoost xpb = XPBoostAPI.setPlayerBoost(Bukkit.getPlayer(args[1]).getUniqueId(), boost,
-                            boostDuration);
-                    for (Condition c : Condition.values()) {
-                        if (condToApply.contains(c))
-                            xpb.putCondition(c, true);
-                        else
-                            xpb.putCondition(c, false);
-                    }
-                    MainAPI.sendMessage(
-                            "You have given &c" + boost + "x Boost &fto &c" + Bukkit.getPlayer(args[1]).getName()
-                                    + " &ffor &c" + boostDuration + " seconds. &6" + condToApply.toString() + "",
-                            sender);
+                    
+                    this.giveBoost(Bukkit.getPlayer(args[1]), boost, boostDuration, condToApply);
+                    MainAPI.sendMessage( 
+                            "You have given &c" + boost + "x Boost &fto &c" + Bukkit.getPlayer(args[1]).getName() + 
+                            " &ffor &c" + boostDuration + " seconds. &6" + condToApply.toString(), sender);
                 }
 
             } else {
@@ -103,6 +87,18 @@ public class GiveBoostCommand implements CommandInterface {
             }
         }
         return true;
+    }
+    
+    private void giveBoost(Player player, double boost, int boostDuration, List<Condition> conditions) {
+        XPBoost xpb = XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, boostDuration);
+
+        for (Condition c : Condition.values()) {
+            if (conditions.contains(c)) {
+                xpb.putCondition(c, true);
+            } else {
+                xpb.putCondition(c, false);
+            }
+        }
     }
 
 }

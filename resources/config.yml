@@ -14,7 +14,7 @@ database:
 
 settings:
   config_version: 1
-  #Supported languages: ENG (English) | NL (Dutch) | ZHS (Simplified Chinese)
+  #Supported languages: ENG (English) | NL (Dutch) | ZHS (Simplified Chinese) | VN (Vietnamese)
   #If you've got a translation to some other language send it to me :)
   language: 'ENG'
   #Enable debug 0 = disabled | 1 = Normal | 2 = All information (Mostly useless for you)
@@ -33,16 +33,26 @@ settings:
     multiplier: 2.0
     #Enable/disable notification on join when global boost is active
     notification: true
-  #Do you want the message about XP gain to appear
-  doublexpmsg: true
-  #Actionban message time delay in ticks, (20 ticks = 1 sec) default 5 sec
-  actiondelay: 100
+  # Disable/Enable vanilla experience gain message
+  enableVanillaExperienceGainedMessage: true
+  # These settings apply to ALL messages about gained experience (vanilla, mcmmo and etc.)
+  experienceGainedMessagesOptions:
+    # You can completely disable ALL messages about gained experience by setting this to false
+    enabled: true
+    # Where messages should appear? This can be CHAT or ACTIONBAR
+    location: 'CHAT'
+  activeBoostReminderOptions:
+    # Do you want active xpboost reminder to be enabled?
+    enabled: true
+    # How ofter do you want players to be reminded about an active xpboost? 
+    # This value is in ticks (20 ticks = 1 sec) default 5 sec
+    periodInTicks: 100
+    # Where reminder about active xpboost should appear? This can be CHAT or ACTIONBAR
+    location: 'ACTIONBAR'
   #Enable/disable motd when global boost is active
   motdon: true
   #Boost end sound - the sound that is emitted when the boost ends
   boostEndSound: BLOCK_TRIPWIRE_CLICK_OFF
-  #Enable/disable actionbar message when boost is active
-  actionbarmsg: true
   bossbar:
     #Enable/disable bossbar when boost is active (will work only if BossBar plugin is present)
     bossbarmsg: true
@@ -69,26 +79,26 @@ settings:
     friday: false
     saturday: false
     sunday: false
-  #Disabled commands while XPBoost is active
+  # Disabled commands while XPBoost is active
   disabledcommands:
     #Do you want this feature to be enabled?
     enabled: true
-    #List of forbiden commands while XPBoost is active
+    #List of forbidden commands while XPBoost is active
     list:
     - '/give'
     - '/test'
-  #Put it to true if you are using daily global xpboost and ur server does not restart every day
+  #Put this to true if you are using daily global xpboost and your server does not restart every day
   periodicalDayCheck: false
   #McMMO support
   mcmmo:
     msg:
-      enabled: true #do you want a message below to appear?
+      enabled: true #do you want the message below to appear?
       msg: '&aGained &c%newexp% &aXP instead of &c%oldexp%&a. Skill: &c%skill%'
   #RPGme support
   rpgme:
     msg:
       enabled: true
-      #I disabled message for a STAMINA skill cuz it just spamms rly a lot
+      # STAMINA skill is ignored (too much spam)
       msg: '&aGained &c%newexp% &aXP instead of &c%oldexp%&a. Skill: &c%skill%'
   #Heroes support
   heroes:
@@ -100,3 +110,8 @@ settings:
     msg:
       enabled: true
       msg: '&aGained &c%newexp% &aXP instead of &c%oldexp%&a. Job: &c%job%'
+  #MyPet support
+  mypet:
+    msg:
+      enabled: true
+      msg: '&aYour pet has gained &c%newexp% &aXP instead of &c%oldexp%&a.'

@@ -1,0 +1,44 @@
+lang:
+  prefix: '&f[&aXPBoost&f] '
+  doublexpnot: '&fBạn Nhận Được &a%newexp% XP &fThay Vì &a%oldexp% XP'
+  actionbar: '&a%boost%x Tăng XP Đã Được Kích Hoạt'
+  bossbar: '&a%boost%x Tăng XP Đã Được Kích Hoạt'
+  motd: "&c%boost%x &aNhân XP Đã Được Bật! Tham Gia Ngay! \n &f&lĐây Là Dòng Thứ Hai!\
+    \ &c%players%/%max%"
+  boostfisnish: '&cTăng XP Đã Hết Hạn.'
+  boostcountdown: '&fSố Giây Còn Lại: &6'
+  boostinfodeny: '&fBạn Chưa Sử Dụng Tăng XP Nào.'
+  xpbuy: '&cTăng XP %boost%x &f &fĐã Bật Trong &a%time% Giây &c(%money%$).'
+  gui: '&cCửa Hàng Tăng XP'
+  xptitle: '&aTăng XP %boost%x.'
+  boostlore:
+  - '&cTăng XP %boost%x Trong %time% Giây'
+  - '&aGiá: &f&l%money%$'
+  buyfail: '&cBạn Không Đủ Tiền Để Mua! &a(%money%$)'
+  boostactive: '&cTăng XP Vẫn Đang Được Kích Hoạt!'
+  joinnotmsg: '&f&lTăng XP %boost%x Được &f&aKích Hoạt &f&lCho Tất Cả Mọi Người!'
+  cmdblock: '&cBạn Không Có Quyền &a%cmd% &cTrong Khi Tăng XP Đang Kích Hoạt:('
+  itemname: '&aTăng XP %boost%x'
+  factions_gui_name: '&cCửa Hàng Tăng XP (Factions)'
+  factions_nofaction: '&cBạn Chưa Có Trong Factions Nào Cả.'
+  factions_active_boost: Faction của bạn đã có Tăng XP Từ Trước!
+  factions_only_owners: Chỉ Có Chủ Faction Mới Có Thể Mua Tăng XP!
+  factions_expire: '&cTăng XP Của Faction Đã Hết Hạn!'
+  factions_buy: '&c%player% &fVừa Mua Tăng XP &c%boost%x &fCho Faction Trong &c%time% Giây!'
+  factions_one_boost: Bạn Không Thể Mua Thêm Trong Khi Đang Kích Hoạt Tăng XP.
+  item:
+    lore1: '&fTăng XP: &a%boost%x'
+    lore2: '&fThời Hạn: &a%time% Seconds'
+    lore3: '&8Chuột Phải Để Lấy.'
+  reload: '&fConfig Đã Được Tải Lại'
+  pluginmenu:
+  - /xpboost gui &f- Mở GUI
+  - /xpboost info &f- Thời Gian Tăng XP Còn Lại
+  - /xpboost factions &f- Mở GUI Factions
+  - /xpboost on/off &f - Bật/Tắt Tăng XP Cho Tất Cả
+  - /xpboost give <tên/all> <tăng> <thời lượng> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Cung cấp cho người chơi tăng XP
+  - /xpboost clear <tên> &f - Xóa tất cả Tăng XP Của Người Chơi
+  - /xpboost item <player> <boost> <time>&f - Đưa Vật Phẩm Tăng XP Cho Người Chơi
+  - /xpboost global <boost> [time in seconds]- Thay Đổi Tăng XP Cho Tất Cả
+  - /xpboost reload &f - Tải Lại Config
+  - Trong Dấu [] là &ckhông bắt buộc

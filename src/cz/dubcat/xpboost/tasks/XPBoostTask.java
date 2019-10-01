@@ -41,7 +41,7 @@ public class XPBoostTask extends BukkitRunnable {
                 Bukkit.getScheduler().scheduleSyncDelayedTask(XPBoostMain.getPlugin(), () -> {
                         Bukkit.getPlayer(xpb.getUuid()).playSound(
                                 Bukkit.getPlayer(xpb.getUuid()).getLocation(),
-                                Sound.valueOf(XPBoostMain.getPlugin().getConfig().getString("settings.boostEndSound")), 
+                                Sound.valueOf(XPBoostMain.getPlugin().getConfig().getString("settings.boostEndSound").toUpperCase()), 
                                 5f, 5f);
                         MainAPI.sendMessage(MESSAGE, xpb.getUuid());
                 });

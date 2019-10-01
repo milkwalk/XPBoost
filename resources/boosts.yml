@@ -24,6 +24,7 @@
 #     RPGME: false #|Same but for rgme
 #     HEROES: false #|Same but for heroes
 #     JOBS: false #|Same but for JobsReborn
+#     MYPET: true #|Same but for MyPet
 #   advanced: *OPTIONAL*
 #    //Here you can set specifically what kind of exp you want to be affected for each supported plugin. 
 #    //The format is:
@@ -38,7 +39,6 @@
 #    MCMMO:
 #      default: false //disabling everyhting by default
 #      swords: true //enabling swords experience
-#
 
 boost1:
   enabled: true
@@ -60,6 +60,7 @@ boost1:
     HEROES: true
     JOBS: true
     MCMMO: true
+    MYPET: true
   advanced:
     #Here you can choose specifically what kind of experience will be affected by the boost
     SKILLAPI: #this boost will ignore crafting experience from SKILLAPI

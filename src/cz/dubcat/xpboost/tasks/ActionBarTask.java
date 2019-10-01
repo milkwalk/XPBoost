@@ -11,18 +11,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
-import cz.dubcat.xpboost.utils.ActionBar;
 
 public class ActionBarTask extends BukkitRunnable {
-    private ActionBar actionBarUtil;
-    
-    public ActionBarTask() {
-        actionBarUtil = new ActionBar();
-    }
+    private final String reminderOptionsPath = "settings.activeBoostReminderOptions";
     
     @Override
     public void run() {
-        if (XPBoostMain.getPlugin().getConfig().getBoolean("settings.actionbarmsg")) {
+        if (XPBoostMain.getPlugin().getConfig().getBoolean(reminderOptionsPath + ".enabled")) {
             Map<UUID, XPBoost> mp = XPBoostMain.allplayers;
             Iterator<Entry<UUID, XPBoost>> it = mp.entrySet().iterator();
 
@@ -36,7 +31,7 @@ public class ActionBarTask extends BukkitRunnable {
                             .replaceAll("%timeleft%", String.valueOf((int) xpb.getTimeRemaining())));
                     
                     Bukkit.getScheduler().scheduleSyncDelayedTask(XPBoostMain.getPlugin(), () -> {
-                        actionBarUtil.sendActionBar(Bukkit.getPlayer(pair.getKey()), message);
+                        XPBoostMain.getPlugin().getExperienceNotifier().reminderNotification(Bukkit.getPlayer(pair.getKey()), message);
                     });
                 }
             }

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cz.dubcat.plugins</groupId>
   <artifactId>xpboost</artifactId>
-  <version>3.1.0</version>
+  <version>3.2.0</version>
   <name>XPBoost</name>
 
   <properties>
@@ -78,6 +78,10 @@
     <repository>
       <id>inventive-repo</id>
       <url>https://repo.inventivetalent.org/content/groups/public/</url>
+    </repository>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
     </repository>
   </repositories>
 
@@ -193,6 +197,13 @@
       <groupId>com.github.Eniripsa96</groupId>
       <artifactId>skillapi</artifactId>
       <version>3.108</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- MyPet -->
+    <dependency>
+      <groupId>de.keyle.mypet</groupId>
+      <artifactId>mypet</artifactId>
+      <version>3.5</version>
       <scope>provided</scope>
     </dependency>
     <!-- Jobs -->

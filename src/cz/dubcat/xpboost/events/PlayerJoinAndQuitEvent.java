@@ -11,7 +11,7 @@ import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class JoinAndQuitEvent implements Listener {
+public class PlayerJoinAndQuitEvent implements Listener {
 
     @EventHandler
     public void onJoin(PlayerJoinEvent e) {

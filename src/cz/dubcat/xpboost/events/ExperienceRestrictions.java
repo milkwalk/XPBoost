@@ -11,7 +11,7 @@ import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.utils.XMaterial;
 
-public class ExpRestrictions implements Listener {
+public class ExperienceRestrictions implements Listener {
 
     @EventHandler
     public void onExpBottle(ExpBottleEvent event) {

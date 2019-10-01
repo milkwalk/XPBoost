@@ -10,7 +10,6 @@ import com.herocraftonline.heroes.api.events.ExperienceChangeEvent;
 import com.herocraftonline.heroes.characters.classes.HeroClass.ExperienceType;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -53,10 +52,10 @@ public class Heroes implements Listener {
 
             if (XPBoostMain.getPlugin().getConfig().getBoolean("settings.heroes.msg.enabled")) {
                 String message = XPBoostMain.getPlugin().getConfig().getString("settings.heroes.msg.msg");
-                message = message.replaceAll("%newexp%", expnew + "");
-                message = message.replaceAll("%oldexp%", exp + "");
-                message = message.replaceAll("%source%", skill + "");
-                MainAPI.sendMessage(message, player);
+                message = message.replaceAll("%newexp%", String.valueOf(expnew));
+                message = message.replaceAll("%oldexp%", String.valueOf(exp));
+                message = message.replaceAll("%source%", String.valueOf(skill));
+                XPBoostMain.getPlugin().getExperienceNotifier().experienceGainedNotification(player, message);
             }
         }
 

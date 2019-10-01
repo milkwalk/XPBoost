@@ -15,7 +15,7 @@ import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
-public class ExpListener implements Listener {
+public class PlayerExperienceChangeListener implements Listener {
 
     private static GlobalBoost gl = XPBoostMain.GLOBAL_BOOST;
     private static final Condition CONDITION_NAME = Condition.VANILLA;
@@ -47,15 +47,14 @@ public class ExpListener implements Listener {
 
         if (expnew > 0) {
             event.setAmount(expnew);
-
             MainAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP ("
                     + CONDITION_NAME + ")", Debug.NORMAL);
 
-            if (XPBoostMain.getPlugin().getConfig().getBoolean("settings.doublexpmsg")) {
-                String message = XPBoostMain.getLang().getString("lang.doublexpnot").replaceAll("%newexp%", expnew + "")
-                        .replaceAll("%oldexp%", exp + "");
-
-                MainAPI.sendMessage(message, player);
+            String message = XPBoostMain.getLang().getString("lang.doublexpnot").replaceAll("%newexp%", String.valueOf(expnew))
+                    .replaceAll("%oldexp%", String.valueOf(exp));
+            
+            if(XPBoostMain.getPlugin().getConfig().getBoolean("settings.enableVanillaExperienceGainedMessage")) {
+                XPBoostMain.getPlugin().getExperienceNotifier().experienceGainedNotification(player, message);
             }
         }
     }

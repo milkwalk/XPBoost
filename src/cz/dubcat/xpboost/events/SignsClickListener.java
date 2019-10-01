@@ -13,7 +13,7 @@ import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.utils.XMaterial;
 
-public class Signs implements Listener {
+public class SignsClickListener implements Listener {
 
     @EventHandler
     public void onSignCreate(SignChangeEvent e) {

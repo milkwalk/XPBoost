@@ -47,8 +47,8 @@ import cz.dubcat.xpboost.utils.XMaterial;
 public class MainAPI {
 
     public enum Condition {
-        VANILLA, SKILLAPI, MCMMO, RPGME, HEROES, JOBS;
-        public static Condition[] CONDITIONS = new Condition[] { VANILLA, SKILLAPI, MCMMO, RPGME, HEROES, JOBS };
+        VANILLA, SKILLAPI, MCMMO, RPGME, HEROES, JOBS, MYPET;
+        public static Condition[] CONDITIONS = new Condition[] { VANILLA, SKILLAPI, MCMMO, RPGME, HEROES, JOBS, MYPET };
     }
 
     public static File playersyml;

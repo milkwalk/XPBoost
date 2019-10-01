@@ -23,9 +23,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 import be.maximvdw.placeholderapi.PlaceholderAPI;
 import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
+import cz.dubcat.xpboost.api.messages.ExperienceNotifier;
 import cz.dubcat.xpboost.commands.ClearCommand;
 import cz.dubcat.xpboost.commands.CommandHandler;
 import cz.dubcat.xpboost.commands.GiveBoostCommand;
+import cz.dubcat.xpboost.commands.GiveDefinedBoostCommand;
 import cz.dubcat.xpboost.commands.GlobalCommand;
 import cz.dubcat.xpboost.commands.GlobalDisableCommand;
 import cz.dubcat.xpboost.commands.GlobalEnableCommand;
@@ -41,11 +43,11 @@ import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import cz.dubcat.xpboost.events.CommandListener;
-import cz.dubcat.xpboost.events.ExpListener;
-import cz.dubcat.xpboost.events.ExpRestrictions;
-import cz.dubcat.xpboost.events.JoinAndQuitEvent;
-import cz.dubcat.xpboost.events.ServerList;
-import cz.dubcat.xpboost.events.Signs;
+import cz.dubcat.xpboost.events.ExperienceRestrictions;
+import cz.dubcat.xpboost.events.PlayerExperienceChangeListener;
+import cz.dubcat.xpboost.events.PlayerJoinAndQuitEvent;
+import cz.dubcat.xpboost.events.ServerListListener;
+import cz.dubcat.xpboost.events.SignsClickListener;
 import cz.dubcat.xpboost.events.XpBoostItemListener;
 import cz.dubcat.xpboost.gui.ShopClickListener;
 import cz.dubcat.xpboost.support.BossBarN;
@@ -74,6 +76,7 @@ public class XPBoostMain extends JavaPlugin {
     public static FileConfiguration lang;
     public static File boostFile;
     public static FileConfiguration boostCfg;
+    private ExperienceNotifier experienceNotifier;
 
     @Override
     public void onEnable() {
@@ -104,6 +107,7 @@ public class XPBoostMain extends JavaPlugin {
         }
 
         this.copyLangFiles();
+        experienceNotifier = new ExperienceNotifier();
 
         // language
         if (getConfig().contains("settings.language")) {
@@ -207,16 +211,16 @@ public class XPBoostMain extends JavaPlugin {
         
         registerCommands();
         new XPBoostTask().runTaskTimerAsynchronously(this, 0, 5);
-        new ActionBarTask().runTaskTimerAsynchronously(this, 100, getConfig().getLong("settings.actiondelay"));
+        new ActionBarTask().runTaskTimerAsynchronously(this, 100, getConfig().getLong("settings.activeBoostReminderOptions.periodInTicks"));
 
         // register events
-        getServer().getPluginManager().registerEvents(new ExpListener(), this);
-        getServer().getPluginManager().registerEvents(new JoinAndQuitEvent(), this);
-        getServer().getPluginManager().registerEvents(new ServerList(), this);
+        getServer().getPluginManager().registerEvents(new PlayerExperienceChangeListener(), this);
+        getServer().getPluginManager().registerEvents(new PlayerJoinAndQuitEvent(), this);
+        getServer().getPluginManager().registerEvents(new ServerListListener(), this);
         getServer().getPluginManager().registerEvents(new CommandListener(), this);
         getServer().getPluginManager().registerEvents(new ShopClickListener(), this);
-        getServer().getPluginManager().registerEvents(new Signs(), this);
-        getServer().getPluginManager().registerEvents(new ExpRestrictions(), this);
+        getServer().getPluginManager().registerEvents(new SignsClickListener(), this);
+        getServer().getPluginManager().registerEvents(new ExperienceRestrictions(), this);
         getServer().getPluginManager().registerEvents(new XpBoostItemListener(), this);
 
         // Auto global boost task
@@ -254,7 +258,7 @@ public class XPBoostMain extends JavaPlugin {
         getLogger().info("Disabled.");
     }
 
-    public static Plugin getPlugin() {
+    public static XPBoostMain getPlugin() {
         return plugin;
     }
 
@@ -264,6 +268,10 @@ public class XPBoostMain extends JavaPlugin {
 
     public static Logger getLog() {
         return Bukkit.getLogger();
+    }
+    
+    public ExperienceNotifier getExperienceNotifier() { 
+        return this.experienceNotifier;
     }
 
     public Debug reloadDebug() {
@@ -300,6 +308,7 @@ public class XPBoostMain extends JavaPlugin {
         handler.register("clear", new ClearCommand());
         handler.register("item", new ItemCommand(this));
         handler.register("global", new GlobalCommand(this));
+        handler.register("giveDefinedBoost", new GiveDefinedBoostCommand());
 
         getCommand("xpboost").setExecutor(handler);
         getCommand("xpb").setExecutor(handler);

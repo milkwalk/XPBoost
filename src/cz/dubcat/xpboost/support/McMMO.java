@@ -11,7 +11,6 @@ import com.gmail.nossr50.api.ExperienceAPI;
 import com.gmail.nossr50.events.experience.McMMOPlayerXpGainEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -80,7 +79,7 @@ public class McMMO implements Listener {
                 message = message.replaceAll("%newexp%", expnew + "");
                 message = message.replaceAll("%oldexp%", exp + "");
                 message = message.replaceAll("%skill%", skillName);
-                MainAPI.sendMessage(message, player);
+                XPBoostMain.getPlugin().getExperienceNotifier().experienceGainedNotification(player, message);
             }
         }
     }

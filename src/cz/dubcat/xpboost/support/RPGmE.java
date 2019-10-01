@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -56,7 +55,7 @@ public class RPGmE implements Listener {
                     message = message.replaceAll("%newexp%", expnew + "");
                     message = message.replaceAll("%oldexp%", exp + "");
                     message = message.replaceAll("%skill%", skill + "");
-                    MainAPI.sendMessage(message, player);
+                    XPBoostMain.getPlugin().getExperienceNotifier().experienceGainedNotification(player, message);
                 }
             }
         }

@@ -9,7 +9,6 @@ import org.bukkit.event.Listener;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
 import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -56,7 +55,7 @@ public class JobsReborn implements Listener {
                 message = message.replaceAll("%newexp%", String.valueOf(newExp));
                 message = message.replaceAll("%oldexp%", String.valueOf(exp));
                 message = message.replaceAll("%job%", job);
-                MainAPI.sendMessage(message, player);
+                XPBoostMain.getPlugin().getExperienceNotifier().experienceGainedNotification(player, message);
             }
         }
     }

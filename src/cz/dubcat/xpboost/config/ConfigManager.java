@@ -71,6 +71,7 @@ public class ConfigManager {
                 "/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost",
                 "/xpboost clear <name> &f - Clears active boost",
                 "/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player",
+                "/xpboost giveDefinedBoost <player/all> <boostId> [durationInSeconds]&f - Gives a predefined boost",
                 "/xpboost global <boost> [time in seconds]- Changes global boost multiplier",
                 "/xpboost reload &f - Reloads config", "What ever is inside [] is &coptional"), cfg);
 

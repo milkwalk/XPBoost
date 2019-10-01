@@ -8,7 +8,7 @@ import org.bukkit.event.server.ServerListPingEvent;
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.MainAPI;
 
-public class ServerList implements Listener {
+public class ServerListListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onServerListPing(ServerListPingEvent event) {
         if (XPBoostMain.GLOBAL_BOOST.isEnabled()) {
