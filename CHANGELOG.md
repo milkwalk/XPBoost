@@ -1,5 +1,5 @@
 # Change Log
-## [3.2.0] - 27/07/2019
+## [3.2.0] - 2/10/2019
 ### Added
 - Vietnamese language (VN) thanks to @fecxica
 - MyPets support
