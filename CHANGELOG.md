@@ -1,6 +1,6 @@
 # Change Log
 
-## [3.2.1] - 2/10/2019
+## [3.2.1] - 13/10/2019
 
 ### Fixed
 - bug with `PlayerInteractEvent` for 1.8.8
