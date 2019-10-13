@@ -37,6 +37,7 @@ public class XpBoostItemListener implements Listener {
         }
     }
     
+    @SuppressWarnings("deprecation")
     public void processPlayerInteractEvent(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         ItemStack item = player.getItemInHand();

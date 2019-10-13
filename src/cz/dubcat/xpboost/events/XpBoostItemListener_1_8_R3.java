@@ -16,6 +16,7 @@ public class XpBoostItemListener_1_8_R3 implements Listener {
     public void rightClick(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
             Player player = event.getPlayer();
+            @SuppressWarnings("deprecation")
             ItemStack item = player.getItemInHand();
             
             if (item != null && item.getType() == Material.getMaterial(XPBoostMain.getPlugin().getConfig().getString("settings.itemmaterial"))) {
