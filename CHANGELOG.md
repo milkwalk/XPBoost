@@ -1,5 +1,12 @@
 # Change Log
+
+## [3.2.1] - 2/10/2019
+
+### Fixed
+- bug with `PlayerInteractEvent` for 1.8.8
+
 ## [3.2.0] - 2/10/2019
+
 ### Added
 - Vietnamese language (VN) thanks to @fecxica
 - MyPet support

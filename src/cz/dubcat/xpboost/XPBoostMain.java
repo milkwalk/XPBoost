@@ -49,6 +49,7 @@ import cz.dubcat.xpboost.events.PlayerJoinAndQuitEvent;
 import cz.dubcat.xpboost.events.ServerListListener;
 import cz.dubcat.xpboost.events.SignsClickListener;
 import cz.dubcat.xpboost.events.XpBoostItemListener;
+import cz.dubcat.xpboost.events.XpBoostItemListener_1_8_R3;
 import cz.dubcat.xpboost.gui.ShopClickListener;
 import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
@@ -221,7 +222,13 @@ public class XPBoostMain extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new ShopClickListener(), this);
         getServer().getPluginManager().registerEvents(new SignsClickListener(), this);
         getServer().getPluginManager().registerEvents(new ExperienceRestrictions(), this);
-        getServer().getPluginManager().registerEvents(new XpBoostItemListener(), this);
+        
+        String version = getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+        if(version.equalsIgnoreCase("v1_8_R3")) {
+            getServer().getPluginManager().registerEvents(new XpBoostItemListener_1_8_R3(), this);
+        } else {
+            getServer().getPluginManager().registerEvents(new XpBoostItemListener(), this);
+        }
 
         // Auto global boost task
         if (getConfig().getBoolean("settings.periodicalDayCheck")) {

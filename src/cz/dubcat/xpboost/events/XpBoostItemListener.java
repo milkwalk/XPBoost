@@ -26,59 +26,63 @@ public class XpBoostItemListener implements Listener {
             ItemStack item = player.getItemInHand();
             
             if (item != null && item.getType() == Material.getMaterial(XPBoostMain.getPlugin().getConfig().getString("settings.itemmaterial"))) {
-                try {
-                    EquipmentSlot e = event.getHand();
-                    if (!e.equals(EquipmentSlot.HAND)) {
-                        return;
-                    }
-                } catch (Exception e) {
-                    //ignore
+                EquipmentSlot e = event.getHand();
+                
+                if (!e.equals(EquipmentSlot.HAND)) {
+                    return;
                 }
                 
-                if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().hasLore()) {
-                    String itemName = item.getItemMeta().getDisplayName();
-                    List<String> lore = item.getItemMeta().getLore();
+                this.processPlayerInteractEvent(event);
+            }
+        }
+    }
+    
+    public void processPlayerInteractEvent(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        ItemStack item = player.getItemInHand();
+        
+        if (item.hasItemMeta() && item.getItemMeta().hasDisplayName() && item.getItemMeta().hasLore()) {
+            String itemName = item.getItemMeta().getDisplayName();
+            List<String> lore = item.getItemMeta().getLore();
 
-                    int i = 0;
-                    double boost = 0;
-                    Integer time = 0;
+            int i = 0;
+            double boost = 0;
+            Integer time = 0;
 
-                    try {
-                        for (String l : lore) {
-                            String str = MainAPI.stripColours(l);
-                            str = str.replaceAll("[^\\d.]", "");
-                            if (i == 0) {
-                                boost = Double.parseDouble(str);
-                            } else if (i == 1) {
-                                time = Integer.parseInt(str);
-                                break;
-                            }
-                            i++;
-                        }
-                    } catch (NumberFormatException ex) {
-                        MainAPI.debug("Cannot recognise XPBoost item.", Debug.NORMAL);
-                        return;
+            try {
+                for (String l : lore) {
+                    String str = MainAPI.stripColours(l);
+                    str = str.replaceAll("[^\\d.]", "");
+                    if (i == 0) {
+                        boost = Double.parseDouble(str);
+                    } else if (i == 1) {
+                        time = Integer.parseInt(str);
+                        break;
                     }
-
-                    String name = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.itemname")
-                            .replace("%boost%", String.valueOf(boost)).replace("%time%", String.valueOf(time)));
-
-                    if (itemName.equals(name) || itemName.contains(MainAPI.stripColours(name)) || itemName.contains(name)) {
-                        if (XPBoostAPI.hasBoost(player.getUniqueId())) {
-                            MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
-                            event.setCancelled(true);
-                            return;
-                        }
-
-                        XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, time);
-                        MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.xpbuy").replace("%boost%", "" + boost)
-                                .replace("%time%", "" + time).replace("%money%", ""), player);
-
-                        player.getInventory().setItemInMainHand(null);
-                        player.updateInventory();
-                        event.setCancelled(true);
-                    }
+                    i++;
                 }
+            } catch (NumberFormatException ex) {
+                MainAPI.debug("Cannot recognise XPBoost item.", Debug.NORMAL);
+                return;
+            }
+
+            String name = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.itemname")
+                    .replace("%boost%", String.valueOf(boost)).replace("%time%", String.valueOf(time)));
+
+            if (itemName.equals(name) || itemName.contains(MainAPI.stripColours(name)) || itemName.contains(name)) {
+                if (XPBoostAPI.hasBoost(player.getUniqueId())) {
+                    MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
+                    event.setCancelled(true);
+                    return;
+                }
+
+                XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, time);
+                MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.xpbuy").replace("%boost%", "" + boost)
+                        .replace("%time%", "" + time).replace("%money%", ""), player);
+
+                player.getInventory().setItemInMainHand(null);
+                player.updateInventory();
+                event.setCancelled(true);
             }
         }
     }
