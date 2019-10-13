@@ -81,7 +81,7 @@ public class XpBoostItemListener implements Listener {
                 MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.xpbuy").replace("%boost%", "" + boost)
                         .replace("%time%", "" + time).replace("%money%", ""), player);
 
-                player.getInventory().setItemInMainHand(null);
+                player.setItemInHand(null);
                 player.updateInventory();
                 event.setCancelled(true);
             }
