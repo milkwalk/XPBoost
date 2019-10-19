@@ -45,15 +45,9 @@ import cz.dubcat.xpboost.utils.PlayerDataManager;
 import cz.dubcat.xpboost.utils.XMaterial;
 
 public class MainAPI {
-
-    public enum Condition {
-        VANILLA, SKILLAPI, MCMMO, RPGME, HEROES, JOBS, MYPET;
-        public static Condition[] CONDITIONS = new Condition[] { VANILLA, SKILLAPI, MCMMO, RPGME, HEROES, JOBS, MYPET };
-    }
-
     public static File playersyml;
     public static FileConfiguration playerCfg;
-    public static PlayerDataManager playerData;;
+    public static PlayerDataManager playerData;
 
     public static XPBoost loadPlayer(UUID uuid) {
         double boost = 0;

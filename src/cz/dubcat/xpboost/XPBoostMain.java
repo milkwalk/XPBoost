@@ -3,6 +3,8 @@ package cz.dubcat.xpboost;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Map;
@@ -10,7 +12,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import org.apache.commons.io.FileUtils;
 import org.bstats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -99,12 +100,9 @@ public class XPBoostMain extends JavaPlugin {
 
         File boostFileGen = new File(XPBoostMain.getPlugin().getDataFolder() + "/boosts.yml");
         if (!boostFileGen.exists()) {
-            try {
-                FileUtils.copyInputStreamToFile(getClass().getResourceAsStream("/boosts.yml"),
-                        new File(XPBoostMain.getPlugin().getDataFolder() + "/boosts.yml"));
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            }
+            InputStream initialStream = getClass().getResourceAsStream("/boosts.yml");
+            File targetFile = new File(XPBoostMain.getPlugin().getDataFolder() + "/boosts.yml");
+            this.copyInputStreamToFile(initialStream, targetFile);
         }
 
         this.copyLangFiles();
@@ -351,22 +349,25 @@ public class XPBoostMain extends JavaPlugin {
     private void copyLangFiles() {
         File langNl = new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_NL.yml");
         if (!langNl.exists()) {
-            InputStream stream = getClass().getResourceAsStream("/lang/lang_NL.yml");
-            try {
-                FileUtils.copyInputStreamToFile(stream, langNl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            langNl.mkdirs();
+            this.copyInputStreamToFile(getClass().getResourceAsStream("/lang/lang_NL.yml"), 
+                    new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_NL.yml"));
         }
         
         File langZhs = new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_ZHS.yml");
         if (!langZhs.exists()) {
-            InputStream stream = getClass().getResourceAsStream("/lang/lang_ZHS.yml");
-            try {
-                FileUtils.copyInputStreamToFile(stream, langZhs);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            langZhs.mkdirs();
+            this.copyInputStreamToFile(getClass().getResourceAsStream("/lang/lang_ZHS.yml"), 
+                    new File(XPBoostMain.getPlugin().getDataFolder() + "/lang/lang_ZHS.yml"));
+        }
+    }
+    
+    private void copyInputStreamToFile(InputStream stream, File targetFile) {
+        try {
+            Files.copy(stream, targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            stream.close();
+        } catch (IOException e1) {
+            e1.printStackTrace();
         }
     }
 }

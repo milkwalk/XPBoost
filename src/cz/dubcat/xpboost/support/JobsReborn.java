@@ -9,7 +9,7 @@ import org.bukkit.event.Listener;
 import com.gamingmesh.jobs.api.JobsExpGainEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI.Condition;
+import cz.dubcat.xpboost.api.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;

@@ -8,8 +8,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.XPBoostMain;
+import cz.dubcat.xpboost.api.Condition;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
@@ -23,10 +23,11 @@ public class InfoCommand implements CommandInterface {
 
             if (XPBoostAPI.hasBoost(id)) {
                 XPBoost xpb = XPBoostAPI.getBoost(id);
-                MainAPI.sendMessage("Boost: &6" + xpb.getBoost(), player);
+                MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.info_command.boost")
+                        .replaceAll("%boost%", String.valueOf(xpb.getBoost())), player);
                 MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostcountdown") + xpb.getTimeRemaining(), player);
                 if (xpb.getConditions().size() > 0) {
-                    MainAPI.sendMessage("Boost type: ", player);
+                    MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.info_command.boost_type"), player);
                     for (Entry<Condition, Boolean> set : xpb.getConditions().entrySet()) {
                         if (set.getValue())
                             MainAPI.sendMessage("  &a" + set.getKey().name(), player);

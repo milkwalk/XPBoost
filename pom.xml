@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cz.dubcat.plugins</groupId>
   <artifactId>xpboost</artifactId>
-  <version>3.2.1</version>
+  <version>3.2.2</version>
   <name>XPBoost</name>
 
   <properties>
@@ -28,26 +28,6 @@
           <source>1.8</source>
           <target>1.8</target>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>1.6</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-            <configuration>
-              <artifactSet>
-                <includes>
-                  <include>commons-io:commons-io</include>
-                </includes>
-              </artifactSet>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
@@ -80,6 +60,10 @@
       <url>https://repo.inventivetalent.org/content/groups/public/</url>
     </repository>
     <repository>
+        <id>papermc</id>
+        <url>https://papermc.io/repo/repository/maven-public/</url>
+    </repository>
+    <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
     </repository>
@@ -90,7 +74,7 @@
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.14.2-R0.1-SNAPSHOT</version>
+      <version>1.14.4-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <!-- MVdWPlaceholderAPI -->
@@ -212,12 +196,6 @@
       <artifactId>jobs</artifactId>
       <version>4.9.5</version>
       <scope>provided</scope>
-    </dependency>
-    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.6</version>
     </dependency>
   </dependencies>
 </project>

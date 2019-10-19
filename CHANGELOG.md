@@ -1,4 +1,12 @@
 # Change Log
+## [3.2.2] - 18/10/2019
+
+### Added
+- lang strings for `/xpboost info` command
+- lang string for non existent command
+
+### Fixed
+- issue with start up on paper spigot
 
 ## [3.2.1] - 13/10/2019
 

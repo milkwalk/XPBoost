@@ -40,6 +40,10 @@ lang:
   factions_expire: '&cBoost for you faction has expired!'
   factions_buy: '&c%player% &fhas bought a boost of &c%boost%x &ffor whole faction for &c%time% seconds!'
   factions_one_boost: 'You cannot purchase any boosts while faction boost is active.'
+  command_not_found: '&cThis command doesnt exist.'
+  info_command:
+    boost: 'Boost: &6%boost%'
+    boost_type: 'Boost type:'
   #Three lores on a given item, you can have up to 5 lines
   item:
     lore1: '&fBoost: &a%boost%x'

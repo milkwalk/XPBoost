@@ -3,8 +3,8 @@ package cz.dubcat.xpboost.constructors;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import cz.dubcat.xpboost.api.Condition;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Condition;
 import lombok.Data;
 
 @Data

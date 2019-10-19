@@ -8,8 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerExpChangeEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
+import cz.dubcat.xpboost.api.Condition;
 import cz.dubcat.xpboost.api.MainAPI;
-import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -35,10 +35,11 @@ public class PlayerExperienceChangeListener implements Listener {
 
         if (XPBoostAPI.hasBoost(id)) {
             XPBoost xpb = XPBoostAPI.getBoost(id);
-            if (xpb.hasCondition(CONDITION_NAME))
+            if (xpb.hasCondition(CONDITION_NAME)) {
                 expnew = (int) Math.round(exp * xpb.getBoost());
-            else
+            } else {
                 return;
+            }
         }
 
         if (gl.isEnabled()) {

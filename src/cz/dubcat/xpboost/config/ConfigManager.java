@@ -65,6 +65,11 @@ public class ConfigManager {
         setLine("lang.item.lore3", "&8Right-Click to gain boost.", cfg);
         setLine("lang.reload", "&fConfig has been reloaded", cfg);
 
+        setLine("lang.info_command.boost", "Boost: &6%boost%", cfg);
+        setLine("lang.info_command.boost_type", "Boost type:", cfg);
+        
+        setLine("lang.command_not_found", "&cThis command doesnt exist.", cfg);
+        
         setLine("lang.pluginmenu", Arrays.asList("/xpboost gui &f- Opens up GUI",
                 "/xpboost info &f- Shows time remaining", "/xpboost factions &f- Opens up a factions GUI",
                 "/xpboost on/off &f - Enables/disables global XP Boost",

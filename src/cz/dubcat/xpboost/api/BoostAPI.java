@@ -3,7 +3,6 @@ package cz.dubcat.xpboost.api;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI.Condition;
 import cz.dubcat.xpboost.constructors.BoostOptions;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import cz.dubcat.xpboost.exceptions.BoostNotFoundException;
