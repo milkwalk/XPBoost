@@ -1,7 +1,7 @@
 package cz.dubcat.xpboost.commands;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -38,18 +38,17 @@ public class GiveBoostCommand implements CommandInterface {
                     return true;
                 }
 
-                List<Condition> condToApply = new ArrayList<>();
-
-                // conditons
+                Set<Condition> condToApply = new HashSet<>();
+                
                 if (args.length == 5) {
                     String[] potenConditions = args[4].split(",");
 
-                    for (String c : potenConditions) {
+                    for (String condition : potenConditions) {
                         try {
-                            condToApply.add(Condition.valueOf(c.toUpperCase()));
+                            condToApply.add(Condition.valueOf(condition.toUpperCase()));
                         } catch (IllegalArgumentException e) {
                             MainAPI.sendMessage(
-                                    "Parameter '" + c
+                                    "Parameter '" + condition
                                             + "' does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS,MYPET",
                                     sender);
                             return true;
@@ -89,14 +88,16 @@ public class GiveBoostCommand implements CommandInterface {
         return true;
     }
     
-    private void giveBoost(Player player, double boost, int boostDuration, List<Condition> conditions) {
+    private void giveBoost(Player player, double boost, int boostDuration, Set<Condition> conditions) {
         XPBoost xpb = XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, boostDuration);
 
-        for (Condition c : Condition.values()) {
-            if (conditions.contains(c)) {
-                xpb.putCondition(c, true);
-            } else {
-                xpb.putCondition(c, false);
+        if(conditions != null && conditions.size() > 0) {
+            for (Condition c : Condition.values()) {
+                if (conditions.contains(c)) {
+                    xpb.putCondition(c, true);
+                } else {
+                    xpb.putCondition(c, false);
+                }
             }
         }
     }
