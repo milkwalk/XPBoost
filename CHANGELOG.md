@@ -1,4 +1,15 @@
 # Change Log
+## [3.3.0] - 29/11/2019
+
+### Added
+- set `api-version` to `1.13` in `plugin.yml`
+- ability to disable effect of xp boost for experience from _XP Bottles_ for **Paper Spigot**
+
+### Fixed
+
+- colorization for `ACTIONBAR` messages
+- `/xpb give` command dsiabling all boost types if none were provided (should be enabled by default)
+
 ## [3.2.2] - 18/10/2019
 
 ### Added
