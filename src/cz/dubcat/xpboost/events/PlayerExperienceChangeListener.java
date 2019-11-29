@@ -2,6 +2,8 @@ package cz.dubcat.xpboost.events;
 
 import java.util.UUID;
 
+import org.bukkit.entity.ExperienceOrb;
+import org.bukkit.entity.ExperienceOrb.SpawnReason;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -22,11 +24,18 @@ public class PlayerExperienceChangeListener implements Listener {
 
     @EventHandler
     public void onExpChange(PlayerExpChangeEvent event) {
-
         if (XPBoostMain.getPlugin().getConfig().getBoolean("settings.disablevanillaxp")) {
             return;
         }
-
+        
+        if(XPBoostMain.getPlugin().isPaperSpigot() && event.getSource() instanceof ExperienceOrb && 
+                XPBoostMain.getPlugin().getConfig().getInt("settings.xpbottlemode") == 4) {
+            ExperienceOrb expOrb = (ExperienceOrb)event.getSource();
+            
+            if(expOrb.getSpawnReason() == SpawnReason.EXP_BOTTLE) {
+                return;
+            }
+        }
         Player player = event.getPlayer();
 
         int exp = event.getAmount();
@@ -41,7 +50,6 @@ public class PlayerExperienceChangeListener implements Listener {
                 return;
             }
         }
-
         if (gl.isEnabled()) {
             expnew += (int) Math.round(exp * gl.getGlobalBoost());
         }

@@ -22,9 +22,10 @@ settings:
   #If you dont want to send metrics (statistics about the plugin) set this to false
   metrics: true
   #Do you want to disable xp bottles? SELECT MODE 1 or 2 or 3
-  #Mode 1: Normal behaviour
-  #Mode 2: Set dropped XP from xp bottles to 0
-  #Mode 3: Disallow players to drop EXP bottles while their boost is active
+  # Mode 1: Normal behaviour
+  # Mode 2: Set dropped XP from xp bottles to 0
+  # Mode 3: Disallow players to drop EXP bottles while their boost is active
+  # Mode 4: (!!THIS MODE WILL ONLY WORK ON PAPER SPIGOT!!) Ignore experience from xp bottles when applying xp boost
   xpbottlemode: 1
   #If you want to use only SkillAPI/McMmmo/Heroes/RpgMe etc. experience, set this to true and vanilla xp will be unaffected
   disablevanillaxp: false

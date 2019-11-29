@@ -79,6 +79,7 @@ public class XPBoostMain extends JavaPlugin {
     public static File boostFile;
     public static FileConfiguration boostCfg;
     private ExperienceNotifier experienceNotifier;
+    private boolean isPaperSpigot = false;
 
     @Override
     public void onEnable() {
@@ -88,6 +89,15 @@ public class XPBoostMain extends JavaPlugin {
         cfg.loadDefaultConfig();
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
+        
+        try {
+            if(Class.forName("com.destroystokyo.paper.VersionHistoryManager$VersionData") != null) {
+                this.isPaperSpigot = true;
+                log.info("Detected PaperSpigot - enabling paper spigot specific features.");
+            }
+        } catch (ClassNotFoundException e) {
+            //ignore error
+        }
         
         if (XPBoostMain.getPlugin().getConfig().getString("database.type").equalsIgnoreCase("mysql")) {
             if (db.loadMysql()) {
@@ -277,6 +287,10 @@ public class XPBoostMain extends JavaPlugin {
     
     public ExperienceNotifier getExperienceNotifier() { 
         return this.experienceNotifier;
+    }
+    
+    public boolean isPaperSpigot() {
+        return this.isPaperSpigot;
     }
 
     public Debug reloadDebug() {
