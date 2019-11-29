@@ -1,5 +1,6 @@
 package cz.dubcat.xpboost.constructors;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -13,8 +14,8 @@ public class XPBoost {
     private UUID uuid;
     private double boost = 1;
     private long endtime;
-    private ConcurrentHashMap<Condition, Boolean> conditions = new ConcurrentHashMap<>();
-    private ConcurrentHashMap<String, BoostOptions> advancedOptions = new ConcurrentHashMap<>();
+    private Map<Condition, Boolean> conditions = new ConcurrentHashMap<>();
+    private Map<String, BoostOptions> advancedOptions = new ConcurrentHashMap<>();
     private int boostTime;
 
     public XPBoost(UUID id, double boost, long endtime, ConcurrentHashMap<Condition, Boolean> conditions) {
