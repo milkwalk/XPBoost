@@ -37,7 +37,7 @@ public class ExperienceNotifier {
     private void sendNotification(Player player, MessageLocation messageLocation, String message) {
         switch(messageLocation) {
         case ACTIONBAR:
-            this.actionBar.sendActionBar(player, message);
+            this.actionBar.sendActionBar(player, MainAPI.colorizeText(message));
             break;
         case CHAT:
             MainAPI.sendMessage(message, player);
