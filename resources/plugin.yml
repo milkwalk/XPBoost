@@ -2,6 +2,7 @@ name: ${project.name}
 author: milkwalk
 version: ${project.version}
 main: cz.dubcat.xpboost.XPBoostMain
+api-version: 1.13
 commands:
     xpboost:
         description: Main command.
