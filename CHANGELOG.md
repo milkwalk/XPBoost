@@ -1,4 +1,14 @@
 # Change Log
+
+## [3.4.0] - 10/07/2020
+
+### Added
+- Minecraft 1.16.1 support
+
+### Fixed
+- mysql issue with not valid connections
+- other minor fixes
+
 ## [3.3.0] - 29/11/2019
 
 ### Added

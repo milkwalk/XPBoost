@@ -1,6 +1,7 @@
 package cz.dubcat.xpboost.utils;
 
 import java.lang.reflect.Constructor;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,11 +17,19 @@ public class ActionBar {
     private Class<?> chatMessageTypeClass;
     private Object chatMessageType;
     private boolean oldVersion = false;
-    
+    private boolean passUuidToPacketPlayOutChat = false; // from 1.16.1
+
     public ActionBar() {
         try {
             this.chatComponent = getNMSClass("IChatBaseComponent");
             this.packetActionbar = getNMSClass("PacketPlayOutChat");
+            
+            try {
+                Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance("test");
+                packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
+            } catch(Exception e) {
+                passUuidToPacketPlayOutChat = true;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,7 +63,11 @@ public class ActionBar {
                 packet = ConstructorActionbar.newInstance(actionbar, (byte) 2);
             } else {
                 Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance(message);
-                packet = packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
+                if(passUuidToPacketPlayOutChat) {
+                    packet = packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass, UUID.class}).newInstance(chatCompontentText, chatMessageType, player.getUniqueId());
+                } else {
+                    packet = packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
+                }
             }
             sendPacket(player, packet);
         } catch (Exception ex) {
