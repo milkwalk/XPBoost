@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Map;
 import java.util.UUID;
@@ -147,7 +146,7 @@ public class XPBoostMain extends JavaPlugin {
         // METRICS
         if (getConfig().getBoolean("settings.metrics")) {
             metrics = new Metrics(this);
-            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> Database.type.name()));
+            metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> Database.getDatabaseType().name()));
         } else {
             MainAPI.debug("Disabling metrics.", Debug.NORMAL);
         }
@@ -257,17 +256,13 @@ public class XPBoostMain extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        getLogger().info("Saving players");
+        getLogger().info("Saving players...");
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
             MainAPI.savePlayer(p.getUniqueId());
         }
-
-        if (Database.type == DType.MYSQL) {
-            try {
-                Database.getConnection().close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        
+        if (Database.getDatabaseType() == DType.MYSQL) {
+            Database.getHikariDataSource().close();
         }
 
         getLogger().info("Disabled.");

@@ -1,6 +1,7 @@
 package cz.dubcat.xpboost.tasks;
 
 import java.io.File;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Iterator;
@@ -46,14 +47,14 @@ public class XPBoostTask extends BukkitRunnable {
                         MainAPI.sendMessage(MESSAGE, xpb.getUuid());
                 });
 
-                if (Database.type == DType.FILE) {
+                if (Database.getDatabaseType() == DType.FILE) {
                     File file = MainAPI.setPlayerFile(xpb.getUuid());
                     file.delete();
                 } else {
                     PreparedStatement ps = null;
-                    try {
+                    try (Connection conn = Database.getConnection()){
                         // readding new value
-                        ps = Database.getConnection().prepareStatement("DELETE FROM xpboost WHERE uuid=?");
+                        ps = conn.prepareStatement("DELETE FROM xpboost WHERE uuid=?");
                         ps.setString(1, xpb.getUuid().toString());
                         ps.execute();
                     } catch (SQLException e) {

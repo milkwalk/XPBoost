@@ -2,6 +2,7 @@ package cz.dubcat.xpboost.api;
 
 import java.io.File;
 import java.io.IOException;
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,7 +56,7 @@ public class MainAPI {
         HashMap<Condition, Boolean> bConditions = new HashMap<>();
         HashMap<String, BoostOptions> bOptions = new HashMap<>();
 
-        if (Database.type == DType.FILE) {
+        if (Database.getDatabaseType() == DType.FILE) {
             setPlayerFile(uuid);
 
             if (playersyml.exists()) {
@@ -94,8 +95,8 @@ public class MainAPI {
         } else {
             PreparedStatement ps = null;
             ResultSet rs = null;
-            try {
-                ps = Database.getConnection().prepareStatement("SELECT * FROM xpboost WHERE uuid=?");
+            try(Connection conn = Database.getConnection()) {
+                ps = conn.prepareStatement("SELECT * FROM xpboost WHERE uuid=?");
                 ps.setString(1, uuid.toString());
                 rs = ps.executeQuery();
 
@@ -184,7 +185,7 @@ public class MainAPI {
         if (XPBoostAPI.hasBoost(uuid)) {
             XPBoost xpb = XPBoostAPI.getBoost(uuid);
 
-            if (Database.type == DType.FILE) {
+            if (Database.getDatabaseType() == DType.FILE) {
                 setPlayerFile(uuid);
                 setPlayerVariable("xp", "");
                 setPlayerVariable("xp.boost", xpb.getBoost());
@@ -215,17 +216,15 @@ public class MainAPI {
             } else {
                 PreparedStatement ps = null;
                 ResultSet rs = null;
-                try {
+                try(Connection conn = Database.getConnection()) {
                     // removing old value
-                    PreparedStatement psr = Database.getConnection()
-                            .prepareStatement("DELETE FROM xpboost WHERE uuid=?");
+                    PreparedStatement psr = conn.prepareStatement("DELETE FROM xpboost WHERE uuid=?");
                     psr.setString(1, uuid.toString());
                     psr.execute();
                     DbUtils.closeQuietly(psr);
 
                     // readding new value
-                    ps = Database.getConnection().prepareStatement(
-                            "INSERT INTO xpboost (uuid,boost,endtime,conditions,advanced) VALUES (?,?,?,?,?)");
+                    ps = conn.prepareStatement("INSERT INTO xpboost (uuid,boost,endtime,conditions,advanced) VALUES (?,?,?,?,?)");
                     ps.setString(1, uuid.toString());
                     ps.setDouble(2, xpb.getBoost());
                     ps.setLong(3, xpb.getEndtime());

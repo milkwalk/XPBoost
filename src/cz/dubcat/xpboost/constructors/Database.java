@@ -1,12 +1,15 @@
 package cz.dubcat.xpboost.constructors;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import org.bukkit.Bukkit;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
 import cz.dubcat.xpboost.XPBoostMain;
+import lombok.Getter;
 
 public class Database {
     private final String table_sql = "CREATE TABLE IF NOT EXISTS `xpboost` ("
@@ -20,20 +23,33 @@ public class Database {
     public enum DType {
         MYSQL, FILE;
     }
-
-    private static Connection conn;
-    public static DType type = DType.FILE;
+    
+    @Getter
+    private static DType databaseType = DType.FILE;
+    @Getter
+    private static HikariDataSource hikariDataSource;
 
     public boolean loadMysql() {
         try {
-            conn = DriverManager.getConnection(
-                    "jdbc:mysql://" + XPBoostMain.getPlugin().getConfig().getString("database.host") + ":"
-                            + XPBoostMain.getPlugin().getConfig().getString("database.port") + "/"
-                            + XPBoostMain.getPlugin().getConfig().getString("database.database"),
-                    XPBoostMain.getPlugin().getConfig().getString("database.user"),
-                    XPBoostMain.getPlugin().getConfig().getString("database.password"));
-            type = DType.MYSQL;
-            conn.prepareStatement(table_sql).execute();
+            HikariConfig config = new HikariConfig();
+            String connectionHost = XPBoostMain.getPlugin().getConfig().getString("database.host");
+            boolean verifySsl = true;
+            if(XPBoostMain.getPlugin().getConfig().contains("database.ssl")) {
+                verifySsl = XPBoostMain.getPlugin().getConfig().getBoolean("database.ssl");
+            }
+            config.setPoolName("dubcat-pool");
+            config.setJdbcUrl("jdbc:mysql://"+connectionHost+":" + XPBoostMain.getPlugin().getConfig().getString("database.port") +"/" + 
+                    XPBoostMain.getPlugin().getConfig().getString("database.database") + (verifySsl ? "?verifyServerCertificate=false&useSSL=true" : ""));
+            config.setUsername(XPBoostMain.getPlugin().getConfig().getString("database.user"));
+            config.setPassword(XPBoostMain.getPlugin().getConfig().getString("database.password"));
+            config.setMinimumIdle(1);
+            config.setMaximumPoolSize(4);
+            hikariDataSource = new HikariDataSource(config);
+            databaseType = DType.MYSQL;
+            
+            try(Connection conn = getConnection()) {
+                conn.prepareStatement(table_sql).execute();
+            }
 
             return true;
         } catch (SQLException e) {
@@ -45,6 +61,12 @@ public class Database {
     }
 
     public static Connection getConnection() {
-        return conn;
+        try {
+            return hikariDataSource.getConnection();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return null;
     }
 }
