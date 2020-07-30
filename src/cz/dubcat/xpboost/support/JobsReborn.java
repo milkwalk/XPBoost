@@ -26,7 +26,7 @@ public class JobsReborn implements Listener {
         String job = event.getJob().getName();
         UUID id = player.getUniqueId();
 
-        double exp = event.getExp();
+        double exp = Math.round(event.getExp());
         double newExp = 0;
 
         if (XPBoostAPI.hasBoost(id)) {

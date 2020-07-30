@@ -1,5 +1,10 @@
 # Change Log
 
+## [3.4.1] - 21/07/2020
+
+### Fixed
+- rounding issue with experince for jobs
+
 ## [3.4.0] - 10/07/2020
 
 ### Added
