@@ -23,13 +23,6 @@ public class ActionBar {
         try {
             this.chatComponent = getNMSClass("IChatBaseComponent");
             this.packetActionbar = getNMSClass("PacketPlayOutChat");
-            
-            try {
-                Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance("test");
-                packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
-            } catch(Exception e) {
-                passUuidToPacketPlayOutChat = true;
-            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -52,6 +45,12 @@ public class ActionBar {
             } 
         }
         
+        try {
+            Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance("test");
+            packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
+        } catch(Exception e) {
+            passUuidToPacketPlayOutChat = true;
+        }
     }
     
     public void sendActionBar(Player player, String message) {

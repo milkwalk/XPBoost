@@ -1,9 +1,10 @@
 # Change Log
 
-## [3.4.1] - 21/07/2020
+## [3.4.1] - 1/08/2020
 
 ### Fixed
 - rounding issue with experince for jobs
+- 1.15.2 action bar messages
 
 ## [3.4.0] - 10/07/2020
 
