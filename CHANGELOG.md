@@ -1,4 +1,8 @@
 # Change Log
+### [3.4.1] - 26/09/2020
+
+### Fixed
+- issue with Jobs reborn
 
 ## [3.4.1] - 1/08/2020
 
