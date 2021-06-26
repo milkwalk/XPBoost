@@ -6,7 +6,7 @@ import java.util.Arrays;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 
 public class ConfigManager {
@@ -84,7 +84,7 @@ public class ConfigManager {
             XPBoostMain.lang.save(XPBoostMain.langFile);
         } catch (IOException e) {
             e.printStackTrace();
-            MainAPI.debug("Could not save language file.", Debug.NORMAL);
+            InternalXPBoostAPI.debug("Could not save language file.", Debug.NORMAL);
         }
     }
 

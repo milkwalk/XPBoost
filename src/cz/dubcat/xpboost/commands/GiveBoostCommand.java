@@ -9,7 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.api.Condition;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
@@ -27,14 +27,14 @@ public class GiveBoostCommand implements CommandInterface {
                 try {
                     boostDuration = Integer.parseInt(args[3]);
                 } catch (NumberFormatException e) {
-                    MainAPI.sendMessage("This is not an integer: &c" + args[3], sender);
+                    InternalXPBoostAPI.sendMessage("This is not an integer: &c" + args[3], sender);
                     return true;
                 }
 
                 try {
                     boost = Double.parseDouble(args[2]);
                 } catch (NumberFormatException e) {
-                    MainAPI.sendMessage("Please provide a number. '" + args[2] + "' is not a number.", sender);
+                    InternalXPBoostAPI.sendMessage("Please provide a number. '" + args[2] + "' is not a number.", sender);
                     return true;
                 }
 
@@ -47,7 +47,7 @@ public class GiveBoostCommand implements CommandInterface {
                         try {
                             condToApply.add(Condition.valueOf(condition.toUpperCase()));
                         } catch (IllegalArgumentException e) {
-                            MainAPI.sendMessage(
+                            InternalXPBoostAPI.sendMessage(
                                     "Parameter '" + condition
                                             + "' does not exist. Use &aVANILLA,SKILLAPI,MCMMO,RPGME,HEROES,JOBS,MYPET",
                                     sender);
@@ -55,7 +55,7 @@ public class GiveBoostCommand implements CommandInterface {
                         }
                     }
 
-                    MainAPI.debug("Found " + condToApply.size() + " conditons. " + condToApply.toString(),
+                    InternalXPBoostAPI.debug("Found " + condToApply.size() + " conditons. " + condToApply.toString(),
                             Debug.NORMAL);
                 }
 
@@ -64,23 +64,24 @@ public class GiveBoostCommand implements CommandInterface {
                         this.giveBoost(player, boost, boostDuration, condToApply);
                     }
 
-                    MainAPI.sendMessage("You have given &c" + boost + "x Boost &fto &call online players &ffor &c"
+                    InternalXPBoostAPI.sendMessage("You have given &c" + boost + "x Boost &fto &call online players &ffor &c"
                             + boostDuration + " seconds. &6" + condToApply.toString(), sender);
                 } else {
-                    if (Bukkit.getServer().getPlayer(args[1]) == null || !Bukkit.getServer().getPlayer(args[1]).isOnline()) {
-                        MainAPI.sendMessage("Player " + args[1] + " is not online.", sender);
+                    Player playerToGive = Bukkit.getServer().getPlayer(args[1]);
+                    if (playerToGive == null || !playerToGive.isOnline()) {
+                        InternalXPBoostAPI.sendMessage("Player " + args[1] + " is not online.", sender);
                         
                         return true;
                     }
                     
-                    this.giveBoost(Bukkit.getPlayer(args[1]), boost, boostDuration, condToApply);
-                    MainAPI.sendMessage( 
-                            "You have given &c" + boost + "x Boost &fto &c" + Bukkit.getPlayer(args[1]).getName() + 
+                    this.giveBoost(playerToGive, boost, boostDuration, condToApply);
+                    InternalXPBoostAPI.sendMessage( 
+                            "You have given &c" + boost + "x Boost &fto &c" + playerToGive.getName() + 
                             " &ffor &c" + boostDuration + " seconds. &6" + condToApply.toString(), sender);
                 }
 
             } else {
-                MainAPI.sendMessage(
+                InternalXPBoostAPI.sendMessage(
                         "Usage: &c/xpboost give <player/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]",
                         sender);
             }

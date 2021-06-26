@@ -8,7 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 
@@ -32,8 +32,8 @@ public class CommandListener implements Listener {
         String finalcmd = command[0];
 
         if (cmdlist.contains(finalcmd)) {
-            MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
-            MainAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);
+            InternalXPBoostAPI.sendMessage(XPBoostMain.getLang().getString("lang.cmdblock").replace("%cmd%", finalcmd), p);
+            InternalXPBoostAPI.debug("Command " + finalcmd + " have been blocked for player " + p.getName(), Debug.NORMAL);
             e.setCancelled(true);
         }
     }

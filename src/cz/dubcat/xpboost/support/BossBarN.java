@@ -9,7 +9,7 @@ import org.inventivetalent.bossbar.BossBar;
 import org.inventivetalent.bossbar.BossBarAPI;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -36,7 +36,7 @@ public class BossBarN extends BukkitRunnable {
                 int lenght = xpb.getBoostTime();
                 float calc1 = ((float) xpb.getTimeRemaining()) / (float) (lenght);
 
-                String message = MainAPI.colorizeText(
+                String message = InternalXPBoostAPI.colorizeText(
                         XPBoostMain.getLang().getString("lang.bossbar").replaceAll("%boost%", xpb.getBoost() + ""));
 
                 BossBarAPI.addBar(p, // The receiver of the BossBar

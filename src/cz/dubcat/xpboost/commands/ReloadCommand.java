@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 
 public class ReloadCommand implements CommandInterface {
 
@@ -36,7 +36,7 @@ public class ReloadCommand implements CommandInterface {
             XPBoostMain.boostFile = new File(XPBoostMain.getPlugin().getDataFolder() + "/boosts.yml");
             XPBoostMain.boostCfg = YamlConfiguration.loadConfiguration(XPBoostMain.boostFile);
 
-            MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.reload"), sender);
+            InternalXPBoostAPI.sendMessage(XPBoostMain.getLang().getString("lang.reload"), sender);
         }
         return true;
     }

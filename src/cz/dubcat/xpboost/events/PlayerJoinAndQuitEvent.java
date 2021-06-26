@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
@@ -20,13 +20,13 @@ public class PlayerJoinAndQuitEvent implements Listener {
         if (XPBoostMain.getPlugin().getConfig().getBoolean("settings.globalboost.notification")) {
             GlobalBoost gl = XPBoostMain.GLOBAL_BOOST;
             if (gl.isEnabled()) {
-                MainAPI.sendMessage(
+                InternalXPBoostAPI.sendMessage(
                         XPBoostMain.getLang().getString("lang.joinnotmsg").replaceAll("%boost%", gl.getGlobalBoost() + ""),
                         player);
             }
         }
 
-        XPBoost boost = MainAPI.loadPlayer(player.getUniqueId());
+        XPBoost boost = InternalXPBoostAPI.loadPlayer(player.getUniqueId());
         if (boost != null) {
             XPBoostMain.allplayers.put(player.getUniqueId(), boost);
         }
@@ -35,7 +35,7 @@ public class PlayerJoinAndQuitEvent implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent e) {
         Player player = e.getPlayer();
-        MainAPI.savePlayer(player.getUniqueId());
+        InternalXPBoostAPI.savePlayer(player.getUniqueId());
         XPBoostMain.allplayers.remove(player.getUniqueId());
     }
 

@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerExpChangeEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.Condition;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.GlobalBoost;
@@ -56,7 +56,7 @@ public class PlayerExperienceChangeListener implements Listener {
 
         if (expnew > 0) {
             event.setAmount(expnew);
-            MainAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP ("
+            InternalXPBoostAPI.debug("Player " + player.getName() + " got " + expnew + " XP instead of " + exp + " XP ("
                     + CONDITION_NAME + ")", Debug.NORMAL);
 
             String message = XPBoostMain.getLang().getString("lang.doublexpnot").replaceAll("%newexp%", String.valueOf(expnew))

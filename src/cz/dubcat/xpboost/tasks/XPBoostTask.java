@@ -14,7 +14,7 @@ import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.constructors.Database;
 import cz.dubcat.xpboost.constructors.Database.DType;
 import cz.dubcat.xpboost.utils.DbUtils;
@@ -44,11 +44,11 @@ public class XPBoostTask extends BukkitRunnable {
                                 Bukkit.getPlayer(xpb.getUuid()).getLocation(),
                                 Sound.valueOf(XPBoostMain.getPlugin().getConfig().getString("settings.boostEndSound").toUpperCase()), 
                                 5f, 5f);
-                        MainAPI.sendMessage(MESSAGE, xpb.getUuid());
+                        InternalXPBoostAPI.sendMessage(MESSAGE, xpb.getUuid());
                 });
 
                 if (Database.getDatabaseType() == DType.FILE) {
-                    File file = MainAPI.setPlayerFile(xpb.getUuid());
+                    File file = InternalXPBoostAPI.setPlayerFile(xpb.getUuid());
                     file.delete();
                 } else {
                     PreparedStatement ps = null;
@@ -64,7 +64,7 @@ public class XPBoostTask extends BukkitRunnable {
                     }
                 }
 
-                MainAPI.debug("Removed boost from UUID " + xpb.getUuid(), Debug.NORMAL);
+                InternalXPBoostAPI.debug("Removed boost from UUID " + xpb.getUuid(), Debug.NORMAL);
                 mp.remove(xpb.getUuid());
             }
         }

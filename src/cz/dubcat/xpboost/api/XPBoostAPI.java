@@ -50,20 +50,20 @@ public class XPBoostAPI {
         if (xpb != null) {
             if (xpb.getBoost() == boost) {
                 xpb.addTime(duration * 1000);
-                MainAPI.debug("Adding boost of " + boost + "x for UUID " + uuid + " endTime: " + (duration * 1000),
+                InternalXPBoostAPI.debug("Adding boost of " + boost + "x for UUID " + uuid + " endTime: " + (duration * 1000),
                         Debug.NORMAL);
-                MainAPI.debug("Player's boost time has been extended UUID " + xpb.getUuid(), Debug.NORMAL);
+                InternalXPBoostAPI.debug("Player's boost time has been extended UUID " + xpb.getUuid(), Debug.NORMAL);
                 return xpb;
             }
 
             xpb.setBoost(boost);
             xpb.setEndtime(System.currentTimeMillis() + duration * 1000);
-            MainAPI.debug("Setting boost of " + boost + "x for UUID " + uuid + " endTime: " + xpb.getEndtime(),
+            InternalXPBoostAPI.debug("Setting boost of " + boost + "x for UUID " + uuid + " endTime: " + xpb.getEndtime(),
                     Debug.NORMAL);
         } else {
             xpb = new XPBoost(uuid, boost, (System.currentTimeMillis() + duration * 1000));
             XPBoostMain.allplayers.put(uuid, xpb);
-            MainAPI.debug("Creating new boost " + boost + "x for UUID " + uuid, Debug.NORMAL);
+            InternalXPBoostAPI.debug("Creating new boost " + boost + "x for UUID " + uuid, Debug.NORMAL);
         }
 
         return xpb;
@@ -87,7 +87,7 @@ public class XPBoostAPI {
      *         returned.
      */
     public static XPBoost getOfflineBoost(UUID uuid) {
-        return MainAPI.loadPlayer(uuid);
+        return InternalXPBoostAPI.loadPlayer(uuid);
     }
 
 }

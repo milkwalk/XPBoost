@@ -24,7 +24,7 @@ public class BoostAPI {
                     String message = XPBoostMain.boostCfg.getString(boostId + ".permissions.fail_message")
                             .replaceAll("%perm%",
                                     XPBoostMain.boostCfg.getString(boostId + ".permissions.required_permission"));
-                    MainAPI.sendMessage(message, player);
+                    InternalXPBoostAPI.sendMessage(message, player);
                     
                     return true;
                 }
@@ -40,7 +40,7 @@ public class BoostAPI {
             } else {
                 String message = XPBoostMain.getLang().getString("lang.buyfail");
                 message = message.replaceAll("%money%", XPBoostMain.boostCfg.getString(boostId + ".cost"));
-                MainAPI.sendMessage(message, player);
+                InternalXPBoostAPI.sendMessage(message, player);
             }
             
             return true;
@@ -68,7 +68,7 @@ public class BoostAPI {
         String message = XPBoostMain.getLang().getString("lang.xpbuy").replaceAll("%time%", duration + "")
                 .replaceAll("%money%", XPBoostMain.boostCfg.getString(boostId + ".cost"))
                 .replaceAll("%boost%", String.valueOf(boost));
-        MainAPI.sendMessage(message, player);
+        InternalXPBoostAPI.sendMessage(message, player);
 
         XPBoost xpb = XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, duration);
 

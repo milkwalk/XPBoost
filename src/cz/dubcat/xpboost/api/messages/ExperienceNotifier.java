@@ -3,7 +3,7 @@ package cz.dubcat.xpboost.api.messages;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.utils.ActionBar;
 
 public class ExperienceNotifier {
@@ -37,10 +37,10 @@ public class ExperienceNotifier {
     private void sendNotification(Player player, MessageLocation messageLocation, String message) {
         switch(messageLocation) {
         case ACTIONBAR:
-            this.actionBar.sendActionBar(player, MainAPI.colorizeText(message));
+            this.actionBar.sendActionBar(player, InternalXPBoostAPI.colorizeText(message));
             break;
         case CHAT:
-            MainAPI.sendMessage(message, player);
+            InternalXPBoostAPI.sendMessage(message, player);
             break;
         }
     }

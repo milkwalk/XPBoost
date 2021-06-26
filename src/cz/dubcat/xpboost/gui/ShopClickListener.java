@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 import cz.dubcat.xpboost.XPBoostMain;
 import cz.dubcat.xpboost.api.BoostAPI;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoostInventoryHolder;
 
@@ -30,7 +30,7 @@ public class ShopClickListener implements Listener {
                 player.closeInventory();
 
                 if (XPBoostAPI.hasBoost(playerUuid)) {
-                    MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
+                    InternalXPBoostAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
                     return;
                 }
 

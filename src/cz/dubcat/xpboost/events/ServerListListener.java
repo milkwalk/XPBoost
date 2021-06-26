@@ -6,7 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.server.ServerListPingEvent;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 
 public class ServerListListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
@@ -17,7 +17,7 @@ public class ServerListListener implements Listener {
                 message = message.replaceAll("%boost%", String.valueOf(XPBoostMain.GLOBAL_BOOST.getGlobalBoost()));
                 message = message.replaceAll("%max%", String.valueOf(event.getMaxPlayers()));
                 message = message.replaceAll("%players%", String.valueOf(event.getNumPlayers()));
-                event.setMotd(MainAPI.colorizeText(message));
+                event.setMotd(InternalXPBoostAPI.colorizeText(message));
             }
         }
     }

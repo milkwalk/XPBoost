@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.api.BoostAPI;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 
 public class BuyCommand implements CommandInterface {
     
@@ -19,10 +19,10 @@ public class BuyCommand implements CommandInterface {
                 if(args.length == 2) {
                     String boostId = args[1];
                     if(!boostApi.buyBoost(player, boostId)) {
-                        MainAPI.sendMessage("Boost &c" + boostId + " &fdoenst exist.", sender);
+                        InternalXPBoostAPI.sendMessage("Boost &c" + boostId + " &fdoenst exist.", sender);
                     }
                 } else {
-                    MainAPI.sendMessage( "Usage: &c/xpboost buy <boostName>", sender);
+                    InternalXPBoostAPI.sendMessage( "Usage: &c/xpboost buy <boostName>", sender);
                 }
             }
         }

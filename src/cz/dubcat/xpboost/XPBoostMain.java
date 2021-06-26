@@ -21,7 +21,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import be.maximvdw.placeholderapi.PlaceholderAPI;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.api.messages.ExperienceNotifier;
 import cz.dubcat.xpboost.commands.ClearCommand;
@@ -148,7 +148,7 @@ public class XPBoostMain extends JavaPlugin {
             metrics = new Metrics(this);
             metrics.addCustomChart(new Metrics.SimplePie("database_type", () -> Database.getDatabaseType().name()));
         } else {
-            MainAPI.debug("Disabling metrics.", Debug.NORMAL);
+            InternalXPBoostAPI.debug("Disabling metrics.", Debug.NORMAL);
         }
 
         // MCMMO
@@ -247,7 +247,7 @@ public class XPBoostMain extends JavaPlugin {
         String stringDay = DayUtil.getDayOfTheWeek(day);
         if (getConfig().getBoolean("settings.day." + stringDay)) {
             GLOBAL_BOOST.setEnabled(true);
-            MainAPI.sendMessage("&2WOHOO! Today is the " + stringDay + "! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!", Bukkit.getConsoleSender());
+            InternalXPBoostAPI.sendMessage("&2WOHOO! Today is the " + stringDay + "! " + GLOBAL_BOOST.getGlobalBoost() + " XP day!", Bukkit.getConsoleSender());
         }
 
         initializePlaceholder();
@@ -258,7 +258,7 @@ public class XPBoostMain extends JavaPlugin {
     public void onDisable() {
         getLogger().info("Saving players...");
         for (Player p : Bukkit.getServer().getOnlinePlayers()) {
-            MainAPI.savePlayer(p.getUniqueId());
+            InternalXPBoostAPI.savePlayer(p.getUniqueId());
         }
         
         if (Database.getDatabaseType() == DType.MYSQL) {

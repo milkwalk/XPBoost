@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 
 public class CommandHandler implements CommandExecutor {
 
@@ -38,7 +38,7 @@ public class CommandHandler implements CommandExecutor {
                 getExecutor(args[0]).onCommand(sender, cmd, commandLabel, args);
                 return true;
             } else {
-                MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.command_not_found"), sender);
+                InternalXPBoostAPI.sendMessage(XPBoostMain.getLang().getString("lang.command_not_found"), sender);
                 
                 return true;
             }

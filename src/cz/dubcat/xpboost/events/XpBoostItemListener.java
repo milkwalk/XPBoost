@@ -12,7 +12,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 
@@ -52,7 +52,7 @@ public class XpBoostItemListener implements Listener {
 
             try {
                 for (String l : lore) {
-                    String str = MainAPI.stripColours(l);
+                    String str = InternalXPBoostAPI.stripColours(l);
                     str = str.replaceAll("[^\\d.]", "");
                     if (i == 0) {
                         boost = Double.parseDouble(str);
@@ -63,22 +63,22 @@ public class XpBoostItemListener implements Listener {
                     i++;
                 }
             } catch (NumberFormatException ex) {
-                MainAPI.debug("Cannot recognise XPBoost item.", Debug.NORMAL);
+                InternalXPBoostAPI.debug("Cannot recognise XPBoost item.", Debug.NORMAL);
                 return;
             }
 
-            String name = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.itemname")
+            String name = InternalXPBoostAPI.colorizeText(XPBoostMain.getLang().getString("lang.itemname")
                     .replace("%boost%", String.valueOf(boost)).replace("%time%", String.valueOf(time)));
 
-            if (itemName.equals(name) || itemName.contains(MainAPI.stripColours(name)) || itemName.contains(name)) {
+            if (itemName.equals(name) || itemName.contains(InternalXPBoostAPI.stripColours(name)) || itemName.contains(name)) {
                 if (XPBoostAPI.hasBoost(player.getUniqueId())) {
-                    MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
+                    InternalXPBoostAPI.sendMessage(XPBoostMain.getLang().getString("lang.boostactive"), player);
                     event.setCancelled(true);
                     return;
                 }
 
                 XPBoostAPI.setPlayerBoost(player.getUniqueId(), boost, time);
-                MainAPI.sendMessage(XPBoostMain.getLang().getString("lang.xpbuy").replace("%boost%", "" + boost)
+                InternalXPBoostAPI.sendMessage(XPBoostMain.getLang().getString("lang.xpbuy").replace("%boost%", "" + boost)
                         .replace("%time%", "" + time).replace("%money%", ""), player);
 
                 player.setItemInHand(null);

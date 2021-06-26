@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.constructors.XPBoost;
 
 public class ActionBarTask extends BukkitRunnable {
@@ -26,7 +26,7 @@ public class ActionBarTask extends BukkitRunnable {
                 XPBoost xpb = pair.getValue();
 
                 if (xpb.getTimeRemaining() > 0) {
-                    String message = MainAPI.colorizeText(XPBoostMain.getLang().getString("lang.actionbar")
+                    String message = InternalXPBoostAPI.colorizeText(XPBoostMain.getLang().getString("lang.actionbar")
                             .replaceAll("%boost%", String.valueOf(xpb.getBoost()))
                             .replaceAll("%timeleft%", String.valueOf((int) xpb.getTimeRemaining())));
                     

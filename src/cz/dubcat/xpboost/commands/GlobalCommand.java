@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 
 public class GlobalCommand implements CommandInterface {
 
@@ -37,9 +37,9 @@ public class GlobalCommand implements CommandInterface {
 
                 if (sender instanceof Player) {
                     player = (Player) sender;
-                    MainAPI.sendMessage("You have successfully set global boost to &a" + globalboost, player);
+                    InternalXPBoostAPI.sendMessage("You have successfully set global boost to &a" + globalboost, player);
                     if (!XPBoostMain.GLOBAL_BOOST.isEnabled())
-                        MainAPI.sendMessage("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
+                        InternalXPBoostAPI.sendMessage("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
                 } else {
                     plugin.getLogger().info("You have successfully set a global boost to " + globalboost);
                 }
@@ -57,10 +57,10 @@ public class GlobalCommand implements CommandInterface {
 
                 if (sender instanceof Player) {
                     player = (Player) sender;
-                    MainAPI.sendMessage("You have successfully set global boost to &a" + globalboost + " &ffor &a"
+                    InternalXPBoostAPI.sendMessage("You have successfully set global boost to &a" + globalboost + " &ffor &a"
                             + time + " Seconds", player);
                     if (!XPBoostMain.GLOBAL_BOOST.isEnabled())
-                        MainAPI.sendMessage("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
+                        InternalXPBoostAPI.sendMessage("To enable &cGlobal Boost &fwrite &a/xpboost on", player);
                 } else {
                     plugin.getLogger().info(
                             "You have successfully set a global boost to " + globalboost + "for " + time + " Seconds");
@@ -69,7 +69,7 @@ public class GlobalCommand implements CommandInterface {
         } else {
             if (sender instanceof Player) {
                 player = (Player) sender;
-                MainAPI.sendMessage("Usage: &c/xpboost global <boost> [time in seconds]", player);
+                InternalXPBoostAPI.sendMessage("Usage: &c/xpboost global <boost> [time in seconds]", player);
             } else {
                 plugin.getLogger().info("Usage: /xpboost global <boost> [time in seconds]");
             }

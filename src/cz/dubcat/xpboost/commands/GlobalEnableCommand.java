@@ -5,7 +5,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 
 public class GlobalEnableCommand implements CommandInterface {
 
@@ -28,7 +28,7 @@ public class GlobalEnableCommand implements CommandInterface {
         XPBoostMain.GLOBAL_BOOST.setEnabled(true);
 
         if (sender instanceof Player) {
-            MainAPI.sendMessage("Global &c" + XPBoostMain.GLOBAL_BOOST.getGlobalBoost() + "x Boost&f is now ON.", player);
+            InternalXPBoostAPI.sendMessage("Global &c" + XPBoostMain.GLOBAL_BOOST.getGlobalBoost() + "x Boost&f is now ON.", player);
         } else {
             plugin.getLogger().info("Global " + XPBoostMain.GLOBAL_BOOST.getGlobalBoost() + "x Boost is now ON.");
         }

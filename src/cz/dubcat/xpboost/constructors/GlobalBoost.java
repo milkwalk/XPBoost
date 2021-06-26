@@ -1,7 +1,7 @@
 package cz.dubcat.xpboost.constructors;
 
 import cz.dubcat.xpboost.XPBoostMain;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import lombok.Data;
 
 @Data
@@ -21,7 +21,7 @@ public class GlobalBoost {
             if (System.currentTimeMillis() > time) {
                 enabled = false;
                 time = 0;
-                MainAPI.debug("Global boost has been disabled, because time has run out.", Debug.ALL);
+                InternalXPBoostAPI.debug("Global boost has been disabled, because time has run out.", Debug.ALL);
             }
 
         }

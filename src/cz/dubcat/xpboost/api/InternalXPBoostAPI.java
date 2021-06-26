@@ -45,7 +45,7 @@ import cz.dubcat.xpboost.utils.DbUtils;
 import cz.dubcat.xpboost.utils.PlayerDataManager;
 import cz.dubcat.xpboost.utils.XMaterial;
 
-public class MainAPI {
+public class InternalXPBoostAPI {
     public static File playersyml;
     public static FileConfiguration playerCfg;
     public static PlayerDataManager playerData;
@@ -163,11 +163,10 @@ public class MainAPI {
         }
 
         if (endtime > System.currentTimeMillis()) {
-
-            MainAPI.debug("Loading boost for UUID: " + uuid.toString(), Debug.NORMAL);
-            MainAPI.debug("  Boost: " + boost + " Until: " + endtime, Debug.NORMAL);
-            MainAPI.debug("  Conditions: " + bConditions.toString(), Debug.NORMAL);
-            MainAPI.debug("  Advanced options: " + bOptions.toString(), Debug.NORMAL);
+            InternalXPBoostAPI.debug("Loading boost for UUID: " + uuid.toString(), Debug.NORMAL);
+            InternalXPBoostAPI.debug("  Boost: " + boost + " Until: " + endtime, Debug.NORMAL);
+            InternalXPBoostAPI.debug("  Conditions: " + bConditions.toString(), Debug.NORMAL);
+            InternalXPBoostAPI.debug("  Advanced options: " + bOptions.toString(), Debug.NORMAL);
 
             XPBoost xpb = new XPBoost(uuid, boost, endtime);
             xpb.getConditions().putAll(bConditions);
@@ -175,7 +174,7 @@ public class MainAPI {
 
             return xpb;
         } else {
-            MainAPI.debug("Did not find any boost for UUID: " + uuid.toString(), Debug.NORMAL);
+            InternalXPBoostAPI.debug("Did not find any boost for UUID: " + uuid.toString(), Debug.NORMAL);
             return null;
         }
 
@@ -396,7 +395,7 @@ public class MainAPI {
                     lore = XPBoostMain.boostCfg.getStringList(key + ".lore");
                 }
 
-                MainAPI.createDisplay(defaultMaterial, GUI, i,
+                InternalXPBoostAPI.createDisplay(defaultMaterial, GUI, i,
                         (XPBoostMain.boostCfg.getString(key + ".title") != null)
                                 ? XPBoostMain.boostCfg.getString(key + ".title").replaceAll("%boost%", boost + "")
                                         .replaceAll("%money%", cost + "").replaceAll("%time%", time + "")

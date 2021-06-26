@@ -5,7 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import cz.dubcat.xpboost.api.Condition;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import lombok.Data;
 
 @Data
@@ -85,6 +85,6 @@ public class XPBoost {
 
     /* Save current boost */
     public void saveBoost() {
-        MainAPI.savePlayer(this.uuid);
+        InternalXPBoostAPI.savePlayer(this.uuid);
     }
 }

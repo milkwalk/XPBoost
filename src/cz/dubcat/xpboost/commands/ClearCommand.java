@@ -8,7 +8,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.api.XPBoostAPI;
 import cz.dubcat.xpboost.constructors.Debug;
 import cz.dubcat.xpboost.constructors.XPBoost;
@@ -34,7 +34,7 @@ public class ClearCommand implements CommandInterface {
                         return true;
 
                     xpb.clear();
-                    MainAPI.sendMessage(MESSAGE + hrac.getName(), sender);
+                    InternalXPBoostAPI.sendMessage(MESSAGE + hrac.getName(), sender);
                 } else if (Bukkit.getServer().getOfflinePlayer(args[1]) != null) {
                     OfflinePlayer p = Bukkit.getServer().getOfflinePlayer(args[1]);
                     UUID id = p.getUniqueId();
@@ -46,11 +46,11 @@ public class ClearCommand implements CommandInterface {
                     xpb.clear();
                     xpb.saveBoost();
 
-                    MainAPI.debug("XPBoost clear CMD for offlineplayer ID " + id, Debug.NORMAL);
-                    MainAPI.sendMessage(MESSAGE + p.getName(), sender);
+                    InternalXPBoostAPI.debug("XPBoost clear CMD for offlineplayer ID " + id, Debug.NORMAL);
+                    InternalXPBoostAPI.sendMessage(MESSAGE + p.getName(), sender);
                 }
             } else {
-                MainAPI.sendMessage("Usage: &c/xpboost clear <player>", sender);
+                InternalXPBoostAPI.sendMessage("Usage: &c/xpboost clear <player>", sender);
             }
         }
         return true;

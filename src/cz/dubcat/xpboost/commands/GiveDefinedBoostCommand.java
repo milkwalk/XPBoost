@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import cz.dubcat.xpboost.api.BoostAPI;
-import cz.dubcat.xpboost.api.MainAPI;
+import cz.dubcat.xpboost.api.InternalXPBoostAPI;
 import cz.dubcat.xpboost.exceptions.BoostNotFoundException;
 
 public class GiveDefinedBoostCommand implements CommandInterface {
@@ -24,7 +24,7 @@ public class GiveDefinedBoostCommand implements CommandInterface {
                     try {
                         duration = Integer.parseInt(args[3]);
                     } catch (NumberFormatException e) {
-                        MainAPI.sendMessage("This is not an integer: &c" + args[3], sender);
+                        InternalXPBoostAPI.sendMessage("This is not an integer: &c" + args[3], sender);
                         return true;
                     }
                 }
@@ -38,7 +38,7 @@ public class GiveDefinedBoostCommand implements CommandInterface {
                 } else {
                     Player targetPlayer = Bukkit.getServer().getPlayer(target);
                     if (targetPlayer == null || !targetPlayer.isOnline()) {
-                        MainAPI.sendMessage("Player " + target + " is not online.", sender);
+                        InternalXPBoostAPI.sendMessage("Player " + target + " is not online.", sender);
                         
                         return true;
                     }
@@ -48,9 +48,9 @@ public class GiveDefinedBoostCommand implements CommandInterface {
                     }
                 }
                 
-                MainAPI.sendMessage("&aYou have successfully given boost " + boostId + " to " + target + (duration != null ? " for " + duration + " seconds" : ""), sender);
+                InternalXPBoostAPI.sendMessage("&aYou have successfully given boost " + boostId + " to " + target + (duration != null ? " for " + duration + " seconds" : ""), sender);
             } else {
-                MainAPI.sendMessage(
+                InternalXPBoostAPI.sendMessage(
                         "Usage: &c/xpboost giveDefinedBoost <player/all> <boostId>",
                         sender);
             }
@@ -63,7 +63,7 @@ public class GiveDefinedBoostCommand implements CommandInterface {
         try {
             boostApi.giveBoost(player, boostId, durationInSeconds);
         } catch (BoostNotFoundException e) {
-            MainAPI.sendMessage("&cBoost " + boostId + " does not exist", caller);
+            InternalXPBoostAPI.sendMessage("&cBoost " + boostId + " does not exist", caller);
             
             return false;
         }
