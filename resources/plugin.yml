@@ -17,4 +17,4 @@ permissions:
         description: Allows you to use the admin commands
         default: op
 depend: [Vault]
-softdepend: [Vault,SkillAPI,RPGme,BossBarAPI,Heroes,PlaceholderAPI,MVdWPlaceholderAPI]
+softdepend: [Vault,SkillAPI,BossBarAPI,Heroes,PlaceholderAPI,MVdWPlaceholderAPI]
