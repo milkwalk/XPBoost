@@ -6,6 +6,9 @@ import java.util.UUID;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
 public class ActionBar {
     
     private Class<?> chatSerializer; //old
@@ -18,42 +21,59 @@ public class ActionBar {
     private Object chatMessageType;
     private boolean oldVersion = false;
     private boolean passUuidToPacketPlayOutChat = false; // from 1.16.1
+    
+    private boolean canUseSpigotActionBar = false;
 
     public ActionBar() {
-        try {
-            this.chatComponent = getNMSClass("IChatBaseComponent");
-            this.packetActionbar = getNMSClass("PacketPlayOutChat");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        String rawVersion = Bukkit.getServer().getClass().getPackage()
+                .getName();
+        String nmsVersion = rawVersion.substring(rawVersion.lastIndexOf(".") + 1);
         
-        try {
-            this.chatComponentTextClass = getNMSClass("ChatComponentText");
-            this.chatMessageTypeClass = getNMSClass("ChatMessageType");
-            Object[] chatMessageTypes = chatMessageTypeClass.getEnumConstants();
-            for (Object obj : chatMessageTypes) {
-                if (obj.toString().equals("GAME_INFO")) {
-                    this.chatMessageType = obj;
-                }
-            }
-        } catch (ClassNotFoundException e) {
-            oldVersion = true;
+        canUseSpigotActionBar = !nmsVersion.startsWith("v1_9_R") && !nmsVersion.startsWith("v1_8_R");
+        
+        if(!canUseSpigotActionBar) {
             try {
-                this.chatSerializer = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0];
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            } 
-        }
-        
-        try {
-            Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance("test");
-            packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
-        } catch(Exception e) {
-            passUuidToPacketPlayOutChat = true;
+                this.chatComponent = getNMSClass("IChatBaseComponent");
+                this.packetActionbar = getNMSClass("PacketPlayOutChat");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
+            try {
+                this.chatComponentTextClass = getNMSClass("ChatComponentText");
+                this.chatMessageTypeClass = getNMSClass("ChatMessageType");
+                Object[] chatMessageTypes = chatMessageTypeClass.getEnumConstants();
+                for (Object obj : chatMessageTypes) {
+                    if (obj.toString().equals("GAME_INFO")) {
+                        this.chatMessageType = obj;
+                    }
+                }
+            } catch (ClassNotFoundException e) {
+                oldVersion = true;
+                try {
+                    this.chatSerializer = getNMSClass("IChatBaseComponent").getDeclaredClasses()[0];
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                } 
+            }
+            
+            try {
+                Object chatCompontentText = chatComponentTextClass.getConstructor(new Class<?>[]{String.class}).newInstance("test");
+                packetActionbar.getConstructor(new Class<?>[]{chatComponent, chatMessageTypeClass}).newInstance(chatCompontentText, chatMessageType);
+            } catch(Exception e) {
+                passUuidToPacketPlayOutChat = true;
+            }
         }
     }
     
+    @SuppressWarnings("deprecation")
     public void sendActionBar(Player player, String message) {
+        if (canUseSpigotActionBar) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+
+            return;
+        }
+        
         try {
             Object packet;
             if(oldVersion) {

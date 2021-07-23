@@ -1,5 +1,14 @@
 # Change Log
-### [3.4.1] - 26/09/2020
+## [3.5.0] - 23/07/2021
+
+### Added
+- `giveIfWorseBoost` command that grants boost only if player's boost multiplier is smaller than the new one
+- support for mc 1.17.1
+
+### Removed
+- RPGme support
+
+## [3.4.1] - 26/09/2020
 
 ### Fixed
 - issue with Jobs reborn

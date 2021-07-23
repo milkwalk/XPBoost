@@ -74,6 +74,7 @@ public class ConfigManager {
                 "/xpboost info &f- Shows time remaining", "/xpboost factions &f- Opens up a factions GUI",
                 "/xpboost on/off &f - Enables/disables global XP Boost",
                 "/xpboost give <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player boost",
+                "/xpboost giveIfWorseBoost <name/all> <boost> <time> [VANILLA,SKILLAPI,MCMMO,RPGME,HEROES]&f - Gives player better boost only",
                 "/xpboost clear <name> &f - Clears active boost",
                 "/xpboost item <player> <boost> <time>&f - Gives an XPboost item to a player",
                 "/xpboost giveDefinedBoost <player/all> <boostId> [durationInSeconds]&f - Gives a predefined boost",

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cz.dubcat.plugins</groupId>
   <artifactId>xpboost</artifactId>
-  <version>3.4.2</version>
+  <version>3.5.0</version>
   <name>XPBoost</name>
 
   <properties>
@@ -29,7 +29,7 @@
           <target>1.8</target>
         </configuration>
       </plugin>
-      
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
@@ -65,10 +65,10 @@
   </distributionManagement>
 
   <repositories>
-    <!-- Dubcat Public Repository -->
+    <!-- PaperMC -->
     <repository>
-      <id>dubcat-public</id>
-      <url>https://maven.dubcat.cz/repository/dubcat-public/</url>
+      <id>papermc</id>
+      <url>https://papermc.io/repo/repository/maven-public/</url>
     </repository>
     <!-- MVdW -->
     <repository>
@@ -80,9 +80,15 @@
       <id>inventive-repo</id>
       <url>https://repo.inventivetalent.org/content/groups/public/</url>
     </repository>
+    <!-- McMMO -->
     <repository>
-        <id>papermc</id>
-        <url>https://papermc.io/repo/repository/maven-public/</url>
+      <id>mcmmo</id>
+      <url>https://nexus.neetgames.com/repository/maven-releases/</url>
+    </repository>
+    <!-- Heroes -->
+    <repository>
+      <id>heroes</id>
+      <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
     </repository>
     <repository>
       <id>jitpack.io</id>
@@ -93,23 +99,23 @@
   <dependencies>
     <!-- Paper Spigot API -->
     <dependency>
-      <groupId>com.destroystokyo.paper</groupId>
+      <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
-      <version>1.16.1-R0.1-SNAPSHOT</version>
+      <version>1.17.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <!-- Spigot -->
     <dependency>
       <groupId>org.spigotmc</groupId>
       <artifactId>spigot-api</artifactId>
-      <version>1.16.1-R0.1-SNAPSHOT</version>
+      <version>1.17.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <!-- MVdWPlaceholderAPI -->
     <dependency>
       <groupId>be.maximvdw</groupId>
       <artifactId>MVdWPlaceholderAPI</artifactId>
-      <version>3.0.1</version>
+      <version>3.1.1-SNAPSHOT</version>
       <scope>provided</scope>
       <exclusions>
         <exclusion>
@@ -124,16 +130,9 @@
       <artifactId>HikariCP</artifactId>
       <version>3.4.1</version>
     </dependency>
-    <!-- Skillapi -->
-    <dependency>
-      <groupId>com.sucy.skill</groupId>
-      <artifactId>skillapi</artifactId>
-      <version>3.108-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
     <!-- Vault -->
     <dependency>
-      <groupId>net.milkbowl.vault</groupId>
+      <groupId>com.github.MilkBowl</groupId>
       <artifactId>VaultAPI</artifactId>
       <version>1.7</version>
       <scope>provided</scope>
@@ -154,34 +153,8 @@
     <!-- Heroes -->
     <dependency>
       <groupId>com.herocraftonline.heroes</groupId>
-      <artifactId>Heroes</artifactId>
-      <version>1.5.5</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot-api</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>net.milkbowl.vault</groupId>
-          <artifactId>Vault</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>net.milkbowl.vault</groupId>
-          <artifactId>Vault</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>me.desht</groupId>
-          <artifactId>scrollingmenusign</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>com.dthielke.herochat</groupId>
-          <artifactId>HeroChat</artifactId>
-        </exclusion>
-      </exclusions>
+      <artifactId>heroes-stripped</artifactId>
+      <version>4dd3dd85</version>
     </dependency>
     <!-- BossbarAPI -->
     <dependency>
@@ -198,16 +171,9 @@
     </dependency>
     <!-- MCMMO -->
     <dependency>
-      <groupId>com.gmail.nossr50</groupId>
-      <artifactId>mcmmo</artifactId>
-      <version>2.1.7</version>
-      <scope>provided</scope>
-    </dependency>
-    <!-- RPGME -->
-    <dependency>
-      <groupId>net.flamedek</groupId>
-      <artifactId>rpgme</artifactId>
-      <version>1.0.2</version>
+      <groupId>com.gmail.nossr50.mcMMO</groupId>
+      <artifactId>mcMMO</artifactId>
+      <version>2.1.199</version>
       <scope>provided</scope>
     </dependency>
     <!-- Skillapi -->
@@ -215,20 +181,22 @@
       <groupId>com.github.Eniripsa96</groupId>
       <artifactId>skillapi</artifactId>
       <version>3.108</version>
-      <scope>provided</scope>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/SkillAPI-3.108.jar</systemPath>
     </dependency>
     <!-- MyPet -->
     <dependency>
-      <groupId>de.keyle.mypet</groupId>
+      <groupId>de.keyle</groupId>
       <artifactId>mypet</artifactId>
-      <version>3.5</version>
-      <scope>provided</scope>
+      <version>3.10</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/libs/MyPet-3.10.jar</systemPath>
     </dependency>
     <!-- Jobs -->
     <dependency>
-      <groupId>jobs.reborn</groupId>
-      <artifactId>jobs</artifactId>
-      <version>4.16.1</version>
+      <groupId>com.github.Zrips</groupId>
+      <artifactId>Jobs</artifactId>
+      <version>4.17.2</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>

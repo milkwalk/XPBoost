@@ -28,6 +28,7 @@ import cz.dubcat.xpboost.commands.ClearCommand;
 import cz.dubcat.xpboost.commands.CommandHandler;
 import cz.dubcat.xpboost.commands.GiveBoostCommand;
 import cz.dubcat.xpboost.commands.GiveDefinedBoostCommand;
+import cz.dubcat.xpboost.commands.GiveIfWorseBoostCommand;
 import cz.dubcat.xpboost.commands.GlobalCommand;
 import cz.dubcat.xpboost.commands.GlobalDisableCommand;
 import cz.dubcat.xpboost.commands.GlobalEnableCommand;
@@ -55,7 +56,6 @@ import cz.dubcat.xpboost.support.BossBarN;
 import cz.dubcat.xpboost.support.Heroes;
 import cz.dubcat.xpboost.support.JobsReborn;
 import cz.dubcat.xpboost.support.McMMO;
-import cz.dubcat.xpboost.support.RPGmE;
 import cz.dubcat.xpboost.support.SkillApi;
 import cz.dubcat.xpboost.tasks.ActionBarTask;
 import cz.dubcat.xpboost.tasks.BoostTaskCheck;
@@ -181,17 +181,6 @@ public class XPBoostMain extends JavaPlugin {
 
             if (metrics != null) {
                 metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "SkillAPI"));
-            }
-        }
-
-        // RpgMe
-        Plugin rpgme = this.getServer().getPluginManager().getPlugin("RPGme");
-        if (rpgme != null) {
-            log.info("Found RPGme, enabling support.");
-            getServer().getPluginManager().registerEvents(new RPGmE(), this);
-
-            if (metrics != null) {
-                metrics.addCustomChart(new Metrics.SimplePie("addons", () -> "RPGme"));
             }
         }
 
@@ -323,6 +312,7 @@ public class XPBoostMain extends JavaPlugin {
         handler.register("item", new ItemCommand(this));
         handler.register("global", new GlobalCommand(this));
         handler.register("giveDefinedBoost", new GiveDefinedBoostCommand());
+        handler.register("giveIfWorseBoost", new GiveIfWorseBoostCommand());
 
         getCommand("xpboost").setExecutor(handler);
         getCommand("xpb").setExecutor(handler);
@@ -337,6 +327,7 @@ public class XPBoostMain extends JavaPlugin {
             return false;
         }
         economy = rsp.getProvider();
+
         return economy != null;
     }
     

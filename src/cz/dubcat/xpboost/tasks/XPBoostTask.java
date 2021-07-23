@@ -23,10 +23,10 @@ import cz.dubcat.xpboost.constructors.XPBoost;
 
 public class XPBoostTask extends BukkitRunnable {
 
-    private static String MESSAGE;
+    private static String boostFinishMessage;
 
     public XPBoostTask() {
-        MESSAGE = XPBoostMain.getLang().getString("lang.boostfisnish");
+        boostFinishMessage = XPBoostMain.getLang().getString("lang.boostfisnish");
     }
 
     @Override
@@ -44,7 +44,7 @@ public class XPBoostTask extends BukkitRunnable {
                                 Bukkit.getPlayer(xpb.getUuid()).getLocation(),
                                 Sound.valueOf(XPBoostMain.getPlugin().getConfig().getString("settings.boostEndSound").toUpperCase()), 
                                 5f, 5f);
-                        InternalXPBoostAPI.sendMessage(MESSAGE, xpb.getUuid());
+                        InternalXPBoostAPI.sendMessage(boostFinishMessage, xpb.getUuid());
                 });
 
                 if (Database.getDatabaseType() == DType.FILE) {
